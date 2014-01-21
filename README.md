@@ -52,11 +52,13 @@ var app = angular.module('app', ["angucomplete"]);
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
 | selectedObject | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
 | url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
-| titlefield | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list | Yes | firstName |
+| titlefield | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
 | descriptionfield | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
 | imagefield | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | twitterUsername |
 | minlength | The minimum length of string required before searching | No | 3 |
 | inputclass | The classes to use for styling the input box | No | form-control |
+| localdata | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
+| searchfields | The fields from your local data to search on (comma separate them) | No | title,description |
 
 
 
