@@ -1,3 +1,16 @@
+.form-control {
+    outline: 0;
+    border-color: #ECECEC;
+    border-style: solid;
+    border-width: 1px;
+    width: 95%;
+    background-color: #ffffff;
+    padding: 6px;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
 .angucomplete-holder {
     position: relative;
 }
@@ -7,7 +20,7 @@
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
-    width: 400px;
+    width: 250px;
     padding: 6px;
     cursor: pointer;
     z-index: 9999;
