@@ -3,6 +3,8 @@ angucomplete
 
 A simple but powerful AngularJS directive that allows you to quickly create autocomplete boxes that pull data either from a server or local variable.
 
+To see a demo go here: http://darylrowland.github.io/angucomplete
+
 ###Key Features
 * Show just a title, a title and a description or a title, description and image in your autocomplete list
 * Deliberately minimally styled so you can customise it to your heart's content!
