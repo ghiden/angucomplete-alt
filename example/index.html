@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Angucomplete</title>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+        <link rel="stylesheet" href="css/structure.css"/>
+        <link rel="stylesheet" href="css/angucomplete.css"/>
+        <link rel="stylesheet" href="fonts/bariol/bariol.css"/>
+    </head>
+	<body ng-app="app">
+		<div ng-controller="MainController">
+            <h1>Angucomplete</h1>
+            <h2>Awesome Autocompleteness for AngularJS</h2>
+            <p>
+                A minimal looking, easy to implement directive for AngularJS that lets you quickly add autocomplete boxes (for local or remote JSON data) to your pages with no dependency on other libraries. Its deliberately minimal looking so you can easily customise it with just a few lines of CSS.
+            </p>
+
+
+
+            <div class="large-padded-row">
+                <h3>Example 1 - Countries of the World</h3>
+                <div class="padded-row">
+                    <angucomplete id="ex1" placeholder="Search countries" pause="100" selectedobject="selectedCountry" localdata="countries" searchfields="name" titlefield="name" minlength="1" inputclass="form-control form-control-small"/>
+                </div>
+                <div class="" ng-show="selectedCountry">
+                    You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+                </div>
+
+
+            </div>
+
+            <div class="large-padded-row">
+                <h3>Example 2 - People</h3>
+                <div class="padded-row">
+                    <angucomplete id="ex2" placeholder="Search people" pause="300" selectedobject="selectedPerson" localdata="people" searchfields="firstName,surname" titlefield="firstName,surname" descriptionfield="twitter" imagefield="pic" minlength="1" inputclass="form-control form-control-small"/>
+                </div>
+                <div class="" ng-show="selectedPerson">
+                    You selected <span class="bold-span">{{selectedPerson.originalObject.firstName}} {{selectedPerson.originalObject.surname}}</span>
+                </div>
+
+
+            </div>
+
+            <div class="very-large-padded-row">
+                <h2>How to use</h2>
+                <p>
+                    Head over to the GitHub pages <a href="http://github.com/darylrowland/angucomplete">here</a> to grab the code and read the documentation on how to use this.
+                </p>
+
+                <p>
+                    You are free to use this code as you see fit. I'm realising it under a completely open license and can't wait to see what you do with it!
+                </p>
+
+            </div>
+
+            <div class="very-large-padded-row">
+                <h5>By Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
+            </div>
+
+
+            <script src="js/angular.min.js"></script>
+            <script src="js/angular-touch.min.js"></script>
+            <script src="js/app/app.js"></script>
+            <script src="js/app/controllers/main-controller.js"></script>
+            <script src="js/app/directives/angucomplete.js"></script>
+        </div>
+	</body>
+</html>
