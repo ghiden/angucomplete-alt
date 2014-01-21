@@ -100,10 +100,10 @@ angular.module('angucomplete', [] )
                         var matches = [];
 
                         for (var i = 0; i < $scope.localData.length; i++) {
-                            var match = true;
+                            var match = false;
 
                             for (var s = 0; s < searchFields.length; s++) {
-                                var evalStr = 'match = ($scope.localData[i].' + searchFields[s] + '.toLowerCase().indexOf("' + str.toLowerCase() + '") >= 0)';
+                                var evalStr = 'match = match || ($scope.localData[i].' + searchFields[s] + '.toLowerCase().indexOf("' + str.toLowerCase() + '") >= 0)';
                                 eval(evalStr);
                             }
 
