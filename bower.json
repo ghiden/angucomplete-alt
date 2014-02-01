@@ -1,0 +1,21 @@
+{
+  "name": "angucomplete",
+  "version": "1.0.0",
+  "homepage": "http://darylrowland.github.io/angucomplete/",
+  "authors": [
+    "Daryl Rowland <daryl@cloudyclear.com>"
+  ],
+  "description": "Awesome Autocompleteness for AngularJS",
+  "keywords": [
+    "autocomplete",
+    "typeahead",
+    "angularjs"
+  ],
+  "license": "MIT",
+  "main": "./angucomplete.js",
+  "ignore": [
+    "example",
+    "bower_components",
+    "node_modules"
+  ]
+}
