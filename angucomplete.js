@@ -61,18 +61,14 @@ angular.module('angucomplete', [] )
                             titleCode = titleCode + "responseData[i]." + titleFields[t];
                         }
 
-                        // Figure out description
                         var description = "";
-
-                        if ($scope.descriptionField && $scope.descriptionField != "") {
-                            eval("description = responseData[i]." + $scope.descriptionField);
+                        if ($scope.descriptionField) {
+                            description = $scope.extractValue(responseData[i], $scope.descriptionField);
                         }
 
-                        // Figure out image
                         var image = "";
-
-                        if ($scope.imageField && $scope.imageField != "") {
-                            eval("image = responseData[i]." + $scope.imageField);
+                        if ($scope.imageField) {
+                            image = $scope.extractValue(responseData[i], $scope.imageField);
                         }
 
                         var resultRow = {
