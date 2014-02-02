@@ -13,6 +13,7 @@ angular.module('angucomplete', [] )
             "placeholder": "@placeholder",
             "selectedObject": "=selectedobject",
             "url": "@url",
+            "dataField": "@datafield",
             "titleField": "@titlefield",
             "descriptionField": "@descriptionfield",
             "imageField": "@imagefield",
@@ -60,18 +61,14 @@ angular.module('angucomplete', [] )
                             titleCode = titleCode + "responseData[i]." + titleFields[t];
                         }
 
-                        // Figure out description
                         var description = "";
-
-                        if ($scope.descriptionField && $scope.descriptionField != "") {
-                            eval("description = responseData[i]." + $scope.descriptionField);
+                        if ($scope.descriptionField) {
+                            description = $scope.extractValue(responseData[i], $scope.descriptionField);
                         }
 
-                        // Figure out image
                         var image = "";
-
-                        if ($scope.imageField && $scope.imageField != "") {
-                            eval("image = responseData[i]." + $scope.imageField);
+                        if ($scope.imageField) {
+                            image = $scope.extractValue(responseData[i], $scope.imageField);
                         }
 
                         var resultRow = {
@@ -121,7 +118,8 @@ angular.module('angucomplete', [] )
                         $http.get($scope.url + str, {}).
                             success(function(responseData, status, headers, config) {
                                 $scope.searching = false;
-                                $scope.processResults(responseData);
+                                data = $scope.extractValue(responseData, $scope.dataField)
+                                $scope.processResults(data);
                             }).
                             error(function(data, status, headers, config) {
                                 console.log("error");
@@ -129,6 +127,15 @@ angular.module('angucomplete', [] )
                     }
                 }
 
+            }
+
+            $scope.extractValue = function(obj, key) {
+                if (key) {
+                    value = eval("obj." + key);
+                } else {
+                    value = obj;
+                }
+                return value;
             }
 
             $scope.hoverRow = function(index) {
