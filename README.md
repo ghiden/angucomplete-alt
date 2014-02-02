@@ -21,12 +21,12 @@ var app = angular.module('app', ["angucomplete"]);
 ### Local Usage
 
 ```html
-<angucomplete id="ex1" 
+<angucomplete id="ex1"
               placeholder="Search countries"
-              pause="100" 
-              selectedobject="selectedCountry" 
-              localdata="countries" 
-              searchfields="name" 
+              pause="100"
+              selectedobject="selectedCountry"
+              localdata="countries"
+              searchfields="name"
               titlefield="name"
               minlength="1"
               inputclass="form-control form-control-small"/>
@@ -40,6 +40,7 @@ var app = angular.module('app', ["angucomplete"]);
               pause="400"
               selectedobject="testObj"
               url="http://myserver.com/api/user/find?s="
+              datafield="results"
               titlefield="firstName,surname"
               descriptionfield="email"
               imagefield="profilePic"
@@ -54,6 +55,7 @@ var app = angular.module('app', ["angucomplete"]);
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
 | selectedObject | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
 | url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
+| datafield | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
 | titlefield | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
 | descriptionfield | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
 | imagefield | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
@@ -63,7 +65,3 @@ var app = angular.module('app', ["angucomplete"]);
 | searchfields | The fields from your local data to search on (comma separate them) | No | title,description |
 
 
-
-
-
-                
