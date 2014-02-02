@@ -21,12 +21,12 @@ var app = angular.module('app', ["angucomplete"]);
 ### Local Usage
 
 ```html
-<angucomplete id="ex1" 
+<angucomplete id="ex1"
               placeholder="Search countries"
-              pause="100" 
-              selectedobject="selectedCountry" 
-              localdata="countries" 
-              searchfields="name" 
+              pause="100"
+              selectedobject="selectedCountry"
+              localdata="countries"
+              searchfields="name"
               titlefield="name"
               minlength="1"
               inputclass="form-control form-control-small"/>
@@ -65,7 +65,3 @@ var app = angular.module('app', ["angucomplete"]);
 | searchfields | The fields from your local data to search on (comma separate them) | No | title,description |
 
 
-
-
-
-                
