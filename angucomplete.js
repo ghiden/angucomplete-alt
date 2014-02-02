@@ -13,6 +13,7 @@ angular.module('angucomplete', [] )
             "placeholder": "@placeholder",
             "selectedObject": "=selectedobject",
             "url": "@url",
+            "dataField": "@datafield",
             "titleField": "@titlefield",
             "descriptionField": "@descriptionfield",
             "imageField": "@imagefield",
@@ -121,7 +122,8 @@ angular.module('angucomplete', [] )
                         $http.get($scope.url + str, {}).
                             success(function(responseData, status, headers, config) {
                                 $scope.searching = false;
-                                $scope.processResults(responseData);
+                                data = $scope.extractValue(responseData, $scope.dataField)
+                                $scope.processResults(data);
                             }).
                             error(function(data, status, headers, config) {
                                 console.log("error");
@@ -129,6 +131,15 @@ angular.module('angucomplete', [] )
                     }
                 }
 
+            }
+
+            $scope.extractValue = function(obj, key) {
+                if (key) {
+                    value = eval("obj." + key);
+                } else {
+                    value = obj;
+                }
+                return value;
             }
 
             $scope.hoverRow = function(index) {
