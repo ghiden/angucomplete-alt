@@ -181,6 +181,9 @@ angular.module('angucomplete', [] )
             }
 
             $scope.selectResult = function(result) {
+                if ($scope.matchClass) {
+                    result.title = result.title.toString().replace(/(<([^>]+)>)/ig, '');
+                }
                 $scope.searchStr = result.title;
                 $scope.selectedObject = result;
                 $scope.showDropdown = false;
