@@ -42,6 +42,15 @@ angular.module('angucomplete', [] )
                 $scope.pause = $scope.userPause;
             }
 
+            extractValue = function(obj, key) {
+                if (key) {
+                    value = eval("obj." + key);
+                } else {
+                    value = obj;
+                }
+                return value;
+            }
+
             $scope.processResults = function(responseData, str) {
                 if (responseData && responseData.length > 0) {
                     $scope.results = [];
@@ -64,12 +73,12 @@ angular.module('angucomplete', [] )
 
                         var description = "";
                         if ($scope.descriptionField) {
-                            description = $scope.extractValue(responseData[i], $scope.descriptionField);
+                            description = extractValue(responseData[i], $scope.descriptionField);
                         }
 
                         var image = "";
                         if ($scope.imageField) {
-                            image = $scope.extractValue(responseData[i], $scope.imageField);
+                            image = extractValue(responseData[i], $scope.imageField);
                         }
 
                         var text = eval(titleCode);
@@ -126,7 +135,7 @@ angular.module('angucomplete', [] )
                         $http.get($scope.url + str, {}).
                             success(function(responseData, status, headers, config) {
                                 $scope.searching = false;
-                                data = $scope.extractValue(responseData, $scope.dataField)
+                                data = extractValue(responseData, $scope.dataField)
                                 $scope.processResults(data, str);
                             }).
                             error(function(data, status, headers, config) {
@@ -135,15 +144,6 @@ angular.module('angucomplete', [] )
                     }
                 }
 
-            }
-
-            $scope.extractValue = function(obj, key) {
-                if (key) {
-                    value = eval("obj." + key);
-                } else {
-                    value = obj;
-                }
-                return value;
             }
 
             $scope.hoverRow = function(index) {
