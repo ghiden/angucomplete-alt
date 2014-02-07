@@ -26,7 +26,7 @@ angular.module('angucomplete', [] )
         },
         template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-keyup="keyPressed($event)"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="result.image && result.image != \'\'" class="angucomplete-image-holder"><img ng-src="{{result.image}}" class="angucomplete-image"/></div><div ng-if="matchClass" ng-bind-html="result.title"></div><div ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
         controller: function ( $scope ) {
-            $scope.lastFoundWord = null;
+            $scope.lastSearchTerm = null;
             $scope.currentIndex = null;
             $scope.justChanged = false;
             $scope.searchTimer = null;
@@ -49,6 +49,10 @@ angular.module('angucomplete', [] )
                     value = obj;
                 }
                 return value;
+            }
+
+            isNewSearchNeeded = function(newTerm, oldTerm) {
+                return newTerm.length >= $scope.minLength && newTerm != oldTerm
             }
 
             $scope.processResults = function(responseData, str) {
@@ -154,27 +158,23 @@ angular.module('angucomplete', [] )
                 if (!(event.which == 38 || event.which == 40 || event.which == 13)) {
                     if (!$scope.searchStr || $scope.searchStr == "") {
                         $scope.showDropdown = false;
-                    } else {
+                        $scope.lastSearchTerm = null
+                    } else if (isNewSearchNeeded($scope.searchStr, $scope.lastSearchTerm)) {
+                        $scope.lastSearchTerm = $scope.searchStr
+                        $scope.showDropdown = true;
+                        $scope.currentIndex = -1;
+                        $scope.results = [];
 
-                        if ($scope.searchStr.length >= $scope.minLength) {
-                            $scope.showDropdown = true;
-                            $scope.currentIndex = -1;
-                            $scope.results = [];
-
-                            if ($scope.searchTimer) {
-                                clearTimeout($scope.searchTimer);
-                            }
-
-                            $scope.searching = true;
-
-                            $scope.searchTimer = setTimeout(function() {
-                                $scope.searchTimerComplete($scope.searchStr);
-                            }, $scope.pause);
+                        if ($scope.searchTimer) {
+                            clearTimeout($scope.searchTimer);
                         }
 
+                        $scope.searching = true;
 
+                        $scope.searchTimer = setTimeout(function() {
+                            $scope.searchTimerComplete($scope.searchStr);
+                        }, $scope.pause);
                     }
-
                 } else {
                     event.preventDefault();
                 }
