@@ -56,8 +56,6 @@
 .angucomplete-image-holder {
     padding-top: 2px;
     float: left;
-    height: 34px;
-    width: 34px;
     margin-right: 10px;
     margin-left: 5px;
 }
@@ -69,4 +67,14 @@
     border-color: #ececec;
     border-style: solid;
     border-width: 1px;
+}
+
+.angucomplete-image-default {
+    /* Add your own default image here
+     background-image: url('/assets/default.png');
+    */
+    background-position: center;
+    background-size: contain;
+    height: 34px;
+    width: 34px;
 }
