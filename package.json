@@ -1,0 +1,23 @@
+{
+  "authors": [
+    "Daryl Rowland <daryl@cloudyclear.com>"
+  ],
+  "name": "angucomplete",
+  "description": "Awesome Autocompleteness for AngularJS",
+  "version": "1.0.0",
+  "homepage": "http://darylrowland.github.io/angucomplete/",
+  "engines": {
+    "node": ">= 0.8.4"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "async": "0.1.x",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-karma": "~0.6.2",
+    "karma": "~0.10.2",
+    "grunt-conventional-changelog": "~1.0.0",
+    "load-grunt-tasks": "~0.2.0"
+  }
+}
