@@ -30,6 +30,7 @@
     "describe": false,
     "expect": false,
     "it": false,
+    "inject": false,
     "jasmine": false,
     "JSHINT": false,
     "mostRecentAjaxRequest": false,
@@ -38,6 +39,8 @@
     "spyOn": false,
     "spyOnEvent": false,
     "waitsFor": false,
-    "xdescribe": false
+    "xdescribe": false,
+    "$": false,
+    "dump": false
   }
 }

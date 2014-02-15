@@ -22,6 +22,7 @@
     "angular": ">=1.2.0"
   },
   "devDependencies": {
-    "angular-mocks": ">=1.2.0"
+    "angular-mocks": ">=1.2.0",
+    "jquery": "~2.1.0"
   }
 }

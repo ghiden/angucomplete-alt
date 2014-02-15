@@ -5,7 +5,7 @@
  */
 
 angular.module('angucomplete', [] )
-    .directive('angucomplete', function ($parse, $http, $sce) {
+    .directive('angucomplete', function ($parse, $http, $sce, $timeout) {
     return {
         restrict: 'EA',
         scope: {
@@ -24,8 +24,9 @@ angular.module('angucomplete', [] )
             "minLengthUser": "@minlength",
             "matchClass": "@matchclass"
         },
-        template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-keyup="keyPressed($event)"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
-        controller: function ( $scope ) {
+        template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
+
+        link: function($scope, elem, attrs) {
             $scope.lastSearchTerm = null;
             $scope.currentIndex = null;
             $scope.justChanged = false;
@@ -33,6 +34,7 @@ angular.module('angucomplete', [] )
             $scope.searching = false;
             $scope.pause = 500;
             $scope.minLength = 3;
+            $scope.searchStr = null;
 
             if ($scope.minLengthUser && $scope.minLengthUser != "") {
                 $scope.minLength = $scope.minLengthUser;
@@ -166,12 +168,12 @@ angular.module('angucomplete', [] )
                         $scope.results = [];
 
                         if ($scope.searchTimer) {
-                            clearTimeout($scope.searchTimer);
+                            $timeout.cancel($scope.searchTimer);
                         }
 
                         $scope.searching = true;
 
-                        $scope.searchTimer = setTimeout(function() {
+                        $scope.searchTimer = $timeout(function() {
                             $scope.searchTimerComplete($scope.searchStr);
                         }, $scope.pause);
                     }
@@ -190,11 +192,12 @@ angular.module('angucomplete', [] )
                 $scope.results = [];
                 //$scope.$apply();
             }
-        },
 
-        link: function($scope, elem, attrs, ctrl) {
+            var inputField = elem.find('input');
 
-            elem.bind("keyup", function (event) {
+            inputField.on('keyup', $scope.keyPressed);
+
+            elem.on("keyup", function (event) {
                 if(event.which === 40) {
                     if (($scope.currentIndex + 1) < $scope.results.length) {
                         $scope.currentIndex ++;
@@ -234,7 +237,6 @@ angular.module('angucomplete', [] )
                     $scope.$apply();
                 }
             });
-
 
         }
     };
