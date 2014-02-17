@@ -85,4 +85,88 @@ describe('angucomplete', function() {
     });
   });
 
+  describe('processResults', function() {
+
+    it('should set $scope.results[0].title', function() {
+      var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" localdata="names" searchfields="name" titlefield="name" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var name = 'John';
+      var responseData = [ {name: name} ];
+      element.isolateScope().processResults(responseData);
+      expect(element.isolateScope().results[0].title).toBe(name);
+    });
+
+    it('should set $scope.results[0].title for two title fields', function() {
+      var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" localdata="names" searchfields="name" titlefield="firstName,lastName" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var lastName = 'Doe', firstName = 'John';
+      var responseData = [ {lastName: lastName, firstName: firstName} ];
+      element.isolateScope().processResults(responseData);
+      expect(element.isolateScope().results[0].title).toBe(firstName + ' ' + lastName);
+    });
+
+    it('should set $scope.results[0].description', function() {
+      var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" localdata="names" searchfields="name" titlefield="name" descriptionfield="desc" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var description = 'blah blah blah';
+      var responseData = [ {name: 'John', desc: description} ];
+      element.isolateScope().processResults(responseData);
+      expect(element.isolateScope().results[0].description).toBe(description);
+    });
+
+    it('should set $scope.results[0].image', function() {
+      var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" localdata="names" searchfields="name" titlefield="name" imagefield="pic" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var image = 'some pic';
+      var responseData = [ {name: 'John', pic: image} ];
+      element.isolateScope().processResults(responseData);
+      expect(element.isolateScope().results[0].image).toBe(image);
+    });
+  });
+
+  describe('searchTimerComplete', function() {
+
+    describe('remote API', function() {
+
+      it('should call $http with given url and param', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" url="names?q=" searchfields="name" datafield="data" titlefield="name" minlength="1"/>');
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'john';
+        var results = {data: [{name: 'john'}]};
+        spyOn(element.isolateScope(), 'processResults');
+        $httpBackend.expectGET('names?q=' + queryTerm).respond(200, results);
+        element.isolateScope().searchTimerComplete(queryTerm);
+        $httpBackend.flush();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+      }));
+
+      it('should set $scope.searching to false and call $scope.processResults after success', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" url="names?q=" searchfields="name" datafield="data" titlefield="name" minlength="1"/>');
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'john';
+        var results = {data: [{name: 'john'}]};
+        spyOn(element.isolateScope(), 'processResults');
+        $httpBackend.expectGET('names?q=' + queryTerm).respond(200, results);
+        element.isolateScope().searchTimerComplete(queryTerm);
+        $httpBackend.flush();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+        expect(element.isolateScope().processResults).toHaveBeenCalledWith(results.data, queryTerm);
+        expect(element.isolateScope().searching).toBe(false);
+      }));
+    });
+  });
 });

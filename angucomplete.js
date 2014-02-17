@@ -44,15 +44,6 @@ angular.module('angucomplete', [] )
                 $scope.pause = $scope.userPause;
             }
 
-            extractValue = function(obj, key) {
-                if (key) {
-                    value = eval("obj." + key);
-                } else {
-                    value = obj;
-                }
-                return value;
-            }
-
             isNewSearchNeeded = function(newTerm, oldTerm) {
                 return newTerm.length >= $scope.minLength && newTerm != oldTerm
             }
@@ -68,26 +59,23 @@ angular.module('angucomplete', [] )
 
                     for (var i = 0; i < responseData.length; i++) {
                         // Get title variables
-                        var titleCode = "";
+                        var titleCode = [];
 
                         for (var t = 0; t < titleFields.length; t++) {
-                            if (t > 0) {
-                                titleCode = titleCode +  " + ' ' + ";
-                            }
-                            titleCode = titleCode + "responseData[i]." + titleFields[t];
+                            titleCode.push(responseData[i][titleFields[t]]);
                         }
 
                         var description = "";
                         if ($scope.descriptionField) {
-                            description = extractValue(responseData[i], $scope.descriptionField);
+                            description = responseData[i][$scope.descriptionField];
                         }
 
                         var image = "";
                         if ($scope.imageField) {
-                            image = extractValue(responseData[i], $scope.imageField);
+                            image = responseData[i][$scope.imageField];
                         }
 
-                        var text = eval(titleCode);
+                        var text = titleCode.join(' ');
                         if ($scope.matchClass) {
                             var re = new RegExp(str, 'i');
                             var strPart = text.match(re)[0];
@@ -141,8 +129,7 @@ angular.module('angucomplete', [] )
                         $http.get($scope.url + str, {}).
                             success(function(responseData, status, headers, config) {
                                 $scope.searching = false;
-                                data = extractValue(responseData, $scope.dataField)
-                                $scope.processResults(data, str);
+                                $scope.processResults(responseData[$scope.dataField], str);
                             }).
                             error(function(data, status, headers, config) {
                                 console.log("error");
