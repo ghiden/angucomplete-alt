@@ -35,7 +35,7 @@ describe('angucomplete', function() {
 
     it('should show search results after 3 letter is entered', function() {
       var element = angular.element('<div angucomplete id="ex1" placeholder="Search countries" selectedobject="selectedCountry" localdata="countries" searchfields="name" titlefield="name"/>');
-      $scope.selectedCountry = undefined; 
+      $scope.selectedCountry = undefined;
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
@@ -66,7 +66,7 @@ describe('angucomplete', function() {
 
     it('should show search results after 1 letter is entered with minlength being set to 1', function() {
       var element = angular.element('<div angucomplete id="ex1" placeholder="Search countries" selectedobject="selectedCountry" localdata="countries" searchfields="name" titlefield="name" minlength="1"/>');
-      $scope.selectedCountry = undefined; 
+      $scope.selectedCountry = undefined;
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
