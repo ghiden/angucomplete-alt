@@ -134,6 +134,25 @@ describe('angucomplete', function() {
 
   describe('searchTimerComplete', function() {
 
+    describe('local data', function() {
+      it('should set $scope.searching to false and call $scope.processResults', function() {
+        var element = angular.element('<div angucomplete id="ex1" placeholder="Search countries" selectedobject="selectedCountry" localdata="countries" searchfields="name" titlefield="name" minlength="1"/>');
+        $scope.selectedCountry = undefined;
+        $scope.countries = [
+          {name: 'Afghanistan', code: 'AF'},
+          {name: 'Aland Islands', code: 'AX'},
+          {name: 'Albania', code: 'AL'}
+        ];
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'al';
+        spyOn(element.isolateScope(), 'processResults');
+        element.isolateScope().searchTimerComplete(queryTerm);
+        expect(element.isolateScope().processResults).toHaveBeenCalledWith($scope.countries.slice(1,3), queryTerm);
+      });
+    });
+
     describe('remote API', function() {
 
       it('should call $http with given url and param', inject(function($httpBackend) {

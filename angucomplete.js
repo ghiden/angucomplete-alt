@@ -111,8 +111,7 @@ angular.module('angucomplete', [] )
                             var match = false;
 
                             for (var s = 0; s < searchFields.length; s++) {
-                                var evalStr = 'match = match || ($scope.localData[i].' + searchFields[s] + '.toLowerCase().indexOf("' + str.toLowerCase() + '") >= 0)';
-                                eval(evalStr);
+                                match = match || ($scope.localData[i][searchFields[s]].toLowerCase().indexOf(str.toLowerCase()) >= 0);
                             }
 
                             if (match) {
@@ -122,8 +121,6 @@ angular.module('angucomplete', [] )
 
                         $scope.searching = false;
                         $scope.processResults(matches, str);
-                        $scope.$apply();
-
 
                     } else {
                         $http.get($scope.url + str, {}).
