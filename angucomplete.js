@@ -34,7 +34,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
     },
     template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
     link: function($scope, elem, attrs) {
-      var params;
+      var isNewSearchNeeded, inputField;
 
       $scope.lastSearchTerm = null;
       $scope.currentIndex = null;
@@ -53,52 +53,53 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
         $scope.pause = $scope.userPause;
       }
 
-      var isNewSearchNeeded = function(newTerm, oldTerm) {
+      isNewSearchNeeded = function(newTerm, oldTerm) {
         return newTerm.length >= $scope.minLength && newTerm !== oldTerm;
       };
 
       $scope.processResults = function(responseData, str) {
+        var titleFields, titleCode, i, t, description, image, text, re, strPart;
+
         if (responseData && responseData.length > 0) {
           $scope.results = [];
 
-          var titleFields = [];
+          titleFields = [];
           if ($scope.titleField && $scope.titleField !== '') {
             titleFields = $scope.titleField.split(',');
           }
 
-          for (var i = 0; i < responseData.length; i++) {
+          for (i = 0; i < responseData.length; i++) {
             // Get title variables
-            var titleCode = [];
+            titleCode = [];
 
-            for (var t = 0; t < titleFields.length; t++) {
+            for (t = 0; t < titleFields.length; t++) {
               titleCode.push(responseData[i][titleFields[t]]);
             }
 
-            var description = '';
+            description = '';
             if ($scope.descriptionField) {
               description = responseData[i][$scope.descriptionField];
             }
 
-            var image = '';
+            image = '';
             if ($scope.imageField) {
               image = responseData[i][$scope.imageField];
             }
 
-            var text = titleCode.join(' ');
+            text = titleCode.join(' ');
             if ($scope.matchClass) {
-              var re = new RegExp(str, 'i');
-              var strPart = text.match(re)[0];
+              re = new RegExp(str, 'i');
+              strPart = text.match(re)[0];
               text = $sce.trustAsHtml(text.replace(re, '<span class="'+ $scope.matchClass +'">'+ strPart +'</span>'));
             }
 
-            var resultRow = {
+            $scope.results[$scope.results.length] = {
               title: text,
               description: description,
               image: image,
               originalObject: responseData[i]
             };
 
-            $scope.results[$scope.results.length] = resultRow;
           }
 
 
@@ -109,17 +110,18 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
 
       $scope.searchTimerComplete = function(str) {
         // Begin the search
+        var searchFields, matches, i, match, s, params;
 
         if (str.length >= $scope.minLength) {
           if ($scope.localData) {
-            var searchFields = $scope.searchFields.split(',');
+            searchFields = $scope.searchFields.split(',');
 
-            var matches = [];
+            matches = [];
 
-            for (var i = 0; i < $scope.localData.length; i++) {
-              var match = false;
+            for (i = 0; i < $scope.localData.length; i++) {
+              match = false;
 
-              for (var s = 0; s < searchFields.length; s++) {
+              for (s = 0; s < searchFields.length; s++) {
                 match = match || ($scope.localData[i][searchFields[s]].toLowerCase().indexOf(str.toLowerCase()) >= 0);
               }
 
@@ -132,7 +134,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
             $scope.processResults(matches, str);
 
           } else if ($scope.dataformatfn) {
-            var params = $scope.dataformatfn(str);
+            params = $scope.dataformatfn(str);
             $http.get($scope.url, {params: params}).
               success(function(responseData, status, headers, config) {
                 $scope.searching = false;
@@ -197,7 +199,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
         //$scope.$apply();
       };
 
-      var inputField = elem.find('input');
+      inputField = elem.find('input');
 
       inputField.on('keyup', $scope.keyPressed);
 
