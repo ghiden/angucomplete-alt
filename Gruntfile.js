@@ -37,7 +37,7 @@ module.exports = function (grunt) {
     jshint: {
       all:[
         'gruntFile.js',
-        'src/**/*.js',
+        'angucomplete.js',
         'test/**/*Spec.js'
       ],
       options: {
