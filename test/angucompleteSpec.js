@@ -188,4 +188,25 @@ describe('angucomplete', function() {
       }));
     });
   });
+
+  describe('custom data function for ajax request', function() {
+    it('should call the custom data function for ajax request if it is given', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete id="ex1" placeholder="Search names" selectedobject="selected" url="names" searchfields="name" datafield="data" dataformatfn="dataFormatFn" titlefield="name" minlength="1"/>');
+        var sequenceNum = 1234567890
+        $scope.dataFormatFn = function(str) {
+          return {q: str, sequence: sequenceNum};
+        };
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'john';
+        var results = {data: [{name: 'john'}]};
+        spyOn(element.isolateScope(), 'processResults');
+        $httpBackend.expectGET('names?q=' + queryTerm + '&sequence=' + sequenceNum).respond(200, results);
+        element.isolateScope().searchTimerComplete(queryTerm);
+        $httpBackend.flush();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    }));
+  });
 });
