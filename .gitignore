@@ -1,4 +1,4 @@
 node_modules
-components
+bower_components
 .*.swp
 .DS_Store
