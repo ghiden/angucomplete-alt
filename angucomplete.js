@@ -204,7 +204,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
       inputField.on('keyup', $scope.keyPressed);
 
       elem.on('keyup', function (event) {
-        if(event.which === KEY_DW) {
+        if(event.which === KEY_DW && $scope.results) {
           if (($scope.currentIndex + 1) < $scope.results.length) {
             $scope.currentIndex ++;
             $scope.$apply();
@@ -221,7 +221,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
             event.stopPropagation();
           }
 
-        } else if (event.which === KEY_EN) {
+        } else if (event.which === KEY_EN && $scope.results) {
           if ($scope.currentIndex >= 0 && $scope.currentIndex < $scope.results.length) {
             $scope.selectResult($scope.results[$scope.currentIndex]);
             $scope.$apply();
