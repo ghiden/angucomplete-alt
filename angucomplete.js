@@ -6,7 +6,7 @@
  */
 'use strict';
 
-angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, $http, $sce, $timeout) {
+angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http', '$sce', '$timeout', function ($parse, $http, $sce, $timeout) {
   var KEY_DW = 40,
       KEY_UP = 38,
       KEY_ES = 27,
@@ -245,5 +245,5 @@ angular.module('angucomplete', [] ).directive('angucomplete', function ($parse, 
       });
     }
   };
-});
+}]);
 
