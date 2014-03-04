@@ -30,7 +30,8 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
       searchFields: '@searchfields',
       minLengthUser: '@minlength',
       matchClass: '@matchclass',
-      dataformatfn: '='
+      dataformatfn: '=',
+      userClearSelected: '@clearselected'
     },
     template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
     link: function($scope, elem, attrs) {
@@ -44,6 +45,7 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
       $scope.pause = 500;
       $scope.minLength = 3;
       $scope.searchStr = null;
+      $scope.clearSelected = false;
 
       if ($scope.minLengthUser && $scope.minLengthUser !== '') {
         $scope.minLength = $scope.minLengthUser;
@@ -51,6 +53,10 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
 
       if ($scope.userPause) {
         $scope.pause = $scope.userPause;
+      }
+
+      if ($scope.userClearSelected) {
+        $scope.clearSelected = $scope.userClearSelected;
       }
 
       isNewSearchNeeded = function(newTerm, oldTerm) {
@@ -192,7 +198,13 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
         if ($scope.matchClass) {
           result.title = result.title.toString().replace(/(<([^>]+)>)/ig, '');
         }
-        $scope.searchStr = $scope.lastSearchTerm = result.title;
+        
+        if ($scope.clearSelected) {
+          $scope.searchStr = null;
+        }
+        else {
+          $scope.searchStr = $scope.lastSearchTerm = result.title;
+        }
         $scope.selectedObject = result;
         $scope.showDropdown = false;
         $scope.results = [];
@@ -206,19 +218,17 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
       elem.on('keyup', function (event) {
         if(event.which === KEY_DW && $scope.results) {
           if (($scope.currentIndex + 1) < $scope.results.length) {
-            $scope.currentIndex ++;
-            $scope.$apply();
+            $scope.$apply(function() {
+              $scope.currentIndex ++;
+            });
             event.preventDefault();
-            event.stopPropagation();
           }
 
-          $scope.$apply();
         } else if(event.which === KEY_UP) {
           if ($scope.currentIndex >= 1) {
             $scope.currentIndex --;
             $scope.$apply();
             event.preventDefault();
-            event.stopPropagation();
           }
 
         } else if (event.which === KEY_EN && $scope.results) {
@@ -226,12 +236,10 @@ angular.module('angucomplete', [] ).directive('angucomplete', ['$parse', '$http'
             $scope.selectResult($scope.results[$scope.currentIndex]);
             $scope.$apply();
             event.preventDefault();
-            event.stopPropagation();
           } else {
             $scope.results = [];
             $scope.$apply();
             event.preventDefault();
-            event.stopPropagation();
           }
 
         } else if (event.which === KEY_ES) {
