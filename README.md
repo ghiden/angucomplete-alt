@@ -1,7 +1,12 @@
 angucomplete-alt
 ============
 
-This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks here and there.
+This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks such as:  
+
+* coding style similar to angular standard
+* remove unnecessary scope variables
+* jshint
+* more test coverage
 
 To see a demo go here: http://ghiden.github.io/angucomplete-alt
 
@@ -12,7 +17,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Simple setup - e.g. to pull data from a server, just set the url parameter
 
 ### Extra Features
-* Data format function: if you need to tweak data before you send to your search API, you can set your own format function. Search query goes through your function and gets sent to your API.
+* Request format function: if you need to tweak data before you send to your search API, you can set your own format function. Search query goes through your function and gets sent to your API.
 * Clear on selection: when you select an item, input field is cleared.
 
 ### Getting Started
