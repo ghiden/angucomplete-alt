@@ -3,8 +3,9 @@ angucomplete-alt
 
 This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks such as:  
 
+* change long attribute names to hyphenated ones
 * coding style similar to angular standard
-* remove unnecessary scope variables
+* refactored in general
 * jshint
 * more test coverage
 

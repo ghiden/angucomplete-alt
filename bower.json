@@ -16,7 +16,10 @@
   "ignore": [
     "example",
     "bower_components",
-    "node_modules"
+    "node_modules",
+    "**/.*",
+    "test",
+    "tests"
   ],
   "dependencies": {
     "angular": ">=1.2.0"
