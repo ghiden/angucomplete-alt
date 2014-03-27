@@ -1,9 +1,9 @@
-angucomplete-extra
+angucomplete-alt
 ============
 
-A simple but powerful AngularJS directive that allows you to quickly create autocomplete boxes that pull data either from a server or local variable.
+This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks here and there.
 
-To see a demo go here: http://ghiden.github.io/angucomplete-extra
+To see a demo go here: http://ghiden.github.io/angucomplete-alt
 
 ###Key Features
 * Show just a title, a title and a description or a title, description and image in your autocomplete list
@@ -16,23 +16,23 @@ To see a demo go here: http://ghiden.github.io/angucomplete-extra
 * Clear on selection: when you select an item, input field is cleared.
 
 ### Getting Started
-Download the code, and include the angucomplete.js file in your page. Then add the angucomplete module to your Angular App file, e.g.
+Download the code, and include the angucomplete-alt.js file in your page. Then add the angucomplete-alt module to your Angular App file, e.g.
 ```html
-var app = angular.module('app', ["angucomplete"]);
+var app = angular.module('app', ["angucomplete-alt"]);
 ```
 
 ### Local Usage
 
 ```html
-<angucomplete id="ex1"
-              placeholder="Search countries"
+<angucomplete-alt id="ex1"
+              place-holder="Search countries"
               pause="100"
-              selectedobject="selectedCountry"
-              localdata="countries"
-              searchfields="name"
-              titlefield="name"
+              selected-object="selectedCountry"
+              local-data="countries"
+              search-fields="name"
+              title-field="name"
               minlength="1"
-              inputclass="form-control form-control-small"/>
+              input-class="form-control form-control-small"/>
 ```
 
 ### Remote Usage
@@ -41,13 +41,13 @@ var app = angular.module('app', ["angucomplete"]);
 <angucomplete id="members"
               placeholder="Search members"
               pause="400"
-              selectedobject="testObj"
-              url="http://myserver.com/api/user/find?s="
-              datafield="results"
-              titlefield="firstName,surname"
-              descriptionfield="email"
-              imagefield="profilePic"
-              inputclass="form-control form-control-small"/>
+              selected-object="testObj"
+              remote-url="http://myserver.com/api/user/find?s="
+              remote-url-data-field="results"
+              title-field="firstName,surname"
+              description-field="email"
+              image-field="profilePic"
+              input-class="form-control form-control-small"/>
 ```
 
 ### Description of attributes
@@ -56,16 +56,16 @@ var app = angular.module('app', ["angucomplete"]);
 | id | A unique ID for the field | Yes | members |
 | placeholder | Placeholder text for the search field | No | Search members |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
-| selectedObject | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
-| url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
-| datafield | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
-| titlefield | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
-| descriptionfield | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
-| imagefield | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
+| selected-object | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
+| remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
+| remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
+| title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
+| description-field | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
+| image-field | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
 | minlength | The minimum length of string required before searching | No | 3 |
-| inputclass | The classes to use for styling the input box | No | form-control |
-| localdata | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
-| searchfields | The fields from your local data to search on (comma separate them) | No | title,description |
-| dataformatfn | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
-| clearselected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
+| input-class | The classes to use for styling the input box | No | form-control |
+| local-data | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
+| search-fields | The fields from your local data to search on (comma separate them) | No | title,description |
+| remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
+| clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
 

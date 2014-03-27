@@ -1,9 +1,9 @@
 {
   "name": "angucomplete",
-  "version": "1.0.0",
-  "homepage": "http://darylrowland.github.io/angucomplete/",
+  "version": "0.0.1",
+  "homepage": "http://ghiden.github.io/angucomplete-alt/",
   "authors": [
-    "Daryl Rowland <daryl@cloudyclear.com>"
+    "Hidenari Nozaki <hidenari@gmail.com>"
   ],
   "description": "Awesome Autocompleteness for AngularJS",
   "keywords": [
@@ -12,7 +12,7 @@
     "angularjs"
   ],
   "license": "MIT",
-  "main": "./angucomplete.js",
+  "main": "./angucomplete-alt.js",
   "ignore": [
     "example",
     "bower_components",

@@ -17,10 +17,10 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       
       // Source Code
-      'angucomplete.js',
+      'angucomplete-alt.js',
 
       // Test Specs
-      'test/*Spec.js'
+      'test/*.spec.js'
     ],
 
     // list of files to exclude
