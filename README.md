@@ -1,4 +1,4 @@
-angucomplete-extra
+angucomplete-alt
 ============
 
 AngularJS Autocomplete Directive
