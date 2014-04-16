@@ -20,6 +20,8 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 ### Extra Features
 * Request format function: if you need to tweak data before you send to your search API, you can set your own format function. Search query goes through your function and gets sent to your API.
 * Clear on selection: when you select an item, input field is cleared.
+* Blur event handling, thanks to @leejsinclair
+* Override suggestions
 
 ### Getting Started
 Download the code, and include the angucomplete-alt.js file in your page. Then add the angucomplete-alt module to your Angular App file, e.g.
@@ -74,4 +76,5 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | search-fields | The fields from your local data to search on (comma separate them) | No | title,description |
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
+| override-suggestions | To override suggestions and set the value in input field to selectedObject | No | true |
 
