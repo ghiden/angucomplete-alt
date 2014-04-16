@@ -43,10 +43,22 @@
 
         <h3>Example 3 - Clear Result on Selection</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry2" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true"/>
+          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry3" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true"/>
         </div>
-        <div class="" ng-show="selectedCountry2">
-          You selected <span class="bold-span">{{selectedCountry2.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry2.originalObject.code}}</span>
+        <div class="" ng-show="selectedCountry3">
+          You selected <span class="bold-span">{{selectedCountry3.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry3.originalObject.code}}</span>
+        </div>
+
+      </div>
+
+      <div class="large-padded-row">
+
+        <h3>Example 4 - Override Suggestions with clear result</h3>
+        <div class="padded-row">
+          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry4" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true"/>
+        </div>
+        <div class="" ng-show="selectedCountry4">
+          You selected <span class="bold-span">{{selectedCountry4.originalObject}}</span>
         </div>
 
       </div>

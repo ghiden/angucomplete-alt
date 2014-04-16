@@ -375,4 +375,64 @@ describe('angucomplete-alt', function() {
       expect(element.find('#ex1_dropdown').length).toBe(0);
     });
   });
+
+  describe('override suggestions', function() {
+    it('should override suggestions when enter is pressed but no suggestion is selected', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('abc');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      e.which = KEY_EN;
+      inputField.trigger(e);
+      expect($scope.selectedCountry.originalObject).toEqual('abc');
+      inputField.blur();
+      expect(element.find('#ex1_dropdown').length).toBe(0);
+    });
+
+    it('should override suggestions when enter is pressed but no suggestion is selected also incorporate with clear-selected if it is set', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true" clear-selected="true"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('abc');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      e.which = KEY_EN;
+      inputField.trigger(e);
+      expect($scope.selectedCountry.originalObject).toEqual('abc');
+      inputField.blur();
+      expect(element.find('#ex1_dropdown').length).toBe(0);
+
+      expect(element.isolateScope().searchStr).toBe(null);
+    });
+  });
 });
