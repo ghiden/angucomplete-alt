@@ -108,7 +108,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       };
 
       scope.processResults = function(responseData, str) {
-        var titleFields, titleCode, i, t, description, image, text, re, strPart;
+        var titleFields, titleCode, i, t, description, image, text, re, strPart, matches;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
@@ -139,8 +139,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             text = titleCode.join(' ');
             if (scope.matchClass) {
               re = new RegExp(str, 'i');
-              strPart = text.match(re)[0];
-              text = $sce.trustAsHtml(text.replace(re, '<span class="'+ scope.matchClass +'">'+ strPart +'</span>'));
+              matches = text.match(re);
+              if (matches) {
+                strPart = matches[0];
+                text = $sce.trustAsHtml(text.replace(re, '<span class="'+ scope.matchClass +'">'+ strPart +'</span>'));
+              }
+              else {
+                text = $sce.trustAsHtml(text);
+              }
             }
 
             scope.results[scope.results.length] = {
