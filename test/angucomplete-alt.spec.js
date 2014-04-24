@@ -261,6 +261,29 @@ describe('angucomplete-alt', function() {
         expect(element.isolateScope().processResults.mostRecentCall.args[0]).toEqual(results.search.data);
         expect(element.isolateScope().searching).toBe(false);
       }));
+
+      it('should not throw an exception when match-class is set and remote api returns bogus results (issue #2)', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" description="type" minlength="1" match-class="highlight"/>');
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var results = {data: [{name: 'tim', type: 'A'}]};
+        $httpBackend.expectGET('names?q=a').respond(200, results);
+
+        var inputField = element.find('#ex1_value');
+        var e = $.Event('keyup');
+        e.which = 97; // letter: a
+
+        inputField.val('a');
+        inputField.trigger('input');
+        inputField.trigger(e);
+        $timeout.flush();
+        $httpBackend.flush();
+
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+        expect(element.isolateScope().searching).toBe(false);
+      }));
     });
   });
 

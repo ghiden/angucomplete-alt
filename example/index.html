@@ -63,6 +63,18 @@
 
       </div>
 
+      <div class="large-padded-row">
+
+        <h3>Example 5 - Using dumb search API that returns all results</h3>
+        <div class="padded-row">
+          <angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+        </div>
+        <div class="" ng-show="selectedCountry">
+          You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+        </div>
+
+      </div>
+
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
         <h5>Forked by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>

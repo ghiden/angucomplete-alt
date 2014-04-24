@@ -72,6 +72,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | image-field | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
 | minlength | The minimum length of string required before searching | No | 3 |
 | input-class | The classes to use for styling the input box | No | form-control |
+| match-class | If it is assigned, matching part of title is highlighted with given class style | No | highlight |
 | local-data | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
 | search-fields | The fields from your local data to search on (comma separate them) | No | title,description |
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
