@@ -16,6 +16,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_ES = 27,
       KEY_EN = 13,
       KEY_BS =  8,
+      KEY_DEL =  46,
       MIN_LENGTH = 3,
       PAUSE = 500;
 
@@ -301,7 +302,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           scope.results = [];
           scope.showDropdown = false;
           scope.$apply();
-        } else if (event.which === KEY_BS) {
+        } else if (event.which === KEY_BS || event.which === KEY_DEL) {
           scope.selectedObject = null;
           scope.$apply();
         }
