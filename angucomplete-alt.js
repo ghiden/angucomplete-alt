@@ -26,6 +26,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       selectedObject: '=',
       localData: '=',
       remoteUrlRequestFormatter: '=',
+	  remoteUrlRequestData: '@',
       id: '@',
       placeholder: '@',
       remoteUrl: '@',
@@ -191,7 +192,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             scope.processResults(matches, str);
 
           } else if (scope.remoteUrlRequestFormatter) {
-            params = scope.remoteUrlRequestFormatter(str);
+            params = scope.remoteUrlRequestFormatter(str, scope.remoteUrlRequestData);
             $http.get(scope.remoteUrl, {params: params}).
               success(function(responseData, status, headers, config) {
                 scope.searching = false;
