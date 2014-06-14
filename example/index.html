@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="fonts/bariol/bariol.css"/>
     </head>
 	<body ng-app="app">
+    <a href="https://github.com/ghiden/angucomplete-alt"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
 		<div ng-controller="MainController">
 
       <h1>Angucomplete Alt</h1>
       <h2>Awesome Autocompleteness for AngularJS</h2>
       <p>
-      A minimal looking autocomplete directive originally developed by Daryl Rowland as <a href="https://github.com/darylrowland/angucomplete">Angucomplete</a>, and I added a few tweaks to it.
+      A minimal looking autocomplete directive originally developed by Daryl Rowland as <a href="https://github.com/darylrowland/angucomplete">Angucomplete</a>, and I added a few tweaks to it and renamed it to <a href="https://github.com/ghiden/angucomplete-alt">angucomplete-alt</a>.
       </p>
 
       <div class="large-padded-row">
@@ -67,10 +69,10 @@
 
         <h3>Example 5 - Using dumb search API that returns all results</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry5" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
         </div>
-        <div class="" ng-show="selectedCountry">
-          You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+        <div class="" ng-show="selectedCountry5">
+          You selected <span class="bold-span">{{selectedCountry5.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry5.originalObject.code}}</span>
         </div>
 
       </div>

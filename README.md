@@ -46,7 +46,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 ### Remote Usage
 
 ```html
-<angucomplete id="members"
+<angucomplete-alt id="members"
               placeholder="Search members"
               pause="400"
               selected-object="testObj"
