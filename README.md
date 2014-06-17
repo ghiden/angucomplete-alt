@@ -67,6 +67,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | selected-object | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
+|object-translator | A function on the scope that will modify each result from the server before it is rendered in the drop-down.  Useful for adding data that may not be available from the API.  The specified function must return the mofified object that was passed to it. | No | addImageUrlToObject |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
 | description-field | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
 | image-field | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
@@ -78,4 +79,5 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
 | override-suggestions | To override suggestions and set the value in input field to selectedObject | No | true |
+| object-selected | Handler which is called when an item in the list is selected.  The selected item will be passed to this function. | No | itemSelected. |
 
