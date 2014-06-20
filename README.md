@@ -23,6 +23,9 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Clear on selection: when you select an item, input field is cleared.
 * Blur event handling, thanks to @leejsinclair
 * Override suggestions
+* You can either bind an object or callback function
+    * bind an object: it works as regular two-way-data-binding
+    * callback function: when a selection is made by user, this callback is called with the selected object. Thanks to @nekcih for proposing this feature.
 
 ### Getting Started
 Download the code, and include the angucomplete-alt.js file in your page. Then add the angucomplete-alt module to your Angular App file, e.g.
@@ -65,7 +68,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | id | A unique ID for the field | Yes | members |
 | placeholder | Placeholder text for the search field | No | Search members |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
-| selected-object | Where to store the selected object in your model/controller (like ng-model) | Yes | myObject |
+| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |

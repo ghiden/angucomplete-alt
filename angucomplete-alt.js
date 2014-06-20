@@ -70,6 +70,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       scope.searching = false;
       scope.searchStr = null;
 
+      var callOrAssign = function(value) {
+        if (typeof scope.selectedObject === 'function') {
+          scope.selectedObject(value);
+        }
+        else {
+          scope.selectedObject = value;
+        }
+      };
+
       var returnFunctionOrIdentity = function(fn) {
         return fn && typeof fn === 'function' ? fn : function(data) { return data; };
       };
@@ -77,7 +86,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       var responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
 
       var setInputString = function(str) {
-        scope.selectedObject = {originalObject: str};
+        callOrAssign({originalObject: str});
 
         if (scope.clearSelected) {
           scope.searchStr = null;
@@ -283,7 +292,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         else {
           scope.searchStr = lastSearchTerm = result.title;
         }
-        scope.selectedObject = result;
+        callOrAssign(result);
         scope.showDropdown = false;
         scope.results = [];
       };
@@ -330,7 +339,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           scope.showDropdown = false;
           scope.$apply();
         } else if (event.which === KEY_BS || event.which === KEY_DEL) {
-          scope.selectedObject = null;
+          callOrAssign(null);
           scope.$apply();
         }
       });

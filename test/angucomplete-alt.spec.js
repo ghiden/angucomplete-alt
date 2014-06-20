@@ -499,4 +499,40 @@ describe('angucomplete-alt', function() {
       expect(element.isolateScope().searchStr).toBe(null);
     });
   });
+
+  describe('selectedObject callback', function() {
+    it('should call selectedObject callback if given', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      var selected = false;
+      $scope.countrySelected = function(value) {
+        selected = true;
+      };
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(selected).toBe(false);
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      e.which = KEY_DW;
+      inputField.trigger(e);
+      expect(element.isolateScope().currentIndex).toBe(0);
+
+      e.which = KEY_EN;
+      inputField.trigger(e);
+      expect(selected).toBe(true);
+    });
+  });
 });
