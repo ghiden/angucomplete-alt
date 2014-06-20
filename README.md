@@ -19,6 +19,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 
 ### Extra Features
 * Request format function: if you need to tweak data before you send to your search API, you can set your own format function. Search query goes through your function and gets sent to your API.
+* Response format function: if you need to tweak response from the server before it gets processed by the directive, you can set your own format function. Raw HTTP response goes through your function. Thanks to @nekcih for proposing this feature.
 * Clear on selection: when you select an item, input field is cleared.
 * Blur event handling, thanks to @leejsinclair
 * Override suggestions
