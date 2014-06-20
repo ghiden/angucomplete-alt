@@ -45,7 +45,7 @@
     padding: 5px;
     color: #000000;
     margin-bottom: 4px;
-
+    clear: both;
 }
 
 .angucomplete-selected-row, .angucomplete-row:hover {
