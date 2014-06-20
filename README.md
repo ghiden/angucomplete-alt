@@ -76,6 +76,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | local-data | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
 | search-fields | The fields from your local data to search on (comma separate them) | No | title,description |
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
+| remote-url-response-formatter | A function on the scope that will modify raw response from remote API before it is rendered in the drop-down.  Useful for adding data that may not be available from the API.  The specified function must return the object in the format that angucomplete understands. | No | addImageUrlToObject |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
 | override-suggestions | To override suggestions and set the value in input field to selectedObject | No | true |
 

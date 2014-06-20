@@ -26,6 +26,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       selectedObject: '=',
       localData: '=',
       remoteUrlRequestFormatter: '=',
+      remoteUrlResponseFormatter: '=',
       id: '@',
       placeholder: '@',
       remoteUrl: '@',
@@ -68,6 +69,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = null;
+
+      var returnFunctionOrIdentity = function(fn) {
+        return fn && typeof fn === 'function' ? fn : function(data) { return data; };
+      };
+
+      var responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
 
       var setInputString = function(str) {
         scope.selectedObject = {originalObject: str};
@@ -211,7 +218,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             $http.get(scope.remoteUrl, {params: params}).
               success(function(responseData, status, headers, config) {
                 scope.searching = false;
-                scope.processResults(extractValue(responseData, scope.remoteUrlDataField), str);
+                scope.processResults(
+                  extractValue(responseFormatter(responseData), scope.remoteUrlDataField), str
+                );
               }).
             error(function(data, status, headers, config) {
               console.log('error');
@@ -221,7 +230,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             $http.get(scope.remoteUrl + str, {}).
               success(function(responseData, status, headers, config) {
                 scope.searching = false;
-                scope.processResults(extractValue(responseData, scope.remoteUrlDataField), str);
+                scope.processResults(
+                  extractValue(responseFormatter(responseData), scope.remoteUrlDataField), str
+                );
               }).
             error(function(data, status, headers, config) {
               console.log('error');

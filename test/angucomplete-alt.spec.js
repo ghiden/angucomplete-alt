@@ -308,6 +308,47 @@ describe('angucomplete-alt', function() {
     }));
   });
 
+  describe('custom data formatter function for ajax response', function() {
+    it('should not run response data through formatter if not given', inject(function($httpBackend) {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="first" remote-url-data-field="data" title-field="name" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var queryTerm = 'john';
+      var results = {data: [{first: 'John', last: 'Doe'}]};
+      spyOn(element.isolateScope(), 'processResults');
+      $httpBackend.expectGET('names?q=' + queryTerm).respond(200, results);
+      element.isolateScope().searchTimerComplete(queryTerm);
+      $httpBackend.flush();
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+      expect(element.isolateScope().processResults).toHaveBeenCalledWith([{first: 'John', last: 'Doe'}], queryTerm);
+    }));
+
+    it('should run response data through formatter if given', inject(function($httpBackend) {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url-response-formatter="dataConverter" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" minlength="1"/>');
+      $scope.dataConverter = function(rawData) {
+        var data = rawData.data;
+        for (var i = 0; i < data.length; i++) {
+          data[i].name = data[i].last + ', ' + data[i].first;
+        }
+        return rawData;
+      };
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var queryTerm = 'john';
+      var results = {data: [{first: 'John', last: 'Doe'}]};
+      spyOn(element.isolateScope(), 'processResults');
+      $httpBackend.expectGET('names?q=' + queryTerm).respond(200, results);
+      element.isolateScope().searchTimerComplete(queryTerm);
+      $httpBackend.flush();
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+      expect(element.isolateScope().processResults).toHaveBeenCalledWith([{first: 'John', last: 'Doe', name: 'Doe, John'}], queryTerm);
+    }));
+  });
+
   describe('clear result', function() {
     it('should clear input when clear-selected is true', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" clear-selected="true"/>');
