@@ -362,21 +362,22 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
-      var e = $.Event('keyup');
-      e.which = 97; // letter: a
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
 
       inputField.val('a');
       inputField.trigger('input');
-      inputField.trigger(e);
+      inputField.trigger(eKeyup);
       $timeout.flush();
       expect(element.find('#ex1_dropdown').length).toBe(1);
 
-      e.which = KEY_DW;
-      inputField.trigger(e);
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
       expect(element.isolateScope().currentIndex).toBe(0);
 
-      e.which = KEY_EN;
-      inputField.trigger(e);
+      eKeyup.which = KEY_EN;
+      inputField.trigger(eKeyup);
       expect($scope.selectedCountry.originalObject).toEqual({name: 'Afghanistan', code: 'AF'});
 
       expect(element.isolateScope().searchStr).toBe(null);
@@ -517,21 +518,22 @@ describe('angucomplete-alt', function() {
 
       expect(selected).toBe(false);
       var inputField = element.find('#ex1_value');
-      var e = $.Event('keyup');
-      e.which = 97; // letter: a
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
 
       inputField.val('a');
       inputField.trigger('input');
-      inputField.trigger(e);
+      inputField.trigger(eKeyup);
       $timeout.flush();
       expect(element.find('#ex1_dropdown').length).toBe(1);
 
-      e.which = KEY_DW;
-      inputField.trigger(e);
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      element.trigger(eKeydown);
       expect(element.isolateScope().currentIndex).toBe(0);
 
-      e.which = KEY_EN;
-      inputField.trigger(e);
+      eKeyup.which = KEY_EN;
+      inputField.trigger(eKeyup);
       expect(selected).toBe(true);
     });
   });

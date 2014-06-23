@@ -273,8 +273,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
       inputField = elem.find('input');
 
-      inputField.on('keyup', scope.keyPressed);
-
       scope.keyPressed = function(event) {
         if (!(event.which === KEY_UP || event.which === KEY_DW || event.which === KEY_EN)) {
           if (!scope.searchStr || scope.searchStr === '') {
@@ -300,6 +298,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           event.preventDefault();
         }
       };
+
+      inputField.on('keyup', scope.keyPressed);
 
       elem.on('keydown', function (event) {
         if(event.which === KEY_DW && scope.results) {
