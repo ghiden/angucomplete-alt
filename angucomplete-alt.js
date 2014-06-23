@@ -303,14 +303,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
       elem.on('keydown', function (event) {
         if(event.which === KEY_DW && scope.results) {
-          event.preventDefault();
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
             });
           }
         } else if(event.which === KEY_UP && scope.results) {
-          event.preventDefault();
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
