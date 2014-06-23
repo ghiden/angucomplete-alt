@@ -255,6 +255,24 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         scope.currentIndex = index;
       };
 
+      scope.selectResult = function(result) {
+        if (scope.matchClass) {
+          result.title = result.title.toString().replace(/(<([^>]+)>)/ig, '');
+        }
+
+        if (scope.clearSelected) {
+          scope.searchStr = null;
+        }
+        else {
+          scope.searchStr = lastSearchTerm = result.title;
+        }
+        callOrAssign(result);
+        scope.showDropdown = false;
+        scope.results = [];
+      };
+
+      inputField = elem.find('input');
+
       scope.keyPressed = function(event) {
         if (!(event.which === KEY_UP || event.which === KEY_DW || event.which === KEY_EN)) {
           if (!scope.searchStr || scope.searchStr === '') {
@@ -281,43 +299,26 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
       };
 
-      scope.selectResult = function(result) {
-        if (scope.matchClass) {
-          result.title = result.title.toString().replace(/(<([^>]+)>)/ig, '');
-        }
-        
-        if (scope.clearSelected) {
-          scope.searchStr = null;
-        }
-        else {
-          scope.searchStr = lastSearchTerm = result.title;
-        }
-        callOrAssign(result);
-        scope.showDropdown = false;
-        scope.results = [];
-      };
-
-      inputField = elem.find('input');
-
       inputField.on('keyup', scope.keyPressed);
 
-      elem.on('keyup', function (event) {
+      elem.on('keydown', function (event) {
         if(event.which === KEY_DW && scope.results) {
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
             });
-            event.preventDefault();
           }
-
-        } else if(event.which === KEY_UP) {
+        } else if(event.which === KEY_UP && scope.results) {
           if (scope.currentIndex >= 1) {
-            scope.currentIndex --;
-            scope.$apply();
-            event.preventDefault();
+            scope.$apply(function() {
+              scope.currentIndex --;
+            });
           }
+        }
+      });
 
-        } else if (event.which === KEY_EN && scope.results) {
+      elem.on('keyup', function (event) {
+        if (event.which === KEY_EN && scope.results) {
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             scope.selectResult(scope.results[scope.currentIndex]);
             scope.$apply();
