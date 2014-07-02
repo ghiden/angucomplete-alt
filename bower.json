@@ -1,9 +1,9 @@
 {
-  "name": "angucomplete-alt",
-  "version": "0.0.5",
-  "homepage": "http://ghiden.github.io/angucomplete-alt/",
+  "name": "angucomplete-alt-plus",
+  "version": "0.0.6",
+  "homepage": "http://ghiden.github.io/angucomplete-alt-plus/",
   "authors": [
-    "Hidenari Nozaki <hidenari@gmail.com>"
+    "Victr Huerta <vhuertahnz@gmail.com>"
   ],
   "description": "Awesome Autocompleteness for AngularJS",
   "keywords": [
@@ -12,7 +12,7 @@
     "angularjs"
   ],
   "license": "MIT",
-  "main": "./angucomplete-alt.js",
+  "main": "./angucomplete-alt-plus.js",
   "ignore": [
     "example",
     "bower_components",
