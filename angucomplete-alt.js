@@ -40,14 +40,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       minlength: '@',
       matchClass: '@',
       clearSelected: '@',
-      overrideSuggestions: '@'
+      overrideSuggestions: '@',
+      searchingLabel: '@',
+      emptyLabel: '@',
     },
     template:
       '<div class="angucomplete-holder">' +
       '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
-      '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
-      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
+      '    <div class="angucomplete-searching" ng-show="searching">{{searchingLabel}}</div>' +
+      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">{{emptyLabel}}</div>' +
       '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
       '      <div ng-if="imageField" class="angucomplete-image-holder">' +
       '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
@@ -347,4 +349,3 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
     }
   };
 }]);
-
