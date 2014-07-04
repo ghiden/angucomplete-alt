@@ -55,7 +55,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       '      </div>' +
       '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
       '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
-      '      <div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
+      '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
+      '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
       '    </div>' +
       '  </div>' +
       '</div>',
@@ -99,6 +100,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         return newTerm.length >= minlength && newTerm !== oldTerm;
       };
 
+      var extractTitle = function(data) {
+        // split title fields and run extractValue for each and join with ' '
+        return scope.titleField.split(',')
+          .map(function(field) {
+            return extractValue(data, field);
+          })
+          .join(' ');
+      };
+
       var extractValue = function(obj, key) {
         var keys, result;
         if (key) {
@@ -110,6 +120,20 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           result = obj;
         }
         return result;
+      };
+
+      var findMatchString = function(target, str) {
+        var result, matches, re = new RegExp(str, 'i');
+        if (!target) { return; }
+        matches = target.match(re);
+        if (matches) {
+          result = target.replace(re,
+              '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
+        }
+        else {
+          result = target;
+        }
+        return $sce.trustAsHtml(result);
       };
 
       if (scope.minlength && scope.minlength !== '') {
@@ -141,22 +165,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       };
 
       scope.processResults = function(responseData, str) {
-        var titleFields, titleCode, i, t, description, image, text, re, strPart, matches;
+        var i, description, image, text;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
 
-          titleFields = [];
-          if (scope.titleField && scope.titleField !== '') {
-            titleFields = scope.titleField.split(',');
-          }
-
           for (i = 0; i < responseData.length; i++) {
-            // Get title variables
-            titleCode = [];
-
-            for (t = 0; t < titleFields.length; t++) {
-              titleCode.push(responseData[i][titleFields[t]]);
+            if (scope.titleField && scope.titleField !== '') {
+              text = extractTitle(responseData[i]);
             }
 
             description = '';
@@ -169,17 +185,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               image = extractValue(responseData[i], scope.imageField);
             }
 
-            text = titleCode.join(' ');
             if (scope.matchClass) {
-              re = new RegExp(str, 'i');
-              matches = text.match(re);
-              if (matches) {
-                strPart = matches[0];
-                text = $sce.trustAsHtml(text.replace(re, '<span class="'+ scope.matchClass +'">'+ strPart +'</span>'));
-              }
-              else {
-                text = $sce.trustAsHtml(text);
-              }
+              text = findMatchString(text, str);
+              description = findMatchString(description, str);
             }
 
             scope.results[scope.results.length] = {
@@ -256,8 +264,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       };
 
       scope.selectResult = function(result) {
+        // Restore original values
         if (scope.matchClass) {
-          result.title = result.title.toString().replace(/(<([^>]+)>)/ig, '');
+          result.title = extractTitle(result.originalObject);
+          result.description = extractValue(result.originalObject, scope.descriptionField);
         }
 
         if (scope.clearSelected) {

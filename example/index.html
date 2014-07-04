@@ -77,6 +77,18 @@
 
       </div>
 
+      <div class="large-padded-row">
+
+        <h3>Example 6 - Show Matches in both name and description</h3>
+        <div class="padded-row">
+          <angucomplete-alt id="ex6" placeholder="Search countries" pause="100" selected-object="selectedCountry6" local-data="countries" search-fields="name,code" title-field="name" description-field="code" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+        </div>
+        <div class="" ng-show="selectedCountry6">
+          You selected <span class="bold-span">{{selectedCountry6.title}}</span> which has a country code of <span class="bold-span">{{selectedCountry6.description}}</span>
+        </div>
+
+      </div>
+
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
         <h5>Forked by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>

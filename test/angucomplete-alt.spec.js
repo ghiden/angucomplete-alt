@@ -116,6 +116,25 @@ describe('angucomplete-alt', function() {
       expect(element.isolateScope().results[0].title).toBe(firstName + ' ' + lastName);
     });
 
+    it('should set scope.results[0].title to more than one level deep attribute', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" local-data="names" search-fields="name" title-field="name.first,name.last" minlength="1"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var first = 'John';
+      var last = 'Doe';
+      var responseData = [
+        {
+          name: {
+            first: first,
+            last: last
+          }
+        }
+      ];
+      element.isolateScope().processResults(responseData);
+      expect(element.isolateScope().results[0].title).toBe(first + ' ' + last);
+    });
+
     it('should set scope.results[0].description', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" local-data="names" search-fields="name" title-field="name" description-field="desc" minlength="1"/>');
       $compile(element)($scope);
