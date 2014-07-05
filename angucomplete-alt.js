@@ -19,7 +19,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_DEL =  46,
       MIN_LENGTH = 3,
       PAUSE = 500,
-      BLUR_TIMEOUT = 300;
+      BLUR_TIMEOUT = 200;
 
   return {
     restrict: 'EA',
