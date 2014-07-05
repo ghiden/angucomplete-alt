@@ -18,7 +18,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_BS =  8,
       KEY_DEL =  46,
       MIN_LENGTH = 3,
-      PAUSE = 500;
+      PAUSE = 500,
+      BLUR_TIMEOUT = 300;
 
   return {
     restrict: 'EA',
@@ -155,7 +156,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
-        }, scope.pause);
+        }, BLUR_TIMEOUT);
       };
 
       scope.resetHideResults = function() {
