@@ -29,8 +29,15 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
     * Another callback function: when the input value changes.
 
 ### Getting Started
-Download the code, and include the angucomplete-alt.js file in your page. Then add the angucomplete-alt module to your Angular App file, e.g.
-```html
+Download the package, and include the angucomplete-alt.js file in your page.
+
+```bash
+bower install angucomplete-alt --save
+```
+
+Then add the angucomplete-alt module to your Angular App file, e.g.
+
+```js
 var app = angular.module('app', ["angucomplete-alt"]);
 ```
 
