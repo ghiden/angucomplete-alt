@@ -313,29 +313,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', scope.keyPressed);
 
       elem.on('keydown', function (event) {
-        if(event.which === KEY_DW && scope.results) {
-          if ((scope.currentIndex + 1) < scope.results.length) {
-            scope.$apply(function() {
-              scope.currentIndex ++;
-            });
-          }
-        } else if(event.which === KEY_UP && scope.results) {
-          if (scope.currentIndex >= 1) {
-            scope.$apply(function() {
-              scope.currentIndex --;
-            });
-          }
-        }
-      });
-
-      elem.on('keyup', function (event) {
         if (event.which === KEY_EN && scope.results) {
+          event.preventDefault();
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             scope.selectResult(scope.results[scope.currentIndex]);
             scope.$apply();
-            event.preventDefault();
           } else {
-            event.preventDefault();
             if (scope.overrideSuggestions) {
               setInputString(scope.searchStr);
               scope.$apply();
@@ -345,8 +328,23 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.$apply();
             }
           }
+        } else if (event.which === KEY_DW && scope.results) {
+          if ((scope.currentIndex + 1) < scope.results.length) {
+            scope.$apply(function() {
+              scope.currentIndex ++;
+            });
+          }
+        } else if (event.which === KEY_UP && scope.results) {
+          if (scope.currentIndex >= 1) {
+            scope.$apply(function() {
+              scope.currentIndex --;
+            });
+          }
+        }
+      });
 
-        } else if (event.which === KEY_ES) {
+      elem.on('keyup', function (event) {
+        if (event.which === KEY_ES) {
           scope.results = [];
           scope.showDropdown = false;
           scope.$apply();
