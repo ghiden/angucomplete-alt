@@ -28,6 +28,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       localData: '=',
       remoteUrlRequestFormatter: '=',
       remoteUrlResponseFormatter: '=',
+      writtingCallback: '=',
       id: '@',
       placeholder: '@',
       remoteUrl: '@',
@@ -45,7 +46,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
     },
     template:
       '<div class="angucomplete-holder">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" ng-change="callChange()"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
@@ -136,6 +137,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
         return $sce.trustAsHtml(result);
       };
+
+       if(scope.writtingCallback){
+           scope.callChange = function(){
+            scope.writtingCallback();
+        }
+       }
 
       if (scope.minlength && scope.minlength !== '') {
         minlength = scope.minlength;
