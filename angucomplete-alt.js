@@ -45,7 +45,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
     },
     template:
       '<div class="angucomplete-holder">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
