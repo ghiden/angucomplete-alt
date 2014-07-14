@@ -304,6 +304,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', scope.keyPressed);
 
       elem.on('keydown', function (event) {
+        if(event.which === KEY_EN) {
+            event.preventDefault();
+        }
         if(event.which === KEY_DW && scope.results) {
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
