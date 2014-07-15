@@ -75,7 +75,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | :------------- |:-------------| :-----:| :-----|
 | id | A unique ID for the field | Yes | members |
 | placeholder | Placeholder text for the search field | No | Search members |
-| pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
+| pause | Max time waiting for the response | No | 500 |
 | selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |

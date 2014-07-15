@@ -204,7 +204,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               image: image,
               originalObject: responseData[i]
             };
-
+              scope.searching=false;
           }
 
 
@@ -235,14 +235,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               }
             }
 
-            scope.searching = false;
+
             scope.processResults(matches, str);
 
           } else if (scope.remoteUrlRequestFormatter) {
             params = scope.remoteUrlRequestFormatter(str);
             $http.get(scope.remoteUrl, {params: params}).
               success(function(responseData, status, headers, config) {
-                scope.searching = false;
+
                 scope.processResults(
                   extractValue(responseFormatter(responseData), scope.remoteUrlDataField), str
                 );
@@ -254,7 +254,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           } else {
             $http.get(scope.remoteUrl + str, {}).
               success(function(responseData, status, headers, config) {
-                scope.searching = false;
+
                 scope.processResults(
                   extractValue(responseFormatter(responseData), scope.remoteUrlDataField), str
                 );
@@ -297,6 +297,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             scope.showDropdown = false;
             lastSearchTerm = null;
           } else if (isNewSearchNeeded(scope.searchStr, lastSearchTerm)) {
+              scope.searching = true;
             lastSearchTerm = scope.searchStr;
             scope.showDropdown = true;
             scope.currentIndex = -1;
@@ -306,11 +307,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               $timeout.cancel(searchTimer);
             }
 
-            scope.searching = true;
-
-            searchTimer = $timeout(function() {
               scope.searchTimerComplete(scope.searchStr);
-            }, scope.pause);
+              searchTimer = $timeout(function() {
+                  scope.searching = false;
+              }, scope.pause);
           }
         } else {
           event.preventDefault();
