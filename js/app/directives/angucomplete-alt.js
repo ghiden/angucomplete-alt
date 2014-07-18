@@ -19,7 +19,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_DEL =  46,
       MIN_LENGTH = 3,
       PAUSE = 500,
-      BLUR_TIMEOUT = 300;
+      BLUR_TIMEOUT = 200;
 
   return {
     restrict: 'EA',
@@ -45,7 +45,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
     },
     template:
       '<div class="angucomplete-holder">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
@@ -313,29 +313,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', scope.keyPressed);
 
       elem.on('keydown', function (event) {
-        if(event.which === KEY_DW && scope.results) {
-          if ((scope.currentIndex + 1) < scope.results.length) {
-            scope.$apply(function() {
-              scope.currentIndex ++;
-            });
-          }
-        } else if(event.which === KEY_UP && scope.results) {
-          if (scope.currentIndex >= 1) {
-            scope.$apply(function() {
-              scope.currentIndex --;
-            });
-          }
-        }
-      });
-
-      elem.on('keyup', function (event) {
         if (event.which === KEY_EN && scope.results) {
+          event.preventDefault();
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             scope.selectResult(scope.results[scope.currentIndex]);
             scope.$apply();
-            event.preventDefault();
           } else {
-            event.preventDefault();
             if (scope.overrideSuggestions) {
               setInputString(scope.searchStr);
               scope.$apply();
@@ -345,13 +328,27 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.$apply();
             }
           }
+        } else if (event.which === KEY_DW && scope.results) {
+          if ((scope.currentIndex + 1) < scope.results.length) {
+            scope.$apply(function() {
+              scope.currentIndex ++;
+            });
+          }
+        } else if (event.which === KEY_UP && scope.results) {
+          if (scope.currentIndex >= 1) {
+            scope.$apply(function() {
+              scope.currentIndex --;
+            });
+          }
+        }
+      });
 
-        } else if (event.which === KEY_ES) {
+      elem.on('keyup', function (event) {
+        if (event.which === KEY_ES) {
           scope.results = [];
           scope.showDropdown = false;
           scope.$apply();
         } else if (event.which === KEY_BS || event.which === KEY_DEL) {
-          callOrAssign(null);
           scope.$apply();
         }
       });
