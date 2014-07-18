@@ -349,7 +349,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           scope.showDropdown = false;
           scope.$apply();
         } else if (event.which === KEY_BS || event.which === KEY_DEL) {
-          callOrAssign(null);
           scope.$apply();
         }
       });
