@@ -28,7 +28,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
     * callback function: when a selection is made by user, this callback is called with the selected object. Thanks to @nekcih for proposing this feature.
 
 ### Getting Started
-Download the package, and include the angucomplete-alt.js file in your page.
+Download the package, and include the dist/angucomplete-alt.min.js file in your page.
 
 ```bash
 bower install angucomplete-alt --save

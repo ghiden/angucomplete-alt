@@ -47,12 +47,24 @@ module.exports = function (grunt) {
       options: {
         dest: 'CHANGELOG.md'
       }
+    },
+    uglify: {
+      options: {
+        mangle: false,
+        preserveComments: 'some'
+      },
+      build: {
+        files: {
+          'dist/angucomplete-alt.min.js': ['angucomplete-alt.js']
+        }
+      }
     }
   };
 
   // Register tasks
   grunt.registerTask('default', ['jshint', 'karma:unit']);
   grunt.registerTask('watch', ['jshint', 'karma:watch']);
+  grunt.registerTask('build', ['jshint', 'uglify:build']);
 
   grunt.initConfig(initConfig);
 };
