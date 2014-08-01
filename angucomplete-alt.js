@@ -22,6 +22,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
   return {
     restrict: 'EA',
+    require: '^?form',
     scope: {
       selectedObject: '=',
       localData: '=',
@@ -40,11 +41,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       minlength: '@',
       matchClass: '@',
       clearSelected: '@',
-      overrideSuggestions: '@'
+      overrideSuggestions: '@',
+      fieldRequired: '=?',
+      validityLabel: '@'
     },
     template:
       '<div class="angucomplete-holder">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-required="{{fieldRequired}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
@@ -60,18 +63,20 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       '    </div>' +
       '  </div>' +
       '</div>',
-    link: function(scope, elem, attrs) {
+    link: function(scope, elem, attrs, ctrl) {
       var inputField,
           minlength = MIN_LENGTH,
           searchTimer = null,
           lastSearchTerm = null,
-          hideTimer;
+          hideTimer,
+          validityLabel;
 
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = null;
+      validityLabel = scope.validityLabel ? scope.validityLabel : 'match';
 
-      var callOrAssign = function(value) {
+	    var callOrAssign = function(value) {
         if (typeof scope.selectedObject === 'function') {
           scope.selectedObject(value);
         }
@@ -85,6 +90,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       };
 
       var responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
+
 
       var setInputString = function(str) {
         callOrAssign({originalObject: str});
@@ -100,7 +106,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         return newTerm.length >= minlength && newTerm !== oldTerm;
       };
 
-      var extractTitle = function(data) {
+	    var extractTitle = function(data) {
         // split title fields and run extractValue for each and join with ' '
         return scope.titleField.split(',')
           .map(function(field) {
@@ -108,6 +114,27 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           })
           .join(' ');
       };
+
+      function validate(){
+        if(!ctrl){return;}
+        if(scope.results && scope.searchStr && scope.results.length === 1){
+          if(scope.matchClass && scope.results[0].title.$$unwrapTrustedValue && scope.results[0].title.$$unwrapTrustedValue().toLowerCase() === scope.searchStr.toLowerCase()){
+            scope.selectResult(scope.results[0]);
+            ctrl.$setValidity(validityLabel, true);
+          }
+          else if(!scope.matchClass && scope.results[0].title.toLowerCase() === scope.searchStr.toLowerCase()){
+            scope.selectResult(scope.results[0]);
+            ctrl.$setValidity(validityLabel, true);
+          }
+          else{
+            ctrl.$setValidity(validityLabel, false);
+          }
+        } else {
+          ctrl.$setValidity(validityLabel, false);
+        }
+      }
+
+      validate();
 
       var extractValue = function(obj, key) {
         var keys, result;
@@ -203,6 +230,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         } else {
           scope.results = [];
         }
+
+        validate();
       };
 
       scope.searchTimerComplete = function(str) {
@@ -278,6 +307,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
         callOrAssign(result);
         scope.showDropdown = false;
+        if(ctrl){
+          ctrl.$setValidity(validityLabel, true);
+        }
         scope.results = [];
       };
 
