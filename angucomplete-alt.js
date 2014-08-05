@@ -16,6 +16,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_EN = 13,
       KEY_BS =  8,
       KEY_DEL =  46,
+      KEY_TAB =  9,
       MIN_LENGTH = 3,
       PAUSE = 500,
       BLUR_TIMEOUT = 200,
@@ -343,6 +344,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             scope.$apply(function() {
               scope.currentIndex --;
             });
+          }
+        } else if (event.which === KEY_TAB && scope.results) {
+          if (scope.currentIndex === -1) {
+            event.preventDefault();
+            scope.selectResult(scope.results[0]);
+            scope.$apply();
           }
         }
       });
