@@ -24,6 +24,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
   return {
     restrict: 'EA',
+		replace: true,
     scope: {
       selectedObject: '=',
       localData: '=',
