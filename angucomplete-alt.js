@@ -18,10 +18,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_DEL =  46,
       MIN_LENGTH = 3,
       PAUSE = 500,
-      BLUR_TIMEOUT = 200;
+      BLUR_TIMEOUT = 200,
+      REQUIRED_CLASS = 'autocomplete-required';
 
   return {
     restrict: 'EA',
+    require: '^?form',
     scope: {
       selectedObject: '=',
       localData: '=',
@@ -40,7 +42,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       minlength: '@',
       matchClass: '@',
       clearSelected: '@',
-      overrideSuggestions: '@'
+      overrideSuggestions: '@',
+      fieldRequired: '@',
+      fieldRequiredClass: '@'
     },
     template:
       '<div class="angucomplete-holder">' +
@@ -60,12 +64,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       '    </div>' +
       '  </div>' +
       '</div>',
-    link: function(scope, elem, attrs) {
+    link: function(scope, elem, attrs, ctrl) {
       var inputField,
           minlength = MIN_LENGTH,
           searchTimer = null,
           lastSearchTerm = null,
-          hideTimer;
+          hideTimer,
+          requiredClassName = REQUIRED_CLASS;
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -78,6 +83,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         else {
           scope.selectedObject = value;
         }
+
+        handleRequired(true);
       };
 
       var returnFunctionOrIdentity = function(fn) {
@@ -135,6 +142,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
         return $sce.trustAsHtml(result);
       };
+
+      var handleRequired = function(valid) {
+        if (scope.fieldRequired && ctrl) {
+          ctrl.$setValidity(requiredClassName, valid);
+        }
+      };
+      if (scope.fieldRequiredClass && scope.fieldRequiredClass !== '') {
+        requiredClassName = scope.fieldRequiredClass;
+      }
+      handleRequired(false);
 
       if (scope.minlength && scope.minlength !== '') {
         minlength = scope.minlength;
@@ -304,6 +321,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.searchTimerComplete(scope.searchStr);
             }, scope.pause);
           }
+          handleRequired(false);
         } else {
           event.preventDefault();
         }
