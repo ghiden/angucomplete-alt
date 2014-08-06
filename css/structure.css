@@ -1008,3 +1008,7 @@ td {
 .highlight {
 	color: #ff0000;
 }
+
+form.ng-invalid-autocomplete-required input {
+  border-color: red;
+}

@@ -3,10 +3,9 @@
  * Autocomplete directive for AngularJS
  * This is a fork of Daryl Rowland's angucomplete with some extra features.
  * By Hidenari Nozaki
- *
- * Copyright (c) 2014 Hidenari Nozaki and contributors
- * Licensed under the MIT license
  */
+
+/*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
 
 'use strict';
 
@@ -17,12 +16,17 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_EN = 13,
       KEY_BS =  8,
       KEY_DEL =  46,
+      KEY_TAB =  9,
       MIN_LENGTH = 3,
       PAUSE = 500,
-      BLUR_TIMEOUT = 200;
+      BLUR_TIMEOUT = 200,
+      REQUIRED_CLASS = 'autocomplete-required',
+      TEXT_SEARCHING = 'Searching...',
+      TEXT_NORESULTS = 'No results found';
 
   return {
     restrict: 'EA',
+    require: '^?form',
     scope: {
       selectedObject: '=',
       localData: '=',
@@ -41,14 +45,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       minlength: '@',
       matchClass: '@',
       clearSelected: '@',
-      overrideSuggestions: '@'
+      overrideSuggestions: '@',
+      fieldRequired: '@',
+      fieldRequiredClass: '@'
     },
     template:
       '<div class="angucomplete-holder">' +
       '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
-      '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
-      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
+      '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
+      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
       '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
       '      <div ng-if="imageField" class="angucomplete-image-holder">' +
       '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
@@ -61,12 +67,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       '    </div>' +
       '  </div>' +
       '</div>',
-    link: function(scope, elem, attrs) {
+    link: function(scope, elem, attrs, ctrl) {
       var inputField,
           minlength = MIN_LENGTH,
           searchTimer = null,
           lastSearchTerm = null,
-          hideTimer;
+          hideTimer,
+          requiredClassName = REQUIRED_CLASS;
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -79,6 +86,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         else {
           scope.selectedObject = value;
         }
+
+        handleRequired(true);
       };
 
       var returnFunctionOrIdentity = function(fn) {
@@ -137,6 +146,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         return $sce.trustAsHtml(result);
       };
 
+      var handleRequired = function(valid) {
+        if (scope.fieldRequired && ctrl) {
+          ctrl.$setValidity(requiredClassName, valid);
+        }
+      };
+      if (scope.fieldRequiredClass && scope.fieldRequiredClass !== '') {
+        requiredClassName = scope.fieldRequiredClass;
+      }
+      handleRequired(false);
+
       if (scope.minlength && scope.minlength !== '') {
         minlength = scope.minlength;
       }
@@ -152,6 +171,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       if (!scope.overrideSuggestions) {
         scope.overrideSuggestions = false;
       }
+
+      scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
+      scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
 
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
@@ -305,6 +327,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.searchTimerComplete(scope.searchStr);
             }, scope.pause);
           }
+          handleRequired(false);
         } else {
           event.preventDefault();
         }
@@ -339,6 +362,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             scope.$apply(function() {
               scope.currentIndex --;
             });
+          }
+        } else if (event.which === KEY_TAB && scope.results) {
+          if (scope.currentIndex === -1) {
+            event.preventDefault();
+            scope.selectResult(scope.results[0]);
+            scope.$apply();
           }
         }
       });
