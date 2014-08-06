@@ -2,12 +2,13 @@
 
 describe('angucomplete-alt', function() {
   var $compile, $scope, $timeout;
-  var KEY_DW = 40,
-      KEY_UP = 38,
-      KEY_ES = 27,
-      KEY_EN = 13,
-      KEY_BS =  8,
-      KEY_DEL =  46;
+  var KEY_DW  = 40,
+      KEY_UP  = 38,
+      KEY_ES  = 27,
+      KEY_EN  = 13,
+      KEY_DEL = 46,
+      KEY_TAB =  9,
+      KEY_BS  =  8;
 
   beforeEach(module('angucomplete-alt'));
 
@@ -458,6 +459,35 @@ describe('angucomplete-alt', function() {
       inputField.focus();
       $timeout.flush();
       expect(element.find('#ex1_dropdown').length).toBe(0);
+    });
+  });
+
+  describe('TAB for selecting', function() {
+    it('should select the first suggestion when TAB is pressed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_TAB;
+      inputField.trigger(eKeydown);
+      expect($scope.selectedCountry.originalObject).toEqual($scope.countries[0]);
     });
   });
 

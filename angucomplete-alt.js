@@ -16,10 +16,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       KEY_EN = 13,
       KEY_BS =  8,
       KEY_DEL =  46,
+      KEY_TAB =  9,
       MIN_LENGTH = 3,
       PAUSE = 500,
       BLUR_TIMEOUT = 200,
-      REQUIRED_CLASS = 'autocomplete-required';
+      REQUIRED_CLASS = 'autocomplete-required',
+      TEXT_SEARCHING = 'Searching...',
+      TEXT_NORESULTS = 'No results found';
 
   return {
     restrict: 'EA',
@@ -50,8 +53,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       '<div class="angucomplete-holder">' +
       '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
-      '    <div class="angucomplete-searching" ng-show="searching">Searching...</div>' +
-      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div>' +
+      '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
+      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
       '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
       '      <div ng-if="imageField" class="angucomplete-image-holder">' +
       '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
@@ -168,6 +171,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       if (!scope.overrideSuggestions) {
         scope.overrideSuggestions = false;
       }
+
+      scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
+      scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
 
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
@@ -356,6 +362,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             scope.$apply(function() {
               scope.currentIndex --;
             });
+          }
+        } else if (event.which === KEY_TAB && scope.results) {
+          if (scope.currentIndex === -1) {
+            event.preventDefault();
+            scope.selectResult(scope.results[0]);
+            scope.$apply();
           }
         }
       });
