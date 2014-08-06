@@ -26,7 +26,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * You can either bind an object or callback function
     * bind an object: it works as regular two-way-data-binding
     * callback function: when a selection is made by user, this callback is called with the selected object. Thanks to @nekcih for proposing this feature.
-* Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable.
+* Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable. Thanks to @alindber for the initial idea.
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
 
 ### Getting Started
