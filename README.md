@@ -26,6 +26,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * You can either bind an object or callback function
     * bind an object: it works as regular two-way-data-binding
     * callback function: when a selection is made by user, this callback is called with the selected object. Thanks to @nekcih for proposing this feature.
+* Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable.
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
 
 ### Getting Started
@@ -91,5 +92,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | remote-url-response-formatter | A function on the scope that will modify raw response from remote API before it is rendered in the drop-down.  Useful for adding data that may not be available from the API.  The specified function must return the object in the format that angucomplete understands. | No | addImageUrlToObject |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
 | override-suggestions | To override suggestions and set the value in input field to selectedObject | No | true |
+| field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required" | No | true |
+| field-required-class | Set custom class name for required. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |

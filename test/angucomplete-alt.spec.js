@@ -2,12 +2,13 @@
 
 describe('angucomplete-alt', function() {
   var $compile, $scope, $timeout;
-  var KEY_DW = 40,
-      KEY_UP = 38,
-      KEY_ES = 27,
-      KEY_EN = 13,
-      KEY_TAB = 9,
-      KEY_BS =  8;
+  var KEY_DW  = 40,
+      KEY_UP  = 38,
+      KEY_ES  = 27,
+      KEY_EN  = 13,
+      KEY_DEL = 46,
+      KEY_TAB =  9,
+      KEY_BS  =  8;
 
   beforeEach(module('angucomplete-alt'));
 
@@ -586,6 +587,69 @@ describe('angucomplete-alt', function() {
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
       expect(selected).toBe(true);
+    });
+  });
+
+  describe('require field', function() {
+    it('should add a class ng-invalid-autocomplete-required when initialized', function() {
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+    });
+
+    it('should add a class ng-invalid-autocomplete-required when selection is made', function() {
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+
+      // make a selection
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+
+      // delete a char
+      inputField.focus();
+      eKeyup.which = KEY_DEL;
+      inputField.val('Afghanista');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.find('.angucomplete-row').length).toBe(1);
+
+      // make a selection again
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
     });
   });
 });
