@@ -96,3 +96,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | field-required-class | Set custom class name for required. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
+
+### Contributors
+
+Here is the list of [contributors](CONTRIBUTORS.md)
+
