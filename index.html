@@ -1,4 +1,8 @@
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" id="ng-app" ng-app="app"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" id="ng-app" ng-app="app"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" id="ng-app" ng-app="app"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" id="ng-app" ng-app="app"> <!--<![endif]-->
   <head>
     <title>Angucomplete Alt: Autocomplete Directive for AngularJS</title>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
@@ -6,10 +10,15 @@
     <link rel="stylesheet" href="css/angucomplete-alt.css"/>
     <link rel="stylesheet" href="fonts/bariol/bariol.css"/>
     </head>
-  <body ng-app="app">
+  <body ng-controller="MainController">
+    <!--[if lt IE 9]>
+      <script src="js/libs/es5-shim.min.js"></script>
+      <script src="js/libs/json3.min.js"></script>
+    <![endif]-->
+
     <a href="https://github.com/ghiden/angucomplete-alt"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 
-    <div ng-controller="MainController">
+    <div>
 
       <h1>Angucomplete Alt</h1>
       <h2>Awesome Autocompleteness for AngularJS</h2>
@@ -21,7 +30,8 @@
 
         <h3>Example 1 - Countries of the World</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          </div>
         </div>
         <div class="" ng-show="selectedCountry">
           You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
@@ -33,7 +43,8 @@
 
         <h3>Example 2 - People</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          </div>
         </div>
         <div class="" ng-show="selectedPerson">
           You selected <span class="bold-span">{{selectedPerson.originalObject.firstName}} {{selectedPerson.originalObject.surname}}</span>
@@ -45,7 +56,8 @@
 
         <h3>Example 3 - Clear Result on Selection</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry3" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true"/>
+          <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry3" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true">
+          </div>
         </div>
         <div class="" ng-show="selectedCountry3">
           You selected <span class="bold-span">{{selectedCountry3.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry3.originalObject.code}}</span>
@@ -57,7 +69,8 @@
 
         <h3>Example 4 - Override Suggestions with clear result</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry4" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true"/>
+          <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry4" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true">
+          </div>
         </div>
         <div class="" ng-show="selectedCountry4">
           You selected <span class="bold-span">{{selectedCountry4.originalObject}}</span>
@@ -69,7 +82,8 @@
 
         <h3>Example 5 - Using dumb search API that returns all results</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry5" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <div angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry5" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          </div>
         </div>
         <div class="" ng-show="selectedCountry5">
           You selected <span class="bold-span">{{selectedCountry5.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry5.originalObject.code}}</span>
@@ -81,7 +95,8 @@
 
         <h3>Example 6 - Show Matches in both name and description</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex6" placeholder="Search countries" pause="100" selected-object="selectedCountry6" local-data="countries" search-fields="name,code" title-field="name" description-field="code" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <div angucomplete-alt id="ex6" placeholder="Search countries" pause="100" selected-object="selectedCountry6" local-data="countries" search-fields="name,code" title-field="name" description-field="code" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          </div>
         </div>
         <div class="" ng-show="selectedCountry6">
           You selected <span class="bold-span">{{selectedCountry6.title}}</span> which has a country code of <span class="bold-span">{{selectedCountry6.description}}</span>
@@ -93,7 +108,8 @@
 
         <h3>Example 7 - Callback and show alert</h3>
         <div class="padded-row">
-          <angucomplete-alt id="ex7" placeholder="Search countries" pause="100" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" />
+          <div angucomplete-alt id="ex7" placeholder="Search countries" pause="100" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          </div>
         </div>
 
       </div>
@@ -103,7 +119,8 @@
         <h3>Example 8 - Required</h3>
         <div class="padded-row">
           <form>
-            <angucomplete-alt id="ex8" placeholder="Search countries" pause="100" selected-object="countrySelected8" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true"/>
+            <div angucomplete-alt id="ex8" placeholder="Search countries" pause="100" selected-object="countrySelected8" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true">
+            </div>
           </form>
         </div>
 

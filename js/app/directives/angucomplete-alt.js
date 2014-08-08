@@ -79,6 +79,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       scope.searching = false;
       scope.searchStr = null;
 
+      // for IE8 quirkiness about event.which
+      function ie8EventNormalizer(event) {
+        return event.which ? event.which : event.keyCode;
+      }
+
       var callOrAssign = function(value) {
         if (typeof scope.selectedObject === 'function') {
           scope.selectedObject(value);
@@ -307,7 +312,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField = elem.find('input');
 
       scope.keyPressed = function(event) {
-        if (!(event.which === KEY_UP || event.which === KEY_DW || event.which === KEY_EN)) {
+        var which = ie8EventNormalizer(event);
+        if (!(which === KEY_UP || which === KEY_DW || which === KEY_EN)) {
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
             lastSearchTerm = null;
@@ -336,7 +342,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', scope.keyPressed);
 
       elem.on('keydown', function (event) {
-        if (event.which === KEY_EN && scope.results) {
+        var which = ie8EventNormalizer(event);
+        if (which === KEY_EN && scope.results) {
           event.preventDefault();
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             scope.selectResult(scope.results[scope.currentIndex]);
@@ -351,19 +358,19 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.$apply();
             }
           }
-        } else if (event.which === KEY_DW && scope.results) {
+        } else if (which === KEY_DW && scope.results) {
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
             });
           }
-        } else if (event.which === KEY_UP && scope.results) {
+        } else if (which === KEY_UP && scope.results) {
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
             });
           }
-        } else if (event.which === KEY_TAB && scope.results) {
+        } else if (which === KEY_TAB && scope.results) {
           if (scope.currentIndex === -1) {
             event.preventDefault();
             scope.selectResult(scope.results[0]);
@@ -373,11 +380,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       });
 
       elem.on('keyup', function (event) {
-        if (event.which === KEY_ES) {
+        var which = ie8EventNormalizer(event);
+        if (which === KEY_ES) {
           scope.results = [];
           scope.showDropdown = false;
           scope.$apply();
-        } else if (event.which === KEY_BS || event.which === KEY_DEL) {
+        } else if (which === KEY_BS || which === KEY_DEL) {
           scope.$apply();
         }
       });
