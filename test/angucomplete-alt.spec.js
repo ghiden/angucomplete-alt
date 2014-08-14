@@ -581,7 +581,7 @@ describe('angucomplete-alt', function() {
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
-      element.trigger(eKeydown);
+      inputField.trigger(eKeydown);
       expect(element.isolateScope().currentIndex).toBe(0);
 
       eKeydown.which = KEY_EN;
