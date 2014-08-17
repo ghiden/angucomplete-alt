@@ -79,6 +79,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       var hideTimer;
       var requiredClassName = REQUIRED_CLASS;
       var responseFormatter;
+      var validState = null;
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -155,6 +156,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       }
 
       function handleRequired(valid) {
+        validState = scope.searchStr;
         if (scope.fieldRequired && ctrl) {
           ctrl.$setValidity(requiredClassName, valid);
         }
@@ -164,7 +166,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         var which = ie8EventNormalizer(event);
         if (which === KEY_UP || which === KEY_DW || which === KEY_EN) {
           event.preventDefault();
-        } else {
+        }
+        else {
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
             lastSearchTerm = null;
@@ -184,7 +187,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.searchTimerComplete(scope.searchStr);
             }, scope.pause);
           }
-          handleRequired(false);
+
+          if (validState && validState !== scope.searchStr) {
+            handleRequired(false);
+          }
         }
       }
 
@@ -228,9 +234,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
               scope.currentIndex --;
             });
           }
-        } else if (which === KEY_TAB && scope.results) {
+        } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
           if (scope.currentIndex === -1) {
-            event.preventDefault();
             scope.selectResult(scope.results[0]);
             scope.$apply();
           }
@@ -394,6 +399,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         scope.overrideSuggestions = false;
       }
 
+      // check override suggestions
+      if (scope.fieldRequired && ctrl) {
+        // start with false
+        handleRequired(false);
+      }
+
       // set strings for "Searching..." and "No results"
       scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
       scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
@@ -405,8 +416,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
       // set response formatter
       responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
-      // start with false
-      handleRequired(false);
     }
   };
 }]);
