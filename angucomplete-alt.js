@@ -33,6 +33,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
     require: '^?form',
     scope: {
       selectedObject: '=',
+      initialValue: '@',
       localData: '=',
       remoteUrlRequestFormatter: '=',
       remoteUrlResponseFormatter: '=',
@@ -83,7 +84,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
 
       scope.currentIndex = null;
       scope.searching = false;
-      scope.searchStr = null;
+      scope.searchStr = scope.initialValue;
 
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
@@ -399,10 +400,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         scope.overrideSuggestions = false;
       }
 
-      // check override suggestions
+      // check required field
       if (scope.fieldRequired && ctrl) {
-        // start with false
-        handleRequired(false);
+        // check initial value, if given, set validitity to true
+        if (scope.initialValue) {
+          handleRequired(true);
+        }
+        else {
+          handleRequired(false);
+        }
       }
 
       // set strings for "Searching..." and "No results"
