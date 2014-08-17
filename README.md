@@ -28,6 +28,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
     * callback function: when a selection is made by user, this callback is called with the selected object. Thanks to @nekcih for proposing this feature.
 * Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable. Thanks to @alindber for the initial idea.
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
+* Be able to set initial value. This becomes handy if you use this directive for updating existing model.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -96,6 +97,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | field-required-class | Set custom class name for required. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
+| initial-value | Initial value for internal ng-model. Take a look at example 9 on the [demo page](http://ghiden.github.io/angucomplete-alt) | No | "some string" |
 
 ### Contributors
 
