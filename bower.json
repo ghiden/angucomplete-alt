@@ -1,11 +1,11 @@
 {
   "name": "angucomplete-alt",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "homepage": "http://ghiden.github.io/angucomplete-alt/",
   "authors": [
     "Hidenari Nozaki <hidenari@gmail.com>"
   ],
-  "description": "Awesome Autocompleteness for AngularJS",
+  "description": "Autocomplete directive for AngularJS",
   "keywords": [
     "autocomplete",
     "typeahead",
