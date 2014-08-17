@@ -256,5 +256,6 @@ app.controller('MainController', ['$scope', '$http',
       {name: 'Zimbabwe', code: 'ZW'}
     ];
 
+    $scope.countrySelected9 = {title: 'Chile'};
   }
 ]);
