@@ -100,6 +100,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
 | initial-value | Initial value for internal ng-model. Take a look at example 9 on the [demo page](http://ghiden.github.io/angucomplete-alt) | No | "some string" |
+| input-changed | A callback function that is called when input field is changed. |  No | inputChangedFn |
 
 ### Contributors
 
