@@ -80,13 +80,13 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 5 - Using dumb search API that returns all results</h3>
+        <h3>Example 5 - Using Github search API</h3>
         <div class="padded-row">
-          <div angucomplete-alt id="ex5" placeholder="Search countries" pause="100" selected-object="selectedCountry5" remote-url="countries.json?" remote-url-data-field="data" search-fields="name" title-field="name" description-field="type" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          <div angucomplete-alt id="ex5" placeholder="Search projects" pause="500" selected-object="selectedProject" remote-url="https://api.github.com/search/repositories?q=" remote-url-data-field="items" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
-        <div class="" ng-show="selectedCountry5">
-          You selected <span class="bold-span">{{selectedCountry5.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry5.originalObject.code}}</span>
+        <div class="" ng-show="selectedProject">
+          Repository: <span class="bold-span">{{selectedProject.originalObject.git_url}}</span>
         </div>
 
       </div>
