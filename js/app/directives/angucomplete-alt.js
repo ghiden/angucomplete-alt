@@ -37,6 +37,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       localData: '=',
       remoteUrlRequestFormatter: '=',
       remoteUrlResponseFormatter: '=',
+      remoteUrlErrorCallback: '=',
       id: '@',
       placeholder: '@',
       remoteUrl: '@',
@@ -102,8 +103,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         handleRequired(true);
       }
 
-      function returnFunctionOrIdentity(fn) {
-        return fn && typeof fn === 'function' ? fn : function(data) { return data; };
+      function callFunctionOrIdentity(fn) {
+        return function(data) {
+          return scope[fn] ? scope[fn](data) : data;
+        };
       }
 
       function setInputString(str) {
@@ -253,7 +256,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        console.error('http error');
+        if (scope.remoteUrlErrorCallback) {
+          scope.remoteUrlErrorCallback(errorRes, status, headers, config);
+        }
+        else {
+          console.error('http error');
+        }
       }
 
       function getRemoteResults(str) {
@@ -421,7 +429,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', keyupHandler);
 
       // set response formatter
-      responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
+      responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
     }
   };
 }]);
