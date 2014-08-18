@@ -102,8 +102,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         handleRequired(true);
       }
 
-      function returnFunctionOrIdentity(fn) {
-        return fn && typeof fn === 'function' ? fn : function(data) { return data; };
+      function callFunctionOrIdentity(fn) {
+        return function(data) {
+          return scope[fn] ? scope[fn](data) : data;
+        };
       }
 
       function setInputString(str) {
@@ -421,7 +423,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       inputField.on('keyup', keyupHandler);
 
       // set response formatter
-      responseFormatter = returnFunctionOrIdentity(scope.remoteUrlResponseFormatter);
+      responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
     }
   };
 }]);
