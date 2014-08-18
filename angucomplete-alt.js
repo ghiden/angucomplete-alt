@@ -37,6 +37,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       localData: '=',
       remoteUrlRequestFormatter: '=',
       remoteUrlResponseFormatter: '=',
+      remoteUrlErrorCallback: '=',
       id: '@',
       placeholder: '@',
       remoteUrl: '@',
@@ -255,7 +256,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        console.error('http error');
+        if (scope.remoteUrlErrorCallback) {
+          scope.remoteUrlErrorCallback(errorRes, status, headers, config);
+        }
+        else {
+          console.error('http error');
+        }
       }
 
       function getRemoteResults(str) {

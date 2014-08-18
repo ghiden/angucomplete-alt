@@ -305,6 +305,24 @@ describe('angucomplete-alt', function() {
         $httpBackend.verifyNoOutstandingRequest();
         expect(element.isolateScope().searching).toBe(false);
       }));
+
+      it('should call error callback when it is given', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" remote-url-error-callback="errorCallback" title-field="name" minlength="1"/>');
+        $scope.errorCallback = jasmine.createSpy('errorCallback');
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'john';
+        var results = {data: [{name: 'john'}]};
+        spyOn(element.isolateScope(), 'processResults');
+        $httpBackend.expectGET('names?q=' + queryTerm).respond(500, 'Internal server error');
+        element.isolateScope().searchTimerComplete(queryTerm);
+        $httpBackend.flush();
+        expect($scope.errorCallback).toHaveBeenCalled();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+      }));
+
     });
   });
 
