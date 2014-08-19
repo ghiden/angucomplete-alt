@@ -30,6 +30,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
 * Be able to set initial value. This becomes handy if you use this directive for updating existing model.
 * Be able to set a error callback for ajax request
+* Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
