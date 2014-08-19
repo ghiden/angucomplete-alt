@@ -33,8 +33,10 @@
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
-        <div class="" ng-show="selectedCountry">
-          You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+        <div class="result">
+          <div ng-show="selectedCountry">
+            You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+          </div>
         </div>
 
       </div>
@@ -46,8 +48,10 @@
           <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
-        <div class="" ng-show="selectedPerson">
-          You selected <span class="bold-span">{{selectedPerson.originalObject.firstName}} {{selectedPerson.originalObject.surname}}</span>
+        <div class="result">
+          <div class="" ng-show="selectedPerson">
+            You selected <span class="bold-span">{{selectedPerson.originalObject.firstName}} {{selectedPerson.originalObject.surname}}</span>
+          </div>
         </div>
 
       </div>
@@ -59,8 +63,10 @@
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry3" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true">
           </div>
         </div>
-        <div class="" ng-show="selectedCountry3">
-          You selected <span class="bold-span">{{selectedCountry3.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry3.originalObject.code}}</span>
+        <div class="result">
+          <div class="" ng-show="selectedCountry3">
+            You selected <span class="bold-span">{{selectedCountry3.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry3.originalObject.code}}</span>
+          </div>
         </div>
 
       </div>
@@ -72,8 +78,10 @@
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry4" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true">
           </div>
         </div>
-        <div class="" ng-show="selectedCountry4">
-          You selected <span class="bold-span">{{selectedCountry4.originalObject}}</span>
+        <div class="result">
+          <div class="" ng-show="selectedCountry4">
+            You selected <span class="bold-span">{{selectedCountry4.originalObject}}</span>
+          </div>
         </div>
 
       </div>
@@ -85,8 +93,10 @@
           <div angucomplete-alt id="ex5" placeholder="Search projects" pause="500" selected-object="selectedProject" remote-url="https://api.github.com/search/repositories?q=" remote-url-data-field="items" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
-        <div class="" ng-show="selectedProject">
-          Repository: <span class="bold-span">{{selectedProject.originalObject.git_url}}</span>
+        <div class="result">
+          <div class="" ng-show="selectedProject">
+            Repository: <span class="bold-span">{{selectedProject.originalObject.git_url}}</span>
+          </div>
         </div>
 
       </div>
@@ -98,8 +108,10 @@
           <div angucomplete-alt id="ex6" placeholder="Search countries" pause="100" selected-object="selectedCountry6" local-data="countries" search-fields="name,code" title-field="name" description-field="code" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
-        <div class="" ng-show="selectedCountry6">
-          You selected <span class="bold-span">{{selectedCountry6.title}}</span> which has a country code of <span class="bold-span">{{selectedCountry6.description}}</span>
+        <div class="result">
+          <div class="" ng-show="selectedCountry6">
+            You selected <span class="bold-span">{{selectedCountry6.title}}</span> which has a country code of <span class="bold-span">{{selectedCountry6.description}}</span>
+          </div>
         </div>
 
       </div>
@@ -135,8 +147,20 @@
             </div>
           </form>
         </div>
-        <div class="" ng-show="countrySelected9">
-          You selected <span class="bold-span">{{countrySelected9.title}}</span>
+        <div class="result">
+          <div class="" ng-show="countrySelected9">
+            You selected <span class="bold-span">{{countrySelected9.title}}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="large-padded-row">
+
+        <h3>Example 10 - Input changed callback<span class="console">current input field value: {{ console10 }}</span></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex10" placeholder="Search countries" pause="100" selected-object="countrySelected10" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" input-changed="inputChanged">
+          </div>
         </div>
 
       </div>
@@ -146,11 +170,10 @@
         <h5>Forked by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>
       </div>
 
-      <script src="js/angular.min.js"></script>
-      <script src="js/angular-touch.min.js"></script>
-      <script src="js/app/app.js"></script>
-      <script src="js/app/controllers/main-controller.js"></script>
-      <script src="js/app/directives/angucomplete-alt.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-touch.min.js"></script>
+      <script src="js/libs/angucomplete-alt.js"></script>
+      <script src="js/app.js"></script>
     </div>
   </body>
 </html>
