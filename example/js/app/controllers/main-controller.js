@@ -257,5 +257,9 @@ app.controller('MainController', ['$scope', '$http',
     ];
 
     $scope.countrySelected9 = {title: 'Chile'};
+
+    $scope.inputChanged = function(str) {
+      $scope.console10 = str;
+    }
   }
 ]);

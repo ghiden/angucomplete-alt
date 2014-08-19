@@ -1012,3 +1012,10 @@ td {
 form.ng-invalid-autocomplete-required input {
   border-color: red;
 }
+
+.console {
+  margin-left: 30px;
+  font-family: Monaco;
+  font-size: 12px;
+  color: #ccc;
+}

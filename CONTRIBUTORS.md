@@ -19,6 +19,10 @@
 
 * Added delete keystroke together with backspace #4
 
+### [@urecio](https://github.com/urecio)
+
+* Added input changed callback #12
+
 ### [@vhuerta: Victor Huerta Hernández](https://github.com/vhuerta)
 
 * Custom strings for "searching" and "no results"  #22

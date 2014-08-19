@@ -711,4 +711,29 @@ describe('angucomplete-alt', function() {
       expect($scope.countrySelected).toBeDefined();
     });
   });
+
+  describe('Input changed callback', function() {
+
+    it('should call input changed callback when input is changed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-changed="inputChanged"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $scope.inputChanged = jasmine.createSpy('inputChanged');
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 97; // letter: a
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+
+      expect($scope.inputChanged).toHaveBeenCalledWith('a');
+    });
+  });
 });

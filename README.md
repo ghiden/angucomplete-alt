@@ -30,6 +30,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
 * Be able to set initial value. This becomes handy if you use this directive for updating existing model.
 * Be able to set a error callback for ajax request
+* Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -100,6 +101,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
 | initial-value | Initial value for internal ng-model. Take a look at example 9 on the [demo page](http://ghiden.github.io/angucomplete-alt) | No | "some string" |
+| input-changed | A callback function that is called when input field is changed. |  No | inputChangedFn |
 
 ### Contributors
 
