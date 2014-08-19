@@ -92,6 +92,43 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect(element.find('.angucomplete-row').length).toBeGreaterThan(0);
     });
+
+    it('should reset selectedObject to undefined when input changes', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect($scope.selectedCountry.originalObject).toEqual({name: 'Afghanistan', code: 'AF'});
+
+      inputField.focus();
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect($scope.selectedCountry).toBeUndefined();
+    });
   });
 
   describe('processResults', function() {
@@ -624,6 +661,7 @@ describe('angucomplete-alt', function() {
 
     it('should add a class ng-invalid-autocomplete-required when selection is made', function() {
       var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
+      $scope.countrySelected = null;
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
@@ -651,6 +689,7 @@ describe('angucomplete-alt', function() {
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
       expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect($scope.countrySelected).toBeDefined();
 
       // delete a char
       inputField.focus();
@@ -661,6 +700,7 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
       expect(element.find('.angucomplete-row').length).toBe(1);
+      expect($scope.countrySelected).toBeUndefined();
 
       // make a selection again
       eKeydown.which = KEY_DW;
@@ -668,6 +708,7 @@ describe('angucomplete-alt', function() {
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
       expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect($scope.countrySelected).toBeDefined();
     });
   });
 });

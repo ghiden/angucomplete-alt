@@ -193,6 +193,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           }
 
           if (validState && validState !== scope.searchStr) {
+            callOrAssign(undefined);
             handleRequired(false);
           }
         }
