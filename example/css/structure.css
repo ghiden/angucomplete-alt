@@ -1019,3 +1019,6 @@ form.ng-invalid-autocomplete-required input {
   font-size: 12px;
   color: #ccc;
 }
+.result {
+  height: 15px;
+}
