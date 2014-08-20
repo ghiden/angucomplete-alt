@@ -54,7 +54,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       overrideSuggestions: '@',
       fieldRequired: '@',
       fieldRequiredClass: '@',
-      inputChanged: '='
+      inputChanged: '=',
+      autoMatch: '@'
     },
     template:
       '<div class="angucomplete-holder">' +
@@ -329,6 +330,21 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       };
 
+      scope.selectExactMatch = function(str){
+        if (scope.autoMatch) {
+          if (scope.results.length > 0) {
+            for(var key in scope.results[0]){
+              if(scope.results[0].hasOwnProperty(key) && (typeof scope.results[0][key] === 'string')) {
+                if(scope.results[0][key].toLowerCase() === str.toLowerCase()){
+                  scope.selectResult(scope.results[0]);
+                  return;
+                }
+              }
+            }
+          }
+        }
+      };
+
       scope.processResults = function(responseData, str) {
         var i, description, image, text;
 
@@ -362,6 +378,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
               originalObject: responseData[i]
             };
           }
+
+          scope.selectExactMatch(scope.searchStr);
+
         } else {
           scope.results = [];
         }
