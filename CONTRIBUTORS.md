@@ -10,6 +10,10 @@
 
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
+### [@foozee](https://github.com/foozee)
+
+* Watch initial value #26
+
 ### [@nekcih](https://github.com/nekcih)
 
 * New callback handler, response translator, better template code format, and css fix #6
