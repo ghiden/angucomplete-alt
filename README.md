@@ -105,5 +105,5 @@ var app = angular.module('app', ["angucomplete-alt"]);
 
 ### Contributors
 
-Here is the list of [contributors](CONTRIBUTORS.md)
-Here is how to [contribute](CONTRIBUTING.md)
+Here is the list of [contributors](CONTRIBUTORS.md).  
+Here is how to [contribute](CONTRIBUTING.md).
