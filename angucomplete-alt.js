@@ -87,6 +87,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = scope.initialValue;
+      scope.$watch('initialValue', function(){
+        scope.searchStr = scope.initialValue;
+      });
 
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
