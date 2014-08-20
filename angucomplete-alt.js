@@ -203,6 +203,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
       }
 
+      function handleOverrideSuggestions(event) {
+        if (scope.overrideSuggestions) {
+          if (!(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
+            event.preventDefault();
+            setInputString(scope.searchStr);
+          }
+        }
+      }
+
       function specialKeyHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_ES) {
@@ -217,20 +226,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       function keydownHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_EN && scope.results) {
-          event.preventDefault();
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
+            event.preventDefault();
             scope.selectResult(scope.results[scope.currentIndex]);
-            scope.$apply();
           } else {
-            if (scope.overrideSuggestions) {
-              setInputString(scope.searchStr);
-              scope.$apply();
-            }
-            else {
-              scope.results = [];
-              scope.$apply();
-            }
+            handleOverrideSuggestions(event);
+            scope.results = [];
           }
+          scope.$apply();
         } else if (which === KEY_DW && scope.results) {
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
@@ -244,7 +247,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
-          if (scope.currentIndex === -1) {
+          if (scope.currentIndex === -1 && scope.showDropdown) {
             scope.selectResult(scope.results[0]);
             scope.$apply();
           }
