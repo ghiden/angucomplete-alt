@@ -9,7 +9,7 @@
 
 'use strict';
 
-angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', '$http', '$sce', '$timeout', function ($parse, $http, $sce, $timeout) {
+angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', function ($q, $parse, $http, $sce, $timeout) {
   // keyboard events
   var KEY_DW  = 40;
   var KEY_UP  = 38;
@@ -83,6 +83,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
       var requiredClassName = REQUIRED_CLASS;
       var responseFormatter;
       var validState = null;
+      var httpCanceller = null;
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -272,6 +273,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         }
       }
 
+      function cancelHttpRequest() {
+        if (httpCanceller) {
+          httpCanceller.resolve();
+        }
+      }
+
       function getRemoteResults(str) {
         var params = {},
             url = scope.remoteUrl + str;
@@ -279,6 +286,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
           params = {params: scope.remoteUrlRequestFormatter(str)};
           url = scope.remoteUrl;
         }
+        cancelHttpRequest();
+        httpCanceller = $q.defer();
+        params.timeout = httpCanceller.promise;
         $http.get(url, params)
           .success(httpSuccessCallbackGen(str))
           .error(httpErrorCallback);
@@ -309,6 +319,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$parse', 
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
         }, BLUR_TIMEOUT);
+        cancelHttpRequest();
       };
 
       scope.resetHideResults = function() {
