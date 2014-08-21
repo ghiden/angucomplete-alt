@@ -93,6 +93,40 @@ describe('angucomplete-alt', function() {
       expect(element.find('.angucomplete-row').length).toBeGreaterThan(0);
     });
 
+    it('should show search results after 2 letters are entered and hide results when a letter is deleted', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="2"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 97; // letter: a
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      expect(element.find('.angucomplete-row').length).toBe(0);
+
+      e.which = 108; // letter: l
+      inputField.val('al');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(2);
+
+      // delete a char
+      e.which = KEY_DEL;
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      expect(element.find('.angucomplete-row').length).toBe(0);
+    });
+
     it('should reset selectedObject to undefined when input changes', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       $scope.selectedCountry = undefined;

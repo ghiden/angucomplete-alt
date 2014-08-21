@@ -78,7 +78,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       var inputField = elem.find('input');
       var minlength = MIN_LENGTH;
       var searchTimer = null;
-      var lastSearchTerm = null;
       var hideTimer;
       var requiredClassName = REQUIRED_CLASS;
       var responseFormatter;
@@ -120,12 +119,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         if (scope.clearSelected) {
           scope.searchStr = null;
         }
-        scope.showDropdown = false;
-        scope.results = [];
-      }
-
-      function isNewSearchNeeded(newTerm, oldTerm) {
-        return newTerm.length >= minlength && newTerm !== oldTerm;
+        clearResults();
       }
 
       function extractTitle(data) {
@@ -179,12 +173,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         else {
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
-            lastSearchTerm = null;
-          } else if (isNewSearchNeeded(scope.searchStr, lastSearchTerm)) {
-            lastSearchTerm = scope.searchStr;
-            scope.showDropdown = true;
-            scope.currentIndex = -1;
-            scope.results = [];
+          } else if (scope.searchStr.length >= minlength) {
+            initResults();
 
             if (searchTimer) {
               $timeout.cancel(searchTimer);
@@ -294,6 +284,17 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           .error(httpErrorCallback);
       }
 
+      function clearResults() {
+        scope.showDropdown = false;
+        scope.results = [];
+      }
+
+      function initResults() {
+        scope.showDropdown = true;
+        scope.currentIndex = -1;
+        scope.results = [];
+      }
+
       function getLocalResults(str) {
         var i, match, s,
             searchFields = scope.searchFields.split(','),
@@ -394,13 +395,21 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.searchStr = null;
         }
         else {
-          scope.searchStr = lastSearchTerm = result.title;
+          scope.searchStr = result.title;
         }
         callOrAssign(result);
-        scope.showDropdown = false;
-        scope.results = [];
+        clearResults();
       };
 
+      scope.inputChangeHandler = function(str) {
+        if (str.length < minlength) {
+          clearResults();
+        }
+        if (scope.inputChanged) {
+          str = scope.inputChanged(str);
+        }
+        return str;
+      };
 
       // check required
       if (scope.fieldRequiredClass && scope.fieldRequiredClass !== '') {
@@ -449,9 +458,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
-
-      // set response formatter
-      scope.inputChangeHandler = callFunctionOrIdentity('inputChanged');
     }
   };
 }]);
