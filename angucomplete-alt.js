@@ -54,6 +54,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       overrideSuggestions: '@',
       fieldRequired: '@',
       fieldRequiredClass: '@',
+      format: '=',
       inputChanged: '='
     },
     template:
@@ -91,6 +92,24 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         scope.searchStr = scope.initialValue;
       });
 
+      function hasFormatFunction() {
+        return (typeof scope.format === 'function');
+      }
+      function setSearchStr(value) {
+        if (hasFormatFunction()) {
+          scope.searchStr = scope.format(value);
+        } else {
+          scope.searchStr = value;
+        }
+        return scope.searchStr;
+      }
+      // if selectedObject is not a function, and we have a 'format' function, then link the selectedObject to the searchStr
+      if (hasFormatFunction() && (typeof scope.selectedObject !== 'function')) {
+        scope.$watch('selectedObject', function() {
+          scope.searchStr = scope.format(scope.selectedObject);
+        });
+      }
+
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
         return event.which ? event.which : event.keyCode;
@@ -101,7 +120,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.selectedObject(value);
         }
         else {
-          scope.selectedObject = value;
+          // if we have format function, and the value already has the originalObject, then we need that value
+          if (hasFormatFunction() && value.originalObject) {
+            scope.selectedObject = value.originalObject;
+          } else {
+            scope.selectedObject = value;
+          }
         }
 
         handleRequired(true);
@@ -123,12 +147,17 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       }
 
       function extractTitle(data) {
-        // split title fields and run extractValue for each and join with ' '
-        return scope.titleField.split(',')
-          .map(function(field) {
-            return extractValue(data, field);
-          })
-          .join(' ');
+        if (hasFormatFunction()) {
+          return scope.format(data);
+        } else if (scope.titleField && scope.titleField !== '') {
+          // split title fields and run extractValue for each and join with ' '
+          return scope.titleField.split(',')
+            .map(function(field) {
+              return extractValue(data, field);
+            })
+            .join(' ');
+		}
+        return null;
       }
 
       function extractValue(obj, key) {
@@ -336,9 +365,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.results = [];
 
           for (i = 0; i < responseData.length; i++) {
-            if (scope.titleField && scope.titleField !== '') {
-              text = extractTitle(responseData[i]);
-            }
+            text = extractTitle(responseData[i]);
 
             description = '';
             if (scope.descriptionField) {
