@@ -330,15 +330,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       };
 
-      scope.selectExactMatch = function(str){
-        if (scope.autoMatch) {
-          if (scope.results.length > 0) {
-            for(var key in scope.results[0]){
-              if(scope.results[0].hasOwnProperty(key) && (typeof scope.results[0][key] === 'string')) {
-                if(scope.results[0][key].toLowerCase() === str.toLowerCase()){
-                  scope.selectResult(scope.results[0]);
-                  return;
-                }
+      scope.checkExactMatch = function(index, obj, str){
+        if (obj) {
+          for(var key in obj){
+            if(typeof obj[key] === 'string') {
+              if(obj[key].toLowerCase() === str.toLowerCase()){
+                scope.selectResult(scope.results[index]);
+                return;
               }
             }
           }
@@ -346,19 +344,19 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       };
 
       scope.processResults = function(responseData, str) {
-        var i, description, image, text;
+        var i, description, image, text, formattedText, formattedDesc;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
 
           for (i = 0; i < responseData.length; i++) {
             if (scope.titleField && scope.titleField !== '') {
-              text = extractTitle(responseData[i]);
+              text = formattedText = extractTitle(responseData[i]);
             }
 
             description = '';
             if (scope.descriptionField) {
-              description = extractValue(responseData[i], scope.descriptionField);
+              description = formattedDesc = extractValue(responseData[i], scope.descriptionField);
             }
 
             image = '';
@@ -367,19 +365,21 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             }
 
             if (scope.matchClass) {
-              text = findMatchString(text, str);
-              description = findMatchString(description, str);
+              formattedText = findMatchString(text, str);
+              formattedDesc = findMatchString(description, str);
             }
 
             scope.results[scope.results.length] = {
-              title: text,
-              description: description,
+              title: formattedText,
+              description: formattedDesc,
               image: image,
               originalObject: responseData[i]
             };
-          }
 
-          scope.selectExactMatch(scope.searchStr);
+            if (scope.autoMatch) {
+              scope.checkExactMatch(scope.results.length-1, { title: text, desc: description}, scope.searchStr);
+            }
+          }
 
         } else {
           scope.results = [];
