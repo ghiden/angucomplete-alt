@@ -223,6 +223,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           } else {
             handleOverrideSuggestions(event);
             scope.results = [];
+            scope.showDropdown = false;
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
