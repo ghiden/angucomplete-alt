@@ -206,8 +206,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function specialKeyHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_ES) {
-          scope.results = [];
-          scope.showDropdown = false;
+          clearResults();
           scope.$apply();
         } else if (which === KEY_BS || which === KEY_DEL) {
           scope.$apply();
