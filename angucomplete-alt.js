@@ -206,8 +206,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function specialKeyHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_ES) {
-          scope.results = [];
-          scope.showDropdown = false;
+          clearResults();
           scope.$apply();
         } else if (which === KEY_BS || which === KEY_DEL) {
           scope.$apply();
@@ -222,7 +221,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.selectResult(scope.results[scope.currentIndex]);
           } else {
             handleOverrideSuggestions(event);
-            scope.results = [];
+            clearResults();
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
