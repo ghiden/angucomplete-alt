@@ -316,6 +316,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         scope.processResults(matches, str);
       }
 
+      function checkExactMatch(result, obj, str){
+        for(var key in obj){
+          if(obj[key].toLowerCase() === str.toLowerCase()){
+            scope.selectResult(result);
+            return;
+          }
+        }
+      }
+
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
@@ -328,15 +337,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           $timeout.cancel(hideTimer);
         }
       };
-
-      function checkExactMatch(index, obj, str){
-        for(var key in obj){
-          if(obj[key].toLowerCase() === str.toLowerCase()){
-            scope.selectResult(scope.results[index]);
-            return;
-          }
-        }
-      }
 
       scope.processResults = function(responseData, str) {
         var i, description, image, text, formattedText, formattedDesc;
@@ -372,7 +372,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             };
 
             if (scope.autoMatch) {
-              checkExactMatch(scope.results.length-1, { title: text, desc: description}, scope.searchStr);
+              checkExactMatch(scope.results[scope.results.length-1],
+                  {title: text, desc: description}, scope.searchStr);
             }
           }
 
