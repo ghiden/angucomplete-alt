@@ -54,7 +54,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       overrideSuggestions: '@',
       fieldRequired: '@',
       fieldRequiredClass: '@',
-      inputChanged: '='
+      inputChanged: '=',
+      autoMatch: '@'
     },
     template:
       '<div class="angucomplete-holder">' +
@@ -206,8 +207,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function specialKeyHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_ES) {
-          scope.results = [];
-          scope.showDropdown = false;
+          clearResults();
           scope.$apply();
         } else if (which === KEY_BS || which === KEY_DEL) {
           scope.$apply();
@@ -222,7 +222,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.selectResult(scope.results[scope.currentIndex]);
           } else {
             handleOverrideSuggestions(event);
-            scope.results = [];
+            clearResults();
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
@@ -316,6 +316,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         scope.processResults(matches, str);
       }
 
+      function checkExactMatch(result, obj, str){
+        for(var key in obj){
+          if(obj[key].toLowerCase() === str.toLowerCase()){
+            scope.selectResult(result);
+            return;
+          }
+        }
+      }
+
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
@@ -330,19 +339,19 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       };
 
       scope.processResults = function(responseData, str) {
-        var i, description, image, text;
+        var i, description, image, text, formattedText, formattedDesc;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
 
           for (i = 0; i < responseData.length; i++) {
             if (scope.titleField && scope.titleField !== '') {
-              text = extractTitle(responseData[i]);
+              text = formattedText = extractTitle(responseData[i]);
             }
 
             description = '';
             if (scope.descriptionField) {
-              description = extractValue(responseData[i], scope.descriptionField);
+              description = formattedDesc = extractValue(responseData[i], scope.descriptionField);
             }
 
             image = '';
@@ -351,17 +360,23 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             }
 
             if (scope.matchClass) {
-              text = findMatchString(text, str);
-              description = findMatchString(description, str);
+              formattedText = findMatchString(text, str);
+              formattedDesc = findMatchString(description, str);
             }
 
             scope.results[scope.results.length] = {
-              title: text,
-              description: description,
+              title: formattedText,
+              description: formattedDesc,
               image: image,
               originalObject: responseData[i]
             };
+
+            if (scope.autoMatch) {
+              checkExactMatch(scope.results[scope.results.length-1],
+                  {title: text, desc: description}, scope.searchStr);
+            }
           }
+
         } else {
           scope.results = [];
         }
