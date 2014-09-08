@@ -329,18 +329,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       };
 
-      scope.checkExactMatch = function(index, obj, str){
-        if (obj) {
-          for(var key in obj){
-            if(typeof obj[key] === 'string') {
-              if(obj[key].toLowerCase() === str.toLowerCase()){
-                scope.selectResult(scope.results[index]);
-                return;
-              }
-            }
+      function checkExactMatch(index, obj, str){
+        for(var key in obj){
+          if(obj[key].toLowerCase() === str.toLowerCase()){
+            scope.selectResult(scope.results[index]);
+            return;
           }
         }
-      };
+      }
 
       scope.processResults = function(responseData, str) {
         var i, description, image, text, formattedText, formattedDesc;
@@ -376,7 +372,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             };
 
             if (scope.autoMatch) {
-              scope.checkExactMatch(scope.results.length-1, { title: text, desc: description}, scope.searchStr);
+              checkExactMatch(scope.results.length-1, { title: text, desc: description}, scope.searchStr);
             }
           }
 
