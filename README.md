@@ -31,6 +31,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Be able to set initial value. This becomes handy if you use this directive for updating existing model.
 * Be able to set a error callback for ajax request
 * Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
+* Auto match
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -107,5 +108,5 @@ var app = angular.module('app', ["angucomplete-alt"]);
 ### Contributors
 
 Here is the list of [contributors](CONTRIBUTORS.md).  
-Here is how to [contribute](CONTRIBUTING.md).
+Here is how to [contribute](CONTRIBUTING.md). 
 Of course the easiest contribution is to give it a star!
