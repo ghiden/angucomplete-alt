@@ -5,6 +5,7 @@
 ### [@alindber: Andy Lindberg](https://github.com/alindber)
 
 * Required support #23
+* Auto match #29
 
 ### [@boshen](https://github.com/Boshen)
 

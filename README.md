@@ -108,3 +108,4 @@ var app = angular.module('app', ["angucomplete-alt"]);
 
 Here is the list of [contributors](CONTRIBUTORS.md).  
 Here is how to [contribute](CONTRIBUTING.md).
+Of course the easiest contribution is to give it a star!
