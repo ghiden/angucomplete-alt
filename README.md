@@ -50,7 +50,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 
 ```html
 <angucomplete-alt id="ex1"
-              place-holder="Search countries"
+              placeholder="Search countries"
               pause="100"
               selected-object="selectedCountry"
               local-data="countries"
