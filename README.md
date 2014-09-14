@@ -32,6 +32,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Be able to set a error callback for ajax request
 * Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
 * Auto match
+* Add callbacks for tracking focus in/out.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -104,6 +105,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | initial-value | Initial value for internal ng-model. Take a look at example 9 on the [demo page](http://ghiden.github.io/angucomplete-alt) | No | "some string" |
 | input-changed | A callback function that is called when input field is changed. |  No | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. |  No | true |
+| focus-in | A function or expression to be called when input field gets focused. Take a look at example 12 on the [demo page](http://ghiden.github.io/angucomplete-alt) |  No | focusIn() |
+| focus-out | A function or expression to be called when input field lose focus. Take a look at example 12 on the [demo page](http://ghiden.github.io/angucomplete-alt) |  No | focusOut() |
 
 ### Contributors
 
