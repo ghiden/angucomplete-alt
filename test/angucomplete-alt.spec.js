@@ -810,4 +810,41 @@ describe('angucomplete-alt', function() {
       expect($scope.selectedPerson.originalObject).toEqual($scope.people[2]);
     });
   });
+
+  describe('key event handling', function() {
+    it('should query again when down arrow key is pressed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      $scope.countrySelected = null;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+
+      // ESC once
+      eKeyup.which = KEY_ES;
+      inputField.trigger(eKeyup);
+      expect(element.find('.angucomplete-row').length).toBe(0);
+
+      // Down arrow
+      inputField.focus();
+      eKeyup.which = KEY_DW;
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+  });
+
 });

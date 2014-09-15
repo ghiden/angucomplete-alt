@@ -12,7 +12,9 @@
 angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', function ($q, $parse, $http, $sce, $timeout) {
   // keyboard events
   var KEY_DW  = 40;
+  var KEY_RT  = 39;
   var KEY_UP  = 38;
+  var KEY_LF  = 37;
   var KEY_ES  = 27;
   var KEY_EN  = 13;
   var KEY_BS  =  8;
@@ -170,8 +172,21 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       function keyupHandler(event) {
         var which = ie8EventNormalizer(event);
-        if (which === KEY_UP || which === KEY_DW || which === KEY_EN) {
+        if (which === KEY_LF || which === KEY_RT) {
+          // do nothing
+          return;
+        }
+
+        if (which === KEY_UP || which === KEY_EN) {
           event.preventDefault();
+        }
+        else if (which === KEY_DW) {
+          event.preventDefault();
+          if (!scope.showDropdown && scope.searchStr.length >= minlength) {
+            initResults();
+            scope.searching = true;
+            scope.searchTimerComplete(scope.searchStr);
+          }
         }
         else if (which === KEY_ES) {
           clearResults();
@@ -222,12 +237,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
+          event.preventDefault();
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
             });
           }
         } else if (which === KEY_UP && scope.results) {
+          event.preventDefault();
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
@@ -398,7 +415,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           return;
         }
         if (scope.localData) {
-          getLocalResults(str);
+          scope.$apply(function() {
+            getLocalResults(str);
+          });
         }
         else {
           getRemoteResults(str);
