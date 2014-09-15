@@ -173,6 +173,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         if (which === KEY_UP || which === KEY_DW || which === KEY_EN) {
           event.preventDefault();
         }
+        else if (which === KEY_ES) {
+          clearResults();
+          scope.$apply();
+        }
         else {
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
@@ -203,16 +207,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             event.preventDefault();
             setInputString(scope.searchStr);
           }
-        }
-      }
-
-      function specialKeyHandler(event) {
-        var which = ie8EventNormalizer(event);
-        if (which === KEY_ES) {
-          clearResults();
-          scope.$apply();
-        } else if (which === KEY_BS || which === KEY_DEL) {
-          scope.$apply();
         }
       }
 
@@ -484,7 +478,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       // register events
       inputField.on('keydown', keydownHandler);
-      inputField.on('keyup', specialKeyHandler);
       inputField.on('keyup', keyupHandler);
 
       // set response formatter
