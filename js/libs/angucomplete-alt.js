@@ -12,7 +12,9 @@
 angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', function ($q, $parse, $http, $sce, $timeout) {
   // keyboard events
   var KEY_DW  = 40;
+  var KEY_RT  = 39;
   var KEY_UP  = 38;
+  var KEY_LF  = 37;
   var KEY_ES  = 27;
   var KEY_EN  = 13;
   var KEY_BS  =  8;
@@ -55,11 +57,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       fieldRequired: '@',
       fieldRequiredClass: '@',
       inputChanged: '=',
-      autoMatch: '@'
+      autoMatch: '@',
+      focusOut: '&',
+      focusIn: '&'
     },
     template:
       '<div class="angucomplete-holder">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
@@ -168,8 +172,25 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       function keyupHandler(event) {
         var which = ie8EventNormalizer(event);
-        if (which === KEY_UP || which === KEY_DW || which === KEY_EN) {
+        if (which === KEY_LF || which === KEY_RT) {
+          // do nothing
+          return;
+        }
+
+        if (which === KEY_UP || which === KEY_EN) {
           event.preventDefault();
+        }
+        else if (which === KEY_DW) {
+          event.preventDefault();
+          if (!scope.showDropdown && scope.searchStr.length >= minlength) {
+            initResults();
+            scope.searching = true;
+            scope.searchTimerComplete(scope.searchStr);
+          }
+        }
+        else if (which === KEY_ES) {
+          clearResults();
+          scope.$apply();
         }
         else {
           if (!scope.searchStr || scope.searchStr === '') {
@@ -204,16 +225,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
-      function specialKeyHandler(event) {
-        var which = ie8EventNormalizer(event);
-        if (which === KEY_ES) {
-          clearResults();
-          scope.$apply();
-        } else if (which === KEY_BS || which === KEY_DEL) {
-          scope.$apply();
-        }
-      }
-
       function keydownHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_EN && scope.results) {
@@ -226,12 +237,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
+          event.preventDefault();
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
             });
           }
         } else if (which === KEY_UP && scope.results) {
+          event.preventDefault();
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
@@ -255,11 +268,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        if (scope.remoteUrlErrorCallback) {
-          scope.remoteUrlErrorCallback(errorRes, status, headers, config);
-        }
-        else {
-          console.error('http error');
+        if (status !== 0) {
+          if (scope.remoteUrlErrorCallback) {
+            scope.remoteUrlErrorCallback(errorRes, status, headers, config);
+          }
+          else {
+            if (console && console.error) {
+              console.error('http error');
+            }
+          }
         }
       }
 
@@ -325,11 +342,21 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
+      scope.onFocusHandler = function() {
+        if (scope.focusIn) {
+          scope.focusIn();
+        }
+      };
+
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
         }, BLUR_TIMEOUT);
         cancelHttpRequest();
+
+        if (scope.focusOut) {
+          scope.focusOut();
+        }
       };
 
       scope.resetHideResults = function() {
@@ -388,7 +415,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           return;
         }
         if (scope.localData) {
-          getLocalResults(str);
+          scope.$apply(function() {
+            getLocalResults(str);
+          });
         }
         else {
           getRemoteResults(str);
@@ -468,7 +497,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       // register events
       inputField.on('keydown', keydownHandler);
-      inputField.on('keyup', specialKeyHandler);
       inputField.on('keyup', keyupHandler);
 
       // set response formatter

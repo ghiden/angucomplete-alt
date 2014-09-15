@@ -524,6 +524,11 @@ h1 {
 }
 
 .form-control-small {
+    -webkit-transition: width .5s ease-in-out;
+    -moz-transition: width .5s ease-in-out;
+    -o-transition: width .5s ease-in-out;
+    -ms-transition: width .5s ease-in-out;
+    transition: width .5s ease-in-out;
     width: 72%;
 }
 
@@ -1021,4 +1026,7 @@ form.ng-invalid-autocomplete-required input {
 }
 .result {
   height: 15px;
+}
+.small-input {
+  width: 30%;
 }
