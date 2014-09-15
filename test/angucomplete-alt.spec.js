@@ -292,6 +292,22 @@ describe('angucomplete-alt', function() {
     });
 
     describe('remote API', function() {
+      it('should not do anything when request is canceled', inject(function($httpBackend) {
+        var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" remote-url-error-callback="errorCB" minlength="1"/>');
+        $scope.errorCB = jasmine.createSpy('errorCB');
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var queryTerm = 'john';
+        var results = {data: [{name: 'john'}]};
+        spyOn(element.isolateScope(), 'processResults');
+        $httpBackend.expectGET('names?q=' + queryTerm).respond(0);
+        element.isolateScope().searchTimerComplete(queryTerm);
+        $httpBackend.flush();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+        expect($scope.errorCB).not.toHaveBeenCalled();
+      }));
 
       it('should call $http with given url and param', inject(function($httpBackend) {
         var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" minlength="1"/>');

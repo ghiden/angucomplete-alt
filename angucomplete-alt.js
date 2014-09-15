@@ -257,11 +257,15 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        if (scope.remoteUrlErrorCallback) {
-          scope.remoteUrlErrorCallback(errorRes, status, headers, config);
-        }
-        else {
-          console.error('http error');
+        if (status !== 0) {
+          if (scope.remoteUrlErrorCallback) {
+            scope.remoteUrlErrorCallback(errorRes, status, headers, config);
+          }
+          else {
+            if (console && console.error) {
+              console.error('http error');
+            }
+          }
         }
       }
 
