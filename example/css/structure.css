@@ -1034,3 +1034,16 @@ form.ng-invalid-autocomplete-required input {
 input:disabled {
   background-color: #ddd;
 }
+
+a.page-anchor {
+    color: black;
+    text-decoration: none;
+}
+
+a.page-anchor:hover {
+    color: black;
+}
+
+ul {
+  list-style: none;
+}
