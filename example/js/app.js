@@ -275,5 +275,7 @@ app.controller('MainController', ['$scope', '$http',
       $scope.focusState = 'Out';
       focusInputElem.classList.add('small-input');
     }
+
+    $scope.disableInput = true;
   }
 ]);

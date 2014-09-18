@@ -185,6 +185,21 @@
 
       </div>
 
+      <div class="large-padded-row">
+
+        <h3>Example 13 - Disable input<span class="console">disable <input type="checkbox" ng-model="disableInput"></span></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex13" placeholder="Search countries" pause="100" selected-object="countrySelected13" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" disable-input="disableInput">
+          </div>
+        </div>
+        <div class="result">
+          <div ng-show="countrySelected13">
+            You selected <span class="bold-span">{{countrySelected13.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected13.originalObject.code}}</span>
+          </div>
+        </div>
+
+      </div>
+
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
         <h5>Forked by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>

@@ -1030,3 +1030,7 @@ form.ng-invalid-autocomplete-required input {
 .small-input {
   width: 30%;
 }
+
+input:disabled {
+  background-color: #ddd;
+}
