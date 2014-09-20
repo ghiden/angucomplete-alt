@@ -26,9 +26,27 @@
       A minimal looking autocomplete directive originally developed by Daryl Rowland as <a href="https://github.com/darylrowland/angucomplete">Angucomplete</a>, and I added a few tweaks to it and renamed it to <a href="https://github.com/ghiden/angucomplete-alt">angucomplete-alt</a>.
       </p>
 
+      <div>
+        <ul>
+          <li><a href="#example1">Example 1 - Countries of the World</a></li>
+          <li><a href="#example2">Example 2 - People</a></li>
+          <li><a href="#example3">Example 3 - Clear Result on Selection</a></li>
+          <li><a href="#example4">Example 4 - Override Suggestions with Clear Result</a></li>
+          <li><a href="#example5">Example 5 - Using GitHub Search API</a></li>
+          <li><a href="#example6">Example 6 - Show Matches in Both Name and Description</a></li>
+          <li><a href="#example7">Example 7 - Callback</a></li>
+          <li><a href="#example8">Example 8 - Required</a></li>
+          <li><a href="#example9">Example 9 - Initial Value</a></li>
+          <li><a href="#example10">Example 10 - Track Input Changes</a></li>
+          <li><a href="#example11">Example 11 - Auto Match</a></li>
+          <li><a href="#example12">Example 12 - Track Input Focus</a></li>
+          <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
+        </ul>
+      </div>
+
       <div class="large-padded-row">
 
-        <h3>Example 1 - Countries of the World</h3>
+        <h3><a name="example1" class="page-anchor">Example 1 - Countries of the World</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
@@ -43,7 +61,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 2 - People</h3>
+        <h3><a name="example2" class="page-anchor">Example 2 - People</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
@@ -58,7 +76,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 3 - Clear Result on Selection</h3>
+        <h3><a name="example3" class="page-anchor">Example 3 - Clear Result on Selection</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry3" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" clear-selected="true">
           </div>
@@ -73,7 +91,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 4 - Override Suggestions with clear result</h3>
+        <h3><a name="example4" class="page-anchor">Example 4 - Override Suggestion with Clear Results</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex1" placeholder="Search countries" pause="100" selected-object="selectedCountry4" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" override-suggestions="true" clear-selected="true">
           </div>
@@ -88,7 +106,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 5 - Using Github search API</h3>
+        <h3><a name="example5" class="page-anchor">Example 5 - Using GitHub Search API</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex5" placeholder="Search projects" pause="500" selected-object="selectedProject" remote-url="https://api.github.com/search/repositories?q=" remote-url-data-field="items" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight">
           </div>
@@ -103,7 +121,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 6 - Show Matches in both name and description</h3>
+        <h3><a name="example6" class="page-anchor">Example 6 - Show Matches in Both Name and Description</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex6" placeholder="Search countries" pause="100" selected-object="selectedCountry6" local-data="countries" search-fields="name,code" title-field="name" description-field="code" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
@@ -118,7 +136,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 7 - Callback and show alert</h3>
+        <h3><a name="example7" class="page-anchor">Example 7 - Callback</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex7" placeholder="Search countries" pause="100" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
           </div>
@@ -128,7 +146,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 8 - Required</h3>
+        <h3><a name="example8" class="page-anchor">Example 8 - Required</a></h3>
         <div class="padded-row">
           <form>
             <div angucomplete-alt id="ex8" placeholder="Search countries" pause="100" selected-object="countrySelected8" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true">
@@ -140,7 +158,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 9 - Initial value</h3>
+        <h3><a name="example9" class="page-anchor">Example 9 - Initial Value</a></h3>
         <div class="padded-row">
           <form>
             <div angucomplete-alt id="ex9" placeholder="Search countries" pause="100" selected-object="countrySelected9" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true" initial-value="{{countrySelected9.title}}">
@@ -157,7 +175,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 10 - Input changed callback<span class="console">current input field value: {{ console10 }}</span></h3>
+        <h3><a name="example10" class="page-anchor">Example 10 - Track Input Changes<span class="console">current input field value: {{ console10 }}</span></a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex10" placeholder="Search countries" pause="100" selected-object="countrySelected10" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" input-changed="inputChanged">
           </div>
@@ -167,7 +185,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 11 - Auto select item that has exact match</h3>
+        <h3><a name="example11" class="page-anchor">Example 11 - Auto Match</a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex10" placeholder="Search countries" pause="100" selected-object="countrySelected10" local-data="countries" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight" auto-match="true">
           </div>
@@ -177,7 +195,7 @@
 
       <div class="large-padded-row">
 
-        <h3>Example 12 - Input focus<span class="console">input field focus state: {{ focusState }}</span></h3>
+        <h3><a name="example12" class="page-anchor">Example 12 - Track Input Focus<span class="console">input field focus state: {{ focusState }}</span></a></h3>
         <div class="padded-row">
           <div angucomplete-alt id="ex12" placeholder="Search countries" pause="100" selected-object="countrySelected12" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small small-input" match-class="highlight" focus-in="focusIn()" focus-out="focusOut()">
           </div>
@@ -185,9 +203,24 @@
 
       </div>
 
+      <div class="large-padded-row">
+
+        <h3><a name="example13" class="page-anchor">Example 13 - Disable/Enable Input<span class="console">disable <input type="checkbox" ng-model="disableInput"></span></a></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex13" placeholder="Search countries" pause="100" selected-object="countrySelected13" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" disable-input="disableInput">
+          </div>
+        </div>
+        <div class="result">
+          <div ng-show="countrySelected13">
+            You selected <span class="bold-span">{{countrySelected13.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected13.originalObject.code}}</span>
+          </div>
+        </div>
+
+      </div>
+
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
-        <h5>Forked by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>
+        <h5>Forked and developed by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>
       </div>
 
       <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
