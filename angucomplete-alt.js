@@ -242,6 +242,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
+              if (scope.results[scope.currentIndex].originalObject.hasOwnProperty('name')) {
+                inputField.val(scope.results[scope.currentIndex].originalObject.name);
+              } else {
+                inputField.val(scope.results[scope.currentIndex].originalObject.firstName + " " + scope.results[scope.currentIndex].originalObject.surname);
+              }
             });
           }
         } else if (which === KEY_UP && scope.results) {
@@ -249,6 +254,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
+              if (scope.results[scope.currentIndex].originalObject.hasOwnProperty('name')) {
+                inputField.val(scope.results[scope.currentIndex].originalObject.name);
+              } else {
+                inputField.val(scope.results[scope.currentIndex].originalObject.firstName + " " + scope.results[scope.currentIndex].originalObject.surname);
+              }
+            });
+          } else {
+            clearResults();
+            scope.$apply(function(){
+              inputField.val(scope.searchStr);
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
