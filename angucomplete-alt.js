@@ -242,6 +242,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
+              updateInputField();
             });
           }
         } else if (which === KEY_UP && scope.results) {
@@ -249,6 +250,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
+              updateInputField();
+            });
+          } else {
+            clearResults();
+            scope.$apply(function(){
+              inputField.val(scope.searchStr);
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
@@ -256,6 +263,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.selectResult(scope.results[0]);
             scope.$apply();
           }
+        } else if (which === KEY_ES && scope.results) {
+          inputField.val(scope.searchStr);
         }
       }
 
@@ -341,6 +350,17 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             return;
           }
         }
+      }
+
+      function updateInputField(){
+        var inputValue = '',
+          titleFields = scope.titleField.split(',');
+
+        for (var s = 0; s < titleFields.length; s++) {
+          inputValue += scope.results[scope.currentIndex].originalObject[titleFields[s]] + ' ';
+        }
+
+        inputField.val(inputValue.trim());
       }
 
       scope.onFocusHandler = function() {

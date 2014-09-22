@@ -845,6 +845,71 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeyup);
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
+
+    it('should update input field when up/down arrow key is pressed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName,middleName,surname" title-field="firstName,surname" minlength="1"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {firstName: 'Emma', middleName: 'C.D.', surname: 'Watson'},
+        {firstName: 'Elvis', middleName: 'A.', surname: 'Presly'},
+        {firstName: 'John', middleName: 'A.', surname: 'Elway'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeydown = $.Event('keydown');
+      var eKeyup = $.Event('keyup');
+
+      inputField.val('e');
+      inputField.trigger('input');
+      eKeyup.which = 101;// letter e
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+
+      // Down arrow 2 times
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      inputField.trigger(eKeydown);
+      expect(inputField.val()).toEqual('Elvis Presly');
+
+      // Up arrow 1 time
+      eKeydown.which = KEY_UP;
+      inputField.trigger(eKeydown);
+      expect(inputField.val()).toEqual('Emma Watson');
+    });
+
+    it('should reset input field when ESC key is pressed after up/down arrow key is pressed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName,middleName,surname" title-field="firstName,surname" minlength="1"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {firstName: 'Emma', middleName: 'C.D.', surname: 'Watson'},
+        {firstName: 'Elvis', middleName: 'A.', surname: 'Presly'},
+        {firstName: 'John', middleName: 'A.', surname: 'Elway'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeydown = $.Event('keydown');
+      var eKeyup = $.Event('keyup');
+
+      inputField.val('e');
+      inputField.trigger('input');
+      eKeyup.which = 101;// letter e
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+
+      // Down arrow 2 times
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      inputField.trigger(eKeydown);
+
+      // Up arrow 1 time
+      eKeydown.which = KEY_ES;
+      inputField.trigger(eKeydown);
+      expect(inputField.val()).toEqual('e');
+    });
   });
 
 });
