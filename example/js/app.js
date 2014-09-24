@@ -260,6 +260,15 @@ app.controller('MainController', ['$scope', '$http',
 
     $scope.countrySelected9 = {title: 'Chile'};
 
+    $scope.numbers = [
+      {number: 'one'},
+      {number: 1},
+      {number: 1.1},
+      {number: true},
+      {number: false},
+      {number: null}
+    ];
+
     $scope.inputChanged = function(str) {
       $scope.console10 = str;
     }

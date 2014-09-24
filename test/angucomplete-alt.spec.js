@@ -163,6 +163,40 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect($scope.selectedCountry).toBeUndefined();
     });
+
+    it('should handle a numeric value as a string one', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search number" selected-object="selectedNumber" local-data="numbers" search-fields="number" title-field="number" minlength="1"/>');
+      $scope.selectedNumber = undefined;
+      $scope.numbers = [
+        {number: 'one'},
+        {number: 1},
+        {number: 1.1},
+        {number: true},
+        {number: false},
+        {number: null}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      var eKeydown = $.Event('keydown');
+
+      inputField.val('1');
+      inputField.trigger('input');
+
+      eKeyup.which = 49; // letter: 1
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(2);
+
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect($scope.selectedNumber.originalObject).toEqual({number: 1});
+    });
   });
 
   describe('Set results', function() {
