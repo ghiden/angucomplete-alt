@@ -139,10 +139,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       function extractValue(obj, key) {
         var keys, result;
+
         if (key) {
-          keys= key.split('.');
           result = obj;
-          keys.forEach(function(k) { result = result[k]; });
+          keys= key.split('.');
+          keys.forEach(function(k) {
+            result = result[k];
+            if (!isNaN(result)) {
+              result = String(result);
+            }
+          });
         }
         else {
           result = obj;
