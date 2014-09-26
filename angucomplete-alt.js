@@ -65,10 +65,10 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
     template:
       '<div class="angucomplete-holder">' +
       '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
-      '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown">' +
+      '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
-      '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
+      '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
       '      <div ng-if="imageField" class="angucomplete-image-holder">' +
       '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
       '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
@@ -89,6 +89,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       var responseFormatter;
       var validState = null;
       var httpCanceller = null;
+      var dd = elem[0].querySelector('.angucomplete-dropdown');
+      var isScrollOn = false;
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -226,8 +228,36 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
+      function dropdownRowOffsetHeight(row) {
+        var css = getComputedStyle(row);
+        return row.offsetHeight +
+          parseInt(css.marginTop, 10) + parseInt(css.marginBottom, 10);
+      }
+
+      function dropdownHeight() {
+        return dd.getBoundingClientRect().top +
+          parseInt(getComputedStyle(dd).maxHeight, 10);
+      }
+
+      function dropdownRow() {
+        return elem[0].querySelectorAll('.angucomplete-row')[scope.currentIndex];
+      }
+
+      function dropdownRowTop() {
+        return dropdownRow().getBoundingClientRect().top -
+          (dd.getBoundingClientRect().top +
+           parseInt(getComputedStyle(dd).paddingTop, 10));
+      }
+
+      function dropdownScrollTopTo(offset) {
+        dd.scrollTop = dd.scrollTop + offset;
+      }
+
       function keydownHandler(event) {
         var which = ie8EventNormalizer(event);
+        var row = null;
+        var rowTop = null;
+
         if (which === KEY_EN && scope.results) {
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             event.preventDefault();
@@ -243,6 +273,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.$apply(function() {
               scope.currentIndex ++;
             });
+
+            if (isScrollOn) {
+              row = dropdownRow();
+              if (dropdownHeight() < row.getBoundingClientRect().bottom) {
+                dropdownScrollTopTo(dropdownRowOffsetHeight(row));
+              }
+            }
           }
         } else if (which === KEY_UP && scope.results) {
           event.preventDefault();
@@ -250,6 +287,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.$apply(function() {
               scope.currentIndex --;
             });
+
+            if (isScrollOn) {
+              rowTop = dropdownRowTop();
+              if (rowTop < 0) {
+                dropdownScrollTopTo(rowTop - 1);
+              }
+            }
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
           if (scope.currentIndex === -1 && scope.showDropdown) {
@@ -305,6 +349,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function clearResults() {
         scope.showDropdown = false;
         scope.results = [];
+        if (dd) {
+          dd.scrollTop = 0;
+        }
       }
 
       function initResults() {
@@ -503,6 +550,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
+
+      // set isScrollOn
+      $timeout(function() {
+        var css = getComputedStyle(dd);
+        isScrollOn = css.maxHeight && css.overflowY === 'auto';
+      });
     }
   };
 }]);
