@@ -191,7 +191,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
         else if (which === KEY_ES) {
           clearResults();
-          scope.$apply();
+          scope.$apply(function() {
+            inputField.val(scope.searchStr);
+          });
         }
         else {
           if (!scope.searchStr || scope.searchStr === '') {
@@ -226,6 +228,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
+      function updateInputField(){
+        var current = scope.results[scope.currentIndex];
+        if (scope.matchClass) {
+          inputField.val(extractTitle(current.originalObject));
+        }
+        else {
+          inputField.val(current.title);
+        }
+      }
+
       function keydownHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_EN && scope.results) {
@@ -242,6 +254,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
+              updateInputField();
             });
           }
         } else if (which === KEY_UP && scope.results) {
@@ -249,6 +262,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
+              updateInputField();
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
