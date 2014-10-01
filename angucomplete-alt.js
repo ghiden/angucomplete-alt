@@ -265,6 +265,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
               updateInputField();
             });
           }
+          else if (scope.currentIndex === 0) {
+            scope.$apply(function() {
+              scope.currentIndex = -1;
+              inputField.val(scope.searchStr);
+            });
+          }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
           if (scope.currentIndex === -1 && scope.showDropdown) {
             scope.selectResult(scope.results[0]);
