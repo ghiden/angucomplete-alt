@@ -186,12 +186,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if (!scope.showDropdown && scope.searchStr.length >= minlength) {
             initResults();
             scope.searching = true;
-            scope.searchTimerComplete(scope.searchStr);
+            searchTimerComplete(scope.searchStr);
           }
         }
         else if (which === KEY_ES) {
           clearResults();
-          scope.$apply();
+          scope.$apply(function() {
+            inputField.val(scope.searchStr);
+          });
         }
         else {
           if (!scope.searchStr || scope.searchStr === '') {
@@ -206,7 +208,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             scope.searching = true;
 
             searchTimer = $timeout(function() {
-              scope.searchTimerComplete(scope.searchStr);
+              searchTimerComplete(scope.searchStr);
             }, scope.pause);
           }
 
@@ -226,6 +228,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
+      function updateInputField(){
+        var current = scope.results[scope.currentIndex];
+        if (scope.matchClass) {
+          inputField.val(extractTitle(current.originalObject));
+        }
+        else {
+          inputField.val(current.title);
+        }
+      }
+
       function keydownHandler(event) {
         var which = ie8EventNormalizer(event);
         if (which === KEY_EN && scope.results) {
@@ -242,6 +254,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if ((scope.currentIndex + 1) < scope.results.length) {
             scope.$apply(function() {
               scope.currentIndex ++;
+              updateInputField();
             });
           }
         } else if (which === KEY_UP && scope.results) {
@@ -249,6 +262,13 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
+              updateInputField();
+            });
+          }
+          else if (scope.currentIndex === 0) {
+            scope.$apply(function() {
+              scope.currentIndex = -1;
+              inputField.val(scope.searchStr);
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
@@ -262,7 +282,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function httpSuccessCallbackGen(str) {
         return function(responseData, status, headers, config) {
           scope.searching = false;
-          scope.processResults(
+          processResults(
             extractValue(responseFormatter(responseData), scope.remoteUrlDataField),
             str);
         };
@@ -314,7 +334,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       }
 
       function getLocalResults(str) {
-        var i, match, s,
+        var i, match, s, value,
             searchFields = scope.searchFields.split(','),
             matches = [];
 
@@ -322,7 +342,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           match = false;
 
           for (s = 0; s < searchFields.length; s++) {
-            match = match || (scope.localData[i][searchFields[s]].toLowerCase().indexOf(str.toLowerCase()) >= 0);
+            value = extractValue(scope.localData[i], searchFields[s]);
+            match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
           }
 
           if (match) {
@@ -331,7 +352,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
 
         scope.searching = false;
-        scope.processResults(matches, str);
+        processResults(matches, str);
       }
 
       function checkExactMatch(result, obj, str){
@@ -343,30 +364,22 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       }
 
-      scope.onFocusHandler = function() {
-        if (scope.focusIn) {
-          scope.focusIn();
+      function searchTimerComplete(str) {
+        // Begin the search
+        if (str.length < minlength) {
+          return;
         }
-      };
-
-      scope.hideResults = function() {
-        hideTimer = $timeout(function() {
-          scope.showDropdown = false;
-        }, BLUR_TIMEOUT);
-        cancelHttpRequest();
-
-        if (scope.focusOut) {
-          scope.focusOut();
+        if (scope.localData) {
+          scope.$apply(function() {
+            getLocalResults(str);
+          });
         }
-      };
-
-      scope.resetHideResults = function() {
-        if (hideTimer) {
-          $timeout.cancel(hideTimer);
+        else {
+          getRemoteResults(str);
         }
-      };
+      }
 
-      scope.processResults = function(responseData, str) {
+      function processResults(responseData, str) {
         var i, description, image, text, formattedText, formattedDesc;
 
         if (responseData && responseData.length > 0) {
@@ -408,20 +421,28 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         } else {
           scope.results = [];
         }
+      }
+
+      scope.onFocusHandler = function() {
+        if (scope.focusIn) {
+          scope.focusIn();
+        }
       };
 
-      scope.searchTimerComplete = function(str) {
-        // Begin the search
-        if (str.length < minlength) {
-          return;
+      scope.hideResults = function() {
+        hideTimer = $timeout(function() {
+          scope.showDropdown = false;
+        }, BLUR_TIMEOUT);
+        cancelHttpRequest();
+
+        if (scope.focusOut) {
+          scope.focusOut();
         }
-        if (scope.localData) {
-          scope.$apply(function() {
-            getLocalResults(str);
-          });
-        }
-        else {
-          getRemoteResults(str);
+      };
+
+      scope.resetHideResults = function() {
+        if (hideTimer) {
+          $timeout.cancel(hideTimer);
         }
       };
 
