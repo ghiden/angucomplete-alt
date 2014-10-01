@@ -35,4 +35,6 @@
 ### [@YasuhiroYoshida: Yasuhiro Yoshida](https://github.com/YasuhiroYoshida)
 
 * Fix pressing enter without selecting an item results in "No results found" message #31
+* Implement 'update input field' #42
+
 
