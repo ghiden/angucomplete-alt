@@ -222,7 +222,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions) {
           if (!(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-            event.preventDefault();
+            if (event !== undefined) {
+                event.preventDefault();
+            }
             setInputString(scope.searchStr);
           }
         }
@@ -432,6 +434,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
+          handleOverrideSuggestions();
         }, BLUR_TIMEOUT);
         cancelHttpRequest();
 
