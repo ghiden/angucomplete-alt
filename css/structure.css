@@ -1047,3 +1047,8 @@ a.page-anchor:hover {
 ul {
   list-style: none;
 }
+
+#ex1_dropdown {
+  overflow-y: auto;
+  max-height: 150px;
+}
