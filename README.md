@@ -34,6 +34,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Auto match
 * Add callbacks for tracking focus in/out.
 * Enable/disable input field
+* Show scrollbar. See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -110,6 +111,18 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
 
+### Scrollbar
+
+To show scrollbar, you need to set the following css style to angucomplete-dropdown class, and then the directive automatically picks it up.
+```css
+.angucomplete-dropdown {
+    ...
+    overflow-y: auto;
+    max-height: 200px; // your preference
+    ...
+}
+```
+See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
 
 ### Contributors
 

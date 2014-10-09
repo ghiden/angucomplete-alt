@@ -651,12 +651,12 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
 
       inputField.blur();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(0);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
     });
 
     it('should cancel hiding the dropdown if it happens within pause period', function() {
@@ -678,13 +678,13 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
 
       inputField.blur();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
       inputField.focus();
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(0);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
     });
   });
 
@@ -737,14 +737,14 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
       expect($scope.selectedCountry.originalObject).toEqual('abc');
       inputField.blur();
-      expect(element.find('#ex1_dropdown').length).toBe(0);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
     });
 
     it('should override suggestions when enter is pressed but no suggestion is selected also incorporate with clear-selected if it is set', function() {
@@ -766,14 +766,14 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
       expect($scope.selectedCountry.originalObject).toEqual('abc');
       inputField.blur();
-      expect(element.find('#ex1_dropdown').length).toBe(0);
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
 
       expect(element.isolateScope().searchStr).toBe(null);
     });
