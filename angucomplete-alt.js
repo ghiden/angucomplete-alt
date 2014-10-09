@@ -281,7 +281,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
           event.preventDefault();
-          if ((scope.currentIndex + 1) < scope.results.length) {
+          if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
             scope.$apply(function() {
               scope.currentIndex ++;
               updateInputField();
