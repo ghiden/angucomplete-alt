@@ -185,7 +185,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
         else if (which === KEY_DW) {
           event.preventDefault();
-          if (!scope.showDropdown && scope.searchStr.length >= minlength) {
+          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
             initResults();
             scope.searching = true;
             searchTimerComplete(scope.searchStr);
