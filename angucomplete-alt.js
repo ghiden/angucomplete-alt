@@ -99,6 +99,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         scope.searchStr = scope.initialValue;
       });
 
+      scope.$on('angucomplete-alt:clearSearch', function () {
+        scope.searchStr = null;
+        clearResults();
+      });
+
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
         return event.which ? event.which : event.keyCode;
