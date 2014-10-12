@@ -11,6 +11,10 @@
 
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
+### [@mrdevin: David Hartman](https://github.com/mrdevin)
+
+* Set the form field to valid when the initialValue is added #59
+
 ### [@foozee](https://github.com/foozee)
 
 * Watch initial value #26
