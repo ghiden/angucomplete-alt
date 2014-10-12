@@ -95,9 +95,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = scope.initialValue;
-      scope.$watch('initialValue', function(){
+      scope.$watch('initialValue', function(newval, oldval){
         scope.searchStr = scope.initialValue;
-        handleRequired(true);
+        if (newval && newval.length > 0) {
+          handleRequired(true);
+        }
       });
 
       // for IE8 quirkiness about event.which

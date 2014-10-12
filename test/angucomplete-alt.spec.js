@@ -816,6 +816,41 @@ describe('angucomplete-alt', function() {
     });
   });
 
+  describe('initial value', function() {
+    it('should set initial value', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="{{initialValue}}"/>');
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      $scope.initialValue = 'Japan';
+      $scope.$digest();
+
+      expect(element.isolateScope().searchStr).toBe('Japan');
+    });
+
+    it('should set validity to true', function() {
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="{{initialValue}}" field-required="true"/></form>');
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      $scope.initialValue = 'Japan';
+      $scope.$digest();
+
+      expect(element.find('#ex1').isolateScope().searchStr).toBe('Japan');
+      expect(element.hasClass('ng-valid')).toBe(true);
+    });
+  });
+
   describe('require field', function() {
     it('should add a class ng-invalid-autocomplete-required when initialized', function() {
       var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
