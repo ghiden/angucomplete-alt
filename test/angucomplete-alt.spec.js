@@ -690,7 +690,7 @@ describe('angucomplete-alt', function() {
 
   describe('TAB for selecting', function() {
     it('should select the first suggestion when TAB is pressed', function() {
-      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true"/>');
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       $scope.selectedCountry = undefined;
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
@@ -714,6 +714,34 @@ describe('angucomplete-alt', function() {
       eKeydown.which = KEY_TAB;
       inputField.trigger(eKeydown);
       expect($scope.selectedCountry.originalObject).toEqual($scope.countries[0]);
+    });
+
+    it('should not select the first suggestion when TAB is pressed when override-suggestions is set', function() {
+      var element = angular.element('<form><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true"/></form>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_TAB;
+      inputField.trigger(eKeydown);
+      inputField.blur();
+      expect($scope.selectedCountry.originalObject).toEqual('a');
     });
   });
 

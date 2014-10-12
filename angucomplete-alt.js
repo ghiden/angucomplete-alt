@@ -220,13 +220,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       }
 
       function handleOverrideSuggestions(event) {
-        if (scope.overrideSuggestions) {
-          if (!(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-            if (event !== undefined) {
-                event.preventDefault();
-            }
-            setInputString(scope.searchStr);
+        if (scope.overrideSuggestions &&
+            !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
+          if (event) {
+            event.preventDefault();
           }
+          setInputString(scope.searchStr);
         }
       }
 
@@ -274,7 +273,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
             });
           }
         } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
-          if (scope.currentIndex === -1 && scope.showDropdown) {
+          if (scope.currentIndex === -1 && scope.showDropdown && !scope.overrideSuggestions) {
             scope.selectResult(scope.results[0]);
             scope.$apply();
           }
@@ -434,9 +433,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
-          handleOverrideSuggestions(event);
         }, BLUR_TIMEOUT);
         cancelHttpRequest();
+        handleOverrideSuggestions();
 
         if (scope.focusOut) {
           scope.focusOut();
