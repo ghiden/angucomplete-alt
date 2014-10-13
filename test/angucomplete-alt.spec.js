@@ -163,6 +163,31 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect($scope.selectedCountry).toBeUndefined();
     });
+
+    describe('incomplete local data', function() {
+      it('should not throw errors', function() {
+        var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+        $scope.countrySelected = null;
+        $scope.countries = [
+          {name: 'Afghanistan', code: 'AF'},
+          {code: 'AX'},
+          {name: 'Albania'}
+        ];
+        $compile(element)($scope);
+        $scope.$digest();
+
+        var inputField = element.find('#ex1_value');
+        var eKeyup = $.Event('keyup');
+        eKeyup.which = 97; // letter: a
+
+        inputField.val('a');
+        inputField.trigger('input');
+        inputField.trigger(eKeyup);
+        expect(function() {
+          $timeout.flush();
+        }).not.toThrow();
+      });
+    });
   });
 
   describe('Set results', function() {
