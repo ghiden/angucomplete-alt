@@ -102,6 +102,19 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       });
 
+      scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
+        if (!elementId) {
+          scope.searchStr = null;
+          clearResults();
+        }
+        else { // id is given
+          if (scope.id === elementId) {
+            scope.searchStr = null;
+            clearResults();
+          }
+        }
+      });
+
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
         return event.which ? event.which : event.keyCode;

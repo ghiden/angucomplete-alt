@@ -19,6 +19,10 @@
 
 * Watch initial value #26
 
+### [@Leocrest](https://github.com/Leocrest)
+
+* Clear input #61
+
 ### [@nekcih](https://github.com/nekcih)
 
 * New callback handler, response translator, better template code format, and css fix #6
