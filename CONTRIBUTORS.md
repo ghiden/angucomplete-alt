@@ -11,10 +11,6 @@
 
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
-### [@mrdevin: David Hartman](https://github.com/mrdevin)
-
-* Set the form field to valid when the initialValue is added #59
-
 ### [@foozee](https://github.com/foozee)
 
 * Watch initial value #26
@@ -23,10 +19,18 @@
 
 * Clear input #61
 
+### [@mrdevin: David Hartman](https://github.com/mrdevin)
+
+* Set the form field to valid when the initialValue is added #59
+
 ### [@nekcih](https://github.com/nekcih)
 
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
+
+### [@SpaceK33z: Kees Kluskens](https://github.com/SpaceK33z)
+
+* Bug fix #62
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 
