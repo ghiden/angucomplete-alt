@@ -392,7 +392,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           match = false;
 
           for (s = 0; s < searchFields.length; s++) {
-            value = extractValue(scope.localData[i], searchFields[s]);
+            value = extractValue(scope.localData[i], searchFields[s]) || '';
             match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
           }
 
