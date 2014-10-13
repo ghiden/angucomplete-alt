@@ -35,6 +35,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Add callbacks for tracking focus in/out.
 * Enable/disable input field
 * Show scrollbar. See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
+* Clear input by sending $broadcast from parent scope. Thanks to @Leocrest for #61.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -123,6 +124,18 @@ To show scrollbar, you need to set the following css style to angucomplete-dropd
 }
 ```
 See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
+
+### Clear Input
+
+To clear all angucomplete-alt input fields, send this message
+```js
+$scope.$broadcast('angucomplete-alt:clearInput');
+```
+
+To clear an angucomplete-alt input field, send this message with id of the directive. For example, the id of the directive is 'autocomplete-1'.
+```js
+$scope.$broadcast('angucomplete-alt:clearInput', 'autocomplete-1');
+```
 
 ### Contributors
 
