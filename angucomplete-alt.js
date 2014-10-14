@@ -94,9 +94,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       scope.currentIndex = null;
       scope.searching = false;
-      scope.searchStr = scope.initialValue;
+      scope.searchStr = scope.initialValue || "";
       scope.$watch('initialValue', function(newval, oldval){
-        scope.searchStr = scope.initialValue;
+        scope.searchStr = scope.initialValue || "";
         if (newval && newval.length > 0) {
           handleRequired(true);
         }
@@ -201,7 +201,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
         else if (which === KEY_DW) {
           event.preventDefault();
-          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
+          if (!scope.showDropdown && scope.searchStr.length >= minlength) {
             initResults();
             scope.searching = true;
             searchTimerComplete(scope.searchStr);
