@@ -104,12 +104,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
         if (!elementId) {
-          scope.searchStr = null;
+          scope.searchStr = "";
           clearResults();
         }
         else { // id is given
           if (scope.id === elementId) {
-            scope.searchStr = null;
+            scope.searchStr = "";
             clearResults();
           }
         }
@@ -141,7 +141,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         callOrAssign({originalObject: str});
 
         if (scope.clearSelected) {
-          scope.searchStr = null;
+          scope.searchStr = "";
         }
         clearResults();
       }
@@ -521,7 +521,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
 
         if (scope.clearSelected) {
-          scope.searchStr = null;
+          scope.searchStr = "";
         }
         else {
           scope.searchStr = result.title;
