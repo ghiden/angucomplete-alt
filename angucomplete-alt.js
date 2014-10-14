@@ -115,6 +115,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       });
 
+      scope.$on('angucomplete-alt:focusInput', function (event, elementId) {
+        if (scope.id === elementId) {
+          $timeout(function () {
+            inputField[0].focus();
+          }, 0, false);
+        }
+      });
+
       // for IE8 quirkiness about event.which
       function ie8EventNormalizer(event) {
         return event.which ? event.which : event.keyCode;

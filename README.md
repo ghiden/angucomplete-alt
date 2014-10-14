@@ -137,6 +137,13 @@ To clear an angucomplete-alt input field, send this message with id of the direc
 $scope.$broadcast('angucomplete-alt:clearInput', 'autocomplete-1');
 ```
 
+### Focus Input
+
+To focus an angucomplete-alt input field, send this message with id of the directive. For example, the id of the directive is 'autocomplete-1'.
+```js
+$scope.$broadcast('angucomplete-alt:focusInput', 'autocomplete-1');
+```
+
 ### Contributors
 
 Here is the list of [contributors](CONTRIBUTORS.md).  
