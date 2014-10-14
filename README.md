@@ -33,6 +33,9 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
 * Auto match
 * Add callbacks for tracking focus in/out.
+* Enable/disable input field
+* Show scrollbar. See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
+* Clear input by sending $broadcast from parent scope. Thanks to @Leocrest for #61.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -79,34 +82,60 @@ var app = angular.module('app', ["angucomplete-alt"]);
 ### Description of attributes
 | Attribute        | Description           | Required | Example  |
 | :------------- |:-------------| :-----:| :-----|
-| id | A unique ID for the field | Yes | members |
-| placeholder | Placeholder text for the search field | No | Search members |
-| pause | The time to wait (in milliseconds) before searching when the user enters new characters | No | 400 |
-| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. | Yes | selectedObject or objectSelectedCallback |
-| remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request | No | http://myserver.com/api/users/find?searchstr= |
-| remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. | No | results |
-| title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined) | Yes | firstName,lastName |
-| description-field | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list | No | twitterUsername |
-| image-field | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list | No | pic |
-| minlength | The minimum length of string required before searching | No | 3 |
-| input-class | The classes to use for styling the input box | No | form-control |
-| match-class | If it is assigned, matching part of title is highlighted with given class style | No | highlight |
-| local-data | The local data variable to use from your controller. Should be an array of objects | No | countriesList |
-| search-fields | The fields from your local data to search on (comma separate them) | No | title,description |
-| remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object.| No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
+| id | A unique ID for the field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | members |
+| placeholder | Placeholder text for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | Search members |
+| pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 400 |
+| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
+| remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | http://myserver.com/api/users/find?searchstr= |
+| remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | results |
+| title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined). If you want to access nested field, use dot to connect attributes (e.g. name.first). [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | firstName,lastName |
+| description-field | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example6) | No | twitterUsername |
+| image-field | The name of the field in the JSON objects returned back that should be used for displaying an image in the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example2) | No | pic |
+| minlength | The minimum length of string required before searching. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 3 |
+| input-class | The classes to use for styling the input box. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | form-control |
+| match-class | If it is assigned, matching part of title is highlighted with given class style. [example](http://ghiden.github.io/angucomplete-alt/#example6) | No | highlight |
+| local-data | The local data variable to use from your controller. Should be an array of objects. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | countriesList |
+| search-fields | The fields from your local data to search on (comma separate them). Each field can contain dots for accessing nested attribute. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | title,description |
+| remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | remote-url-response-formatter | A function on the scope that will modify raw response from remote API before it is rendered in the drop-down.  Useful for adding data that may not be available from the API.  The specified function must return the object in the format that angucomplete understands. | No | addImageUrlToObject |
 | remote-url-error-callback | A callback funciton to handle error response from $http.get | No | httpErrorCallbackFn |
-| clear-selected | To clear out input field upon selecting an item, set this attribute to true. | No | true |
-| override-suggestions | To override suggestions and set the value in input field to selectedObject | No | true |
-| field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required" | No | true |
+| clear-selected | To clear out input field upon selecting an item, set this attribute to true. [example](http://ghiden.github.io/angucomplete-alt/#example3) | No | true |
+| override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](http://ghiden.github.io/angucomplete-alt/#example4) | No | true |
+| field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required". [example](http://ghiden.github.io/angucomplete-alt/#example8) | No | true |
 | field-required-class | Set custom class name for required. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
-| initial-value | Initial value for internal ng-model. Take a look at example 9 on the [demo page](http://ghiden.github.io/angucomplete-alt) | No | "some string" |
-| input-changed | A callback function that is called when input field is changed. |  No | inputChangedFn |
-| auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. |  No | true |
-| focus-in | A function or expression to be called when input field gets focused. Take a look at example 12 on the [demo page](http://ghiden.github.io/angucomplete-alt) |  No | focusIn() |
-| focus-out | A function or expression to be called when input field lose focus. Take a look at example 12 on the [demo page](http://ghiden.github.io/angucomplete-alt) |  No | focusOut() |
+| initial-value | Initial value for internal ng-model. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | "some string" |
+| input-changed | A callback function that is called when input field is changed. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
+| auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](http://ghiden.github.io/angucomplete-alt/#example11) |  No | true |
+| focus-in | A function or expression to be called when input field gets focused. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusIn() |
+| focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
+| disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
+
+### Scrollbar
+
+To show scrollbar, you need to set the following css style to angucomplete-dropdown class, and then the directive automatically picks it up.
+```css
+.angucomplete-dropdown {
+    ...
+    overflow-y: auto;
+    max-height: 200px; // your preference
+    ...
+}
+```
+See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
+
+### Clear Input
+
+To clear all angucomplete-alt input fields, send this message
+```js
+$scope.$broadcast('angucomplete-alt:clearInput');
+```
+
+To clear an angucomplete-alt input field, send this message with id of the directive. For example, the id of the directive is 'autocomplete-1'.
+```js
+$scope.$broadcast('angucomplete-alt:clearInput', 'autocomplete-1');
+```
 
 ### Contributors
 

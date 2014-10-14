@@ -35,7 +35,7 @@
     clear: both;
 }
 
-.angucomplete-selected-row, .angucomplete-row:hover {
+.angucomplete-selected-row {
     background-color: lightblue;
     color: #ffffff;
 }

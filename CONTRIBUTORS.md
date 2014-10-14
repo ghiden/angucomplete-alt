@@ -15,10 +15,22 @@
 
 * Watch initial value #26
 
+### [@Leocrest](https://github.com/Leocrest)
+
+* Clear input #61
+
+### [@mrdevin: David Hartman](https://github.com/mrdevin)
+
+* Set the form field to valid when the initialValue is added #59
+
 ### [@nekcih](https://github.com/nekcih)
 
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
+
+### [@SpaceK33z: Kees Kluskens](https://github.com/SpaceK33z)
+
+* Bug fix #62
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 
@@ -35,4 +47,6 @@
 ### [@YasuhiroYoshida: Yasuhiro Yoshida](https://github.com/YasuhiroYoshida)
 
 * Fix pressing enter without selecting an item results in "No results found" message #31
+* Implement 'update input field' #42
+
 
