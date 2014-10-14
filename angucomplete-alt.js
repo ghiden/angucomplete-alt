@@ -60,7 +60,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       inputChanged: '=',
       autoMatch: '@',
       focusOut: '&',
-      focusIn: '&'
+      focusIn: '&',
+      searchOnFocus: '@'
     },
     template:
       '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
@@ -497,6 +498,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.onFocusHandler = function() {
         if (scope.focusIn) {
           scope.focusIn();
+        }
+
+        if (scope.searchOnFocus) {
+          $timeout(function () {
+            initResults();
+            scope.searching = true;
+            searchTimerComplete(scope.searchStr);
+          }, 0, false);
         }
       };
 
