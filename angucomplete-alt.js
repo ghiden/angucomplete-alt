@@ -464,7 +464,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
             if (scope.autoMatch) {
               checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description}, scope.searchStr);
+                  {title: text, desc: description || ''}, scope.searchStr);
             }
           }
 
