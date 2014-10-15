@@ -64,7 +64,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
     },
     template:
       '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
@@ -91,6 +91,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       var httpCanceller = null;
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
+      var mousedownOn = null;
+
+      elem.on('mousedown', function(event) {
+        mousedownOn = event.target.id;
+      });
 
       scope.currentIndex = null;
       scope.searching = false;
@@ -492,14 +497,22 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       };
 
-      scope.hideResults = function() {
-        hideTimer = $timeout(function() {
-          scope.showDropdown = false;
-        }, BLUR_TIMEOUT);
-        cancelHttpRequest();
+      scope.hideResults = function(event) {
+        if (mousedownOn === scope.id + '_dropdown') {
+          mousedownOn = null;
+        }
+        else {
+          hideTimer = $timeout(function() {
+            clearResults();
+            scope.$apply(function() {
+              inputField.val(scope.searchStr);
+            });
+          }, BLUR_TIMEOUT);
+          cancelHttpRequest();
 
-        if (scope.focusOut) {
-          scope.focusOut();
+          if (scope.focusOut) {
+            scope.focusOut();
+          }
         }
       };
 
