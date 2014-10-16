@@ -990,6 +990,29 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect($scope.selectedPerson.originalObject).toEqual($scope.people[2]);
     });
+
+    it('should not throw an error when description is not defined', function() {
+      var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name,email" title-field="name" description-field="email" minlength="1"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Elvis Presly'},
+        {name: 'John Elway', email: 'elway@nfl.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var y = $.Event('keyup');
+      y.which = 121;
+
+      inputField.val('e');
+      inputField.trigger('input');
+      inputField.trigger(y);
+      expect(function() {
+        $timeout.flush();
+      }).not.toThrow();
+    });
   });
 
   describe('key event handling', function() {
