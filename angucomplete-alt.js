@@ -336,11 +336,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
               inputField.val(scope.searchStr);
             });
           }
-        } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
-          if (scope.currentIndex === -1 && scope.showDropdown) {
+        } else if (which === KEY_TAB && scope.results && scope.results.length > 0 && scope.showDropdown) {
+          // selecting the first result
+          if (scope.currentIndex === -1) {
             scope.selectResult(scope.results[0]);
-            scope.$apply();
           }
+          else {
+            // scope.currentIndex >= 0 
+            scope.selectResult(scope.results[scope.currentIndex]);
+          }
+          scope.$apply();
         }
       }
 
