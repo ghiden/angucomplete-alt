@@ -741,6 +741,7 @@ describe('angucomplete-alt', function() {
       eKeydown.which = KEY_TAB;
       inputField.trigger(eKeydown);
       inputField.blur();
+      $timeout.flush();
       expect($scope.selectedCountry.originalObject).toEqual('a');
     });
   });

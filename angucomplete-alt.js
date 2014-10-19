@@ -433,9 +433,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.hideResults = function() {
         hideTimer = $timeout(function() {
           scope.showDropdown = false;
+          handleOverrideSuggestions();
         }, BLUR_TIMEOUT);
         cancelHttpRequest();
-        handleOverrideSuggestions();
 
         if (scope.focusOut) {
           scope.focusOut();
@@ -453,6 +453,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       };
 
       scope.selectResult = function(result) {
+        $timeout.cancel(hideTimer);
         // Restore original values
         if (scope.matchClass) {
           result.title = extractTitle(result.originalObject);
