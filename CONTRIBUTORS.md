@@ -15,6 +15,10 @@
 
 * Watch initial value #26
 
+### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
+
+* Add css to bower.json main #68
+
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
