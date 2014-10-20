@@ -1281,4 +1281,43 @@ describe('angucomplete-alt', function() {
       expect(inputField.val()).toEqual('e');
     });
   });
+
+  describe('Focus input', function() {
+    it('should focus input field', inject(function($document) {
+      var element = angular.element(
+        '<form name="name">' +
+        '  <div angucomplete-alt id="ex1" focus-in="onInput1Focus()" placeholder="Search people" selected-object="selectedPerson1" local-data="people" search-fields="firstName" title-field="firstName" minlength="1" />' +
+        '  <div angucomplete-alt id="ex2" focus-in="onInput2Focus()" placeholder="Search people" selected-object="selectedPerson2" local-data="people" search-fields="firstName" title-field="firstName" minlength="1"/>' +
+        '</form>'
+      );
+      angular.element('body').append(element);
+
+      $scope.focusInput = function(id) {
+        $scope.$broadcast('angucomplete-alt:focusInput', id);
+      };
+
+      $scope.onInput1Focus = function () { return true; };
+      $scope.onInput2Focus = function () { return true; };
+      spyOn($scope, 'onInput1Focus');
+      spyOn($scope, 'onInput2Focus');
+
+      
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField1 = element.find('#ex1_value');
+      var inputField2 = element.find('#ex2_value');
+
+      $scope.focusInput('ex1');
+      $timeout.flush();
+
+      expect($scope.onInput1Focus).toHaveBeenCalled();
+
+      $scope.focusInput('ex2');
+      $timeout.flush();
+
+      expect($scope.onInput2Focus).toHaveBeenCalled();
+
+    }));
+  });
 });

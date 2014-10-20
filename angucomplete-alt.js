@@ -60,7 +60,8 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       inputChanged: '=',
       autoMatch: '@',
       focusOut: '&',
-      focusIn: '&'
+      focusIn: '&',
+      searchOnFocus: '@'
     },
     template:
       '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
@@ -99,9 +100,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       scope.currentIndex = null;
       scope.searching = false;
-      scope.searchStr = scope.initialValue;
+      scope.searchStr = scope.initialValue || "";
       scope.$watch('initialValue', function(newval, oldval){
-        scope.searchStr = scope.initialValue;
+        scope.searchStr = scope.initialValue || "";
         if (newval && newval.length > 0) {
           handleRequired(true);
         }
@@ -109,14 +110,22 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
         if (!elementId) {
-          scope.searchStr = null;
+          scope.searchStr = "";
           clearResults();
         }
         else { // id is given
           if (scope.id === elementId) {
-            scope.searchStr = null;
+            scope.searchStr = "";
             clearResults();
           }
+        }
+      });
+
+      scope.$on('angucomplete-alt:focusInput', function (event, elementId) {
+        if (scope.id === elementId) {
+          $timeout(function () {
+            inputField[0].focus();
+          }, 0, false);
         }
       });
 
@@ -146,7 +155,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         callOrAssign({originalObject: str});
 
         if (scope.clearSelected) {
-          scope.searchStr = null;
+          scope.searchStr = "";
         }
         clearResults();
       }
@@ -206,7 +215,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
         else if (which === KEY_DW) {
           event.preventDefault();
-          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
+          if (!scope.showDropdown && scope.searchStr.length >= minlength) {
             initResults();
             scope.searching = true;
             searchTimerComplete(scope.searchStr);
@@ -500,6 +509,14 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         if (scope.focusIn) {
           scope.focusIn();
         }
+
+        if (scope.searchOnFocus) {
+          $timeout(function () {
+            initResults();
+            scope.searching = true;
+            searchTimerComplete(scope.searchStr);
+          }, 0, false);
+        }
       };
 
       scope.hideResults = function(event) {
@@ -539,7 +556,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
 
         if (scope.clearSelected) {
-          scope.searchStr = null;
+          scope.searchStr = "";
         }
         else {
           scope.searchStr = result.title;
