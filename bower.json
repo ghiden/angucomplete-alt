@@ -12,7 +12,10 @@
     "angularjs"
   ],
   "license": "MIT",
-  "main": "./angucomplete-alt.js",
+  "main": [
+      "./angucomplete-alt.js",
+      "./angucomplete-alt.css"
+  ],
   "ignore": [
     "example",
     "bower_components",
