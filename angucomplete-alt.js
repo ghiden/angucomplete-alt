@@ -92,6 +92,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
       var mousedownOn = null;
+      var unbindInitialValue;
 
       elem.on('mousedown', function(event) {
         mousedownOn = event.target.id;
@@ -100,10 +101,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = scope.initialValue;
-      scope.$watch('initialValue', function(newval, oldval){
-        scope.searchStr = scope.initialValue;
+      unbindInitialValue = scope.$watch('initialValue', function(newval, oldval){
         if (newval && newval.length > 0) {
+          scope.searchStr = scope.initialValue;
           handleRequired(true);
+          unbindInitialValue();
         }
       });
 
@@ -133,7 +135,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.selectedObject = value;
         }
 
-        handleRequired(true);
+        if (value) {
+          handleRequired(true);
+        }
+        else {
+          handleRequired(false);
+        }
       }
 
       function callFunctionOrIdentity(fn) {
@@ -237,7 +244,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
           if (validState && validState !== scope.searchStr) {
             callOrAssign(undefined);
-            handleRequired(false);
           }
         }
       }
