@@ -64,7 +64,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
     },
     template:
       '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults()" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
       '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
       '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
       '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
@@ -91,12 +91,35 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       var httpCanceller = null;
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
+      var mousedownOn = null;
+      var unbindInitialValue;
+
+      elem.on('mousedown', function(event) {
+        mousedownOn = event.target.id;
+      });
 
       scope.currentIndex = null;
       scope.searching = false;
       scope.searchStr = scope.initialValue;
-      scope.$watch('initialValue', function(){
-        scope.searchStr = scope.initialValue;
+      unbindInitialValue = scope.$watch('initialValue', function(newval, oldval){
+        if (newval && newval.length > 0) {
+          scope.searchStr = scope.initialValue;
+          handleRequired(true);
+          unbindInitialValue();
+        }
+      });
+
+      scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
+        if (!elementId) {
+          scope.searchStr = null;
+          clearResults();
+        }
+        else { // id is given
+          if (scope.id === elementId) {
+            scope.searchStr = null;
+            clearResults();
+          }
+        }
       });
 
       // for IE8 quirkiness about event.which
@@ -112,7 +135,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           scope.selectedObject = value;
         }
 
-        handleRequired(true);
+        if (value) {
+          handleRequired(true);
+        }
+        else {
+          handleRequired(false);
+        }
       }
 
       function callFunctionOrIdentity(fn) {
@@ -216,7 +244,6 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
           if (validState && validState !== scope.searchStr) {
             callOrAssign(undefined);
-            handleRequired(false);
           }
         }
       }
@@ -315,11 +342,16 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
               inputField.val(scope.searchStr);
             });
           }
-        } else if (which === KEY_TAB && scope.results && scope.results.length > 0) {
-          if (scope.currentIndex === -1 && scope.showDropdown) {
+        } else if (which === KEY_TAB && scope.results && scope.results.length > 0 && scope.showDropdown) {
+          // selecting the first result
+          if (scope.currentIndex === -1) {
             scope.selectResult(scope.results[0]);
-            scope.$apply();
           }
+          else {
+            // scope.currentIndex >= 0 
+            scope.selectResult(scope.results[scope.currentIndex]);
+          }
+          scope.$apply();
         }
       }
 
@@ -389,7 +421,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
           match = false;
 
           for (s = 0; s < searchFields.length; s++) {
-            value = extractValue(scope.localData[i], searchFields[s]);
+            value = extractValue(scope.localData[i], searchFields[s]) || '';
             match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
           }
 
@@ -461,7 +493,7 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
             if (scope.autoMatch) {
               checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description}, scope.searchStr);
+                  {title: text, desc: description || ''}, scope.searchStr);
             }
           }
 
@@ -476,14 +508,22 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         }
       };
 
-      scope.hideResults = function() {
-        hideTimer = $timeout(function() {
-          scope.showDropdown = false;
-        }, BLUR_TIMEOUT);
-        cancelHttpRequest();
+      scope.hideResults = function(event) {
+        if (mousedownOn === scope.id + '_dropdown') {
+          mousedownOn = null;
+        }
+        else {
+          hideTimer = $timeout(function() {
+            clearResults();
+            scope.$apply(function() {
+              inputField.val(scope.searchStr);
+            });
+          }, BLUR_TIMEOUT);
+          cancelHttpRequest();
 
-        if (scope.focusOut) {
-          scope.focusOut();
+          if (scope.focusOut) {
+            scope.focusOut();
+          }
         }
       };
 
@@ -570,6 +610,11 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
+
+      scope.$on('$destroy', function() {
+        // take care of required validity when it gets destroyed
+        handleRequired(true);
+      });
 
       // set isScrollOn
       $timeout(function() {
