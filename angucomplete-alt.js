@@ -9,7 +9,8 @@
 
 'use strict';
 
-angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', function ($q, $parse, $http, $sce, $timeout) {
+angular.module('angucomplete-alt', [] )
+  .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', function ($q, $parse, $http, $sce, $timeout, $templateCache) {
   // keyboard events
   var KEY_DW  = 40;
   var KEY_RT  = 39;
@@ -29,6 +30,28 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
   var REQUIRED_CLASS = 'autocomplete-required';
   var TEXT_SEARCHING = 'Searching...';
   var TEXT_NORESULTS = 'No results found';
+  var TEMPLATE_URL = '/angucomplete-alt/index.html';
+
+  // Set the default template for this directive
+  $templateCache.put(TEMPLATE_URL,
+      '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
+      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+      '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
+      '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
+      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
+      '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
+      '      <div ng-if="imageField" class="angucomplete-image-holder">' +
+      '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
+      '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
+      '      </div>' +
+      '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
+      '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
+      '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
+      '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
+      '    </div>' +
+      '  </div>' +
+      '</div>'
+  );
 
   return {
     restrict: 'EA',
@@ -62,24 +85,9 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
       focusOut: '&',
       focusIn: '&'
     },
-    template:
-      '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
-      '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
-      '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
-      '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
-      '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
-      '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
-      '      <div ng-if="imageField" class="angucomplete-image-holder">' +
-      '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
-      '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
-      '      </div>' +
-      '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
-      '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
-      '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
-      '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
-      '    </div>' +
-      '  </div>' +
-      '</div>',
+    templateUrl: function(element, attrs) {
+      return attrs.templateUrl || TEMPLATE_URL;
+    },
     link: function(scope, elem, attrs, ctrl) {
       var inputField = elem.find('input');
       var minlength = MIN_LENGTH;
