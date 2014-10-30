@@ -1,7 +1,7 @@
 angucomplete-alt
 ============
 
-This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks such as:  
+This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks such as:
 
 * change long attribute names to hyphenated ones
 * coding style similar to angular standard
@@ -111,6 +111,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | focus-in | A function or expression to be called when input field gets focused. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusIn() |
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
+| template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) |  No | "/my-custom-template.html" |
 
 ### Scrollbar
 
@@ -139,6 +140,6 @@ $scope.$broadcast('angucomplete-alt:clearInput', 'autocomplete-1');
 
 ### Contributors
 
-Here is the list of [contributors](CONTRIBUTORS.md).  
-Here is how to [contribute](CONTRIBUTING.md). 
+Here is the list of [contributors](CONTRIBUTORS.md).
+Here is how to [contribute](CONTRIBUTING.md).
 Of course the easiest contribution is to give it a star!
