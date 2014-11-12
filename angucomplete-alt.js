@@ -621,6 +621,12 @@ angular.module('angucomplete-alt', [] ).directive('angucompleteAlt', ['$q', '$pa
         var css = getComputedStyle(dd);
         isScrollOn = css.maxHeight && css.overflowY === 'auto';
       });
+      
+      scope.$watch("selectedObject", function(object){
+        if (angular.isObject(object)) {
+          inputField.val(object[scope.titleField]);
+        }
+      });
     }
   };
 }]);
