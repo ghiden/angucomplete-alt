@@ -2,6 +2,10 @@ var app = angular.module('app', ["ngTouch", "angucomplete-alt"]);
 
 app.controller('MainController', ['$scope', '$http',
   function MainController($scope, $http) {
+    $scope.remoteUrlRequestFn = function(str) {
+      return {q: str};
+    };
+
     $scope.countrySelected = function(selected) {
       window.alert('You have selected ' + selected.title);
     };

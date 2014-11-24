@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" id="ng-app" ng-app="app"> <!--<![endif]-->
   <head>
     <title>Angucomplete Alt: Autocomplete Directive for AngularJS</title>
+    <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
     <link rel="stylesheet" href="css/structure.css"/>
     <link rel="stylesheet" href="css/angucomplete-alt.css"/>
@@ -108,7 +109,7 @@
 
         <h3><a name="example5" class="page-anchor">Example 5 - Using GitHub Search API</a></h3>
         <div class="padded-row">
-          <div angucomplete-alt id="ex5" placeholder="Search projects" pause="500" selected-object="selectedProject" remote-url="https://api.github.com/search/repositories?q=" remote-url-data-field="items" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight">
+          <div angucomplete-alt id="ex5" placeholder="Search projects" pause="500" selected-object="selectedProject" remote-url="https://api.github.com/search/repositories" remote-url-request-formatter="remoteUrlRequestFn" remote-url-data-field="items" search-fields="name,description" title-field="name" description-field="description" minlength="2" input-class="form-control form-control-small" match-class="highlight">
           </div>
         </div>
         <div class="result">
