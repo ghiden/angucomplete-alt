@@ -36,7 +36,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Enable/disable input field
 * Show scrollbar. See [example #1](http://ghiden.github.io/angucomplete-alt/#example1)
 * Clear input by sending $broadcast from parent scope. Thanks to @Leocrest for #61.
-* Override template with your own
+* Override template with your own. When you use this feature, test throughly as it might break other features. Thanks to @sdbondi for #74.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.

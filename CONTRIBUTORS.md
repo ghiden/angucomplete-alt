@@ -32,6 +32,10 @@
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
 
+### [@sdbondi: Stan Bondi](https://github.com/sdbondi)
+
+* Custom template #74
+
 ### [@SpaceK33z: Kees Kluskens](https://github.com/SpaceK33z)
 
 * Bug fix #62
