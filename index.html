@@ -42,6 +42,7 @@
           <li><a href="#example11">Example 11 - Auto Match</a></li>
           <li><a href="#example12">Example 12 - Track Input Focus</a></li>
           <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
+          <li><a href="#example14">Example 14 - Custom Template</a></li>
         </ul>
       </div>
 
@@ -218,6 +219,71 @@
         </div>
 
       </div>
+
+      <div class="large-padded-row">
+
+      <h3><a name="example14" class="page-anchor">Example 14 - Custom template</a></h3>
+      <div class="padded-row">
+        <script type="text/ng-template" id="/my-custom-template.html">
+        <div class="angucomplete-holder" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+         <p>This is custom</p>
+          <input ng-model="searchStr"
+            ng-disabled="disableInput"
+            type="text"
+            placeholder="{{placeholder}}"
+            ng-focus="onFocusHandler()"
+            class="{{inputClass}}"
+            ng-focus="resetHideResults()"
+            ng-blur="hideResults($event)"
+            autocapitalize="off"
+            autocorrect="off"
+            autocomplete="off"
+            ng-change="inputChangeHandler(searchStr)"/>
+          <div class="angucomplete-dropdown" ng-show="showDropdown">
+            <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
+            <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
+            <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
+              <div ng-if="imageField" class="angucomplete-image-holder">
+                <img ng-if="result.image && result.image != ''" ng-src="{{result.image}}" class="angucomplete-image"/>
+                <div ng-if="!result.image && result.image != ''" class="angucomplete-image-default"></div>
+              </div>
+              <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
+              <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
+              <div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
+              <div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
+            </div>
+            <div class="angucomplete-row" ng-click="selectResult({title: searchStr, originalObject: { name: searchStr, custom: true }})" ng-mouseenter="hoverRow(results.length)" ng-class="{'angucomplete-selected-row': results.length == currentIndex}">
+              <div class="angucomplete-title">Select custom country '{{ searchStr }}'</div>
+            </div>
+          </div>
+        </div>
+        </script>
+        <div angucomplete-alt
+          id="ex14"
+          placeholder="Search countries"
+          pause="100" selected-object="countrySelected14"
+          local-data="countries"
+          search-fields="name"
+          title-field="name"
+          minlength="1"
+          input-class="form-control form-control-small"
+          match-class="highlight"
+          template-url="/my-custom-template.html"
+          >
+        </div>
+      </div>
+      <div class="result">
+        <div ng-show="countrySelected14">
+          <span ng-if="!countrySelected14.originalObject.custom">
+          You selected <span class="bold-span">{{countrySelected14.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected14.originalObject.code}}</span>
+          </span>
+          <span ng-if="countrySelected14.originalObject.custom">
+            You selected a custom country <span class="bold-span">{{countrySelected14.originalObject.name}}</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
 
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
