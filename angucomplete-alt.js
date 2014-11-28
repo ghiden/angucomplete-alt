@@ -250,18 +250,19 @@ angular.module('angucomplete-alt', [] )
             }, scope.pause);
           }
 
-          if (validState && validState !== scope.searchStr) {
+          if (validState && validState !== scope.searchStr && !scope.clearSelected) {
             callOrAssign(undefined);
           }
         }
       }
 
       function handleOverrideSuggestions(event) {
-        if (scope.overrideSuggestions) {
-          if (!(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
+        if (scope.overrideSuggestions &&
+            !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
+          if (event) {
             event.preventDefault();
-            setInputString(scope.searchStr);
           }
+          setInputString(scope.searchStr);
         }
       }
 
@@ -350,16 +351,29 @@ angular.module('angucomplete-alt', [] )
               inputField.val(scope.searchStr);
             });
           }
-        } else if (which === KEY_TAB && scope.results && scope.results.length > 0 && scope.showDropdown) {
-          // selecting the first result
-          if (scope.currentIndex === -1) {
-            scope.selectResult(scope.results[0]);
+        } else if (which === KEY_TAB) {
+          if (scope.results && scope.results.length > 0 && scope.showDropdown) {
+            if (scope.currentIndex === -1 && scope.overrideSuggestions) {
+              // intentionally not sending event so that it does not
+              // prevent default tab behavior
+              handleOverrideSuggestions();
+            }
+            else {
+              if (scope.currentIndex === -1) {
+                scope.currentIndex = 0;
+              }
+              scope.selectResult(scope.results[scope.currentIndex]);
+              scope.$digest();
+            }
           }
           else {
-            // scope.currentIndex >= 0 
-            scope.selectResult(scope.results[scope.currentIndex]);
+            // no results
+            // intentionally not sending event so that it does not
+            // prevent default tab behavior
+            if (scope.searchStr && scope.searchStr.length > 0) {
+              handleOverrideSuggestions();
+            }
           }
-          scope.$apply();
         }
       }
 
@@ -524,7 +538,9 @@ angular.module('angucomplete-alt', [] )
           hideTimer = $timeout(function() {
             clearResults();
             scope.$apply(function() {
-              inputField.val(scope.searchStr);
+              if (scope.searchStr && scope.searchStr.length > 0) {
+                inputField.val(scope.searchStr);
+              }
             });
           }, BLUR_TIMEOUT);
           cancelHttpRequest();
