@@ -7,7 +7,7 @@
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
-    width: 250px;
+    width: 100%;
     padding: 6px;
     cursor: pointer;
     z-index: 9999;
