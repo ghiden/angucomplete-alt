@@ -88,6 +88,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 400 |
 | selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | http://myserver.com/api/users/find?searchstr= |
+| remote-url-all | The remote URL to hit to query for all results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example15) | No | http://myserver.com/api/users/all |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | results |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined). If you want to access nested field, use dot to connect attributes (e.g. name.first). [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | firstName,lastName |
 | description-field | The name of the field in the JSON objects returned back that should be used for displaying the description in the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example6) | No | twitterUsername |
@@ -113,6 +114,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
 | template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) |  No | "/my-custom-template.html" |
+| show-dropdown-all | Variable that will show all values if true [example](http://ghiden.github.io/angucomplete-alt/#example15) |  No | "showAll" |
+| show-dropdown-all-disabled | Variable that stores desired status of "showAll" button [example](http://ghiden.github.io/angucomplete-alt/#example15) |  No | "showAllDisabled" |
 
 ### Scrollbar
 

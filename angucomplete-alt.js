@@ -83,7 +83,10 @@ angular.module('angucomplete-alt', [] )
       inputChanged: '=',
       autoMatch: '@',
       focusOut: '&',
-      focusIn: '&'
+      focusIn: '&',
+      showDropdownAll: '=?',
+      showDropdownAllDisabled: '=?',
+      remoteUrlAll: '@'
     },
     templateUrl: function(element, attrs) {
       return attrs.templateUrl || TEMPLATE_URL;
@@ -236,6 +239,7 @@ angular.module('angucomplete-alt', [] )
         else {
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
+            scope.showDropdownAllDisabled = false;
           } else if (scope.searchStr.length >= minlength) {
             initResults();
 
@@ -305,6 +309,8 @@ angular.module('angucomplete-alt', [] )
         var which = ie8EventNormalizer(event);
         var row = null;
         var rowTop = null;
+
+        scope.showDropdownAll = false;
 
         if (which === KEY_EN && scope.results) {
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
@@ -406,12 +412,24 @@ angular.module('angucomplete-alt', [] )
       }
 
       function getRemoteResults(str) {
-        var params = {},
-            url = scope.remoteUrl + str;
-        if (scope.remoteUrlRequestFormatter) {
-          params = {params: scope.remoteUrlRequestFormatter(str)};
-          url = scope.remoteUrl;
+        var url;
+        var params = {};
+
+        if (typeof str === 'undefined' && typeof scope.remoteUrlAll !== 'undefined') {
+          url = scope.remoteUrlAll;
         }
+        else if (typeof scope.remoteUrl !== 'undefined') {
+          url = scope.remoteUrl + str ;
+
+          if (scope.remoteUrlRequestFormatter) {
+            params = {params: scope.remoteUrlRequestFormatter(str)};
+            url = scope.remoteUrl;
+          }
+        }
+        else {
+          return;
+        }
+
         cancelHttpRequest();
         httpCanceller = $q.defer();
         params.timeout = httpCanceller.promise;
@@ -422,6 +440,8 @@ angular.module('angucomplete-alt', [] )
 
       function clearResults() {
         scope.showDropdown = false;
+        scope.showDropdownAll = false;
+        scope.showDropdownAllDisabled = false;
         scope.results = [];
         if (dd) {
           dd.scrollTop = 0;
@@ -432,6 +452,10 @@ angular.module('angucomplete-alt', [] )
         scope.showDropdown = true;
         scope.currentIndex = -1;
         scope.results = [];
+
+        if (!scope.showDropdownAll) {
+          scope.showDropdownAllDisabled = true;
+        }
       }
 
       function getLocalResults(str) {
@@ -444,7 +468,7 @@ angular.module('angucomplete-alt', [] )
 
           for (s = 0; s < searchFields.length; s++) {
             value = extractValue(scope.localData[i], searchFields[s]) || '';
-            match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
+            match = match || (typeof str === 'undefined' || value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
           }
 
           if (match) {
@@ -458,7 +482,7 @@ angular.module('angucomplete-alt', [] )
 
       function checkExactMatch(result, obj, str){
         for(var key in obj){
-          if(obj[key].toLowerCase() === str.toLowerCase()){
+          if(typeof str === 'undefined' || obj[key].toLowerCase() === str.toLowerCase()){
             scope.selectResult(result);
             return;
           }
@@ -477,6 +501,15 @@ angular.module('angucomplete-alt', [] )
         }
         else {
           getRemoteResults(str);
+        }
+      }
+
+      function getAllResults() {
+        if (scope.localData) {
+          getLocalResults();
+        }
+        else {
+          getRemoteResults();
         }
       }
 
@@ -501,7 +534,7 @@ angular.module('angucomplete-alt', [] )
               image = extractValue(responseData[i], scope.imageField);
             }
 
-            if (scope.matchClass) {
+            if (scope.matchClass && typeof str !== 'undefined') {
               formattedText = findMatchString(text, str);
               formattedDesc = findMatchString(description, str);
             }
@@ -536,7 +569,10 @@ angular.module('angucomplete-alt', [] )
         }
         else {
           hideTimer = $timeout(function() {
-            clearResults();
+            if (!scope.showDropdownAll) {
+              clearResults();
+            }
+
             scope.$apply(function() {
               if (scope.searchStr && scope.searchStr.length > 0) {
                 inputField.val(scope.searchStr);
@@ -587,6 +623,22 @@ angular.module('angucomplete-alt', [] )
         }
         return str;
       };
+
+      scope.$watch('showDropdownAll', function(newval, oldval) {
+        if (typeof newval === 'undefined' || (newval && scope.showDropdown)) {
+          return;
+        }
+
+        if (!newval && oldval) {
+          clearResults();
+        }
+        else if (newval) {
+          initResults();
+
+          scope.searching = true;
+          getAllResults();
+        }
+      });
 
       // check required
       if (scope.fieldRequiredClass && scope.fieldRequiredClass !== '') {
