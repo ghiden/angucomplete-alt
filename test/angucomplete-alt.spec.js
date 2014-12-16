@@ -39,6 +39,40 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Local data', function() {
+    it('should show search results when showDropdownAll is true', function() {
+      var element = angular.element('<div><span id="toggle" ng-click="showAll = !showAll">toggle</span><div angucomplete-alt id="ex1" show-dropdown-all="showAll" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name"/></div>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+
+      $compile(element)($scope);
+      $scope.$digest();
+
+      element.find('#toggle').click();
+
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+
+    it('should hide dropdown when showDropdownAll is false', function() {
+      var element = angular.element('<div><span id="toggle" ng-click="showAll = !showAll">toggle</span><div angucomplete-alt id="ex1" show-dropdown-all="showAll" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name"/></div>');
+      $scope.showAll = true;
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+
+      $compile(element)($scope);
+      $scope.$digest();
+
+      element.find('#toggle').click();
+
+      expect(element.find('.angucomplete-dropdown').hasClass('ng-hide')).toBe(true);
+    });
 
     it('should show search results after 3 letter is entered', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name"/>');
