@@ -43,6 +43,7 @@
           <li><a href="#example12">Example 12 - Track Input Focus</a></li>
           <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
           <li><a href="#example14">Example 14 - Custom Template</a></li>
+          <li><a href="#example15">Example 15 - Show All</a></li>
         </ul>
       </div>
 
@@ -283,6 +284,14 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="large-padded-row">
+
+      <h3><a name="example15" class="page-anchor">Example 15 - Show All (Using REST Countries API)<span class="console">show all <input type="checkbox" ng-model="showAll" ng-disabled="showAllDisabled"></span></a></h3>
+      <div class="padded-row">
+        <div angucomplete-alt id="ex15" placeholder="Search countries" pause="100" selected-object="countrySelected15" remote-url="http://restcountries.eu/rest/v1/name/" remote-url-all="http://restcountries.eu/rest/v1/all" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" show-all="true">
+        </div>
     </div>
 
       <div class="very-large-padded-row">

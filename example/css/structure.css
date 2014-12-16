@@ -1033,6 +1033,7 @@ form.ng-invalid-autocomplete-required input {
 
 input:disabled {
   background-color: #ddd;
+  cursor: default;
 }
 
 a.page-anchor {
