@@ -625,8 +625,26 @@ angular.module('angucomplete-alt', [] )
       }
 
       // set strings for "Searching..." and "No results"
-      scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
-      scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
+      scope.textSearching = attrs.textSearching || TEXT_SEARCHING;
+      scope.textNoResults = attrs.textNoResults || TEXT_NORESULTS;
+
+      scope.$watch(
+        function () {
+          return attrs.textSearching;
+        },
+        function (newValue, oldValue) {
+          scope.textSearching = newValue || TEXT_SEARCHING;
+        }
+      );
+
+      scope.$watch(
+        function () {
+          return attrs.textNoResults;
+        },
+        function (newValue, oldValue) {
+          scope.textNoResults = newValue || TEXT_NORESULTS;
+        }
+      );
 
       // register events
       inputField.on('keydown', keydownHandler);
