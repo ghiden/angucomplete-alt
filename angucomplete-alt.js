@@ -548,6 +548,12 @@ angular.module('angucomplete-alt', [] )
           if (scope.focusOut) {
             scope.focusOut();
           }
+
+          if (scope.overrideSuggestions) {
+            if (scope.searchStr && scope.searchStr.length > 0) {
+              handleOverrideSuggestions();
+            }
+          }
         }
       };
 
