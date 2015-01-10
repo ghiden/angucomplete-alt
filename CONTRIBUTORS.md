@@ -7,6 +7,10 @@
 * Required support #23
 * Auto match #29
 
+### [@andretw: Andre Lee](https://github.com/andretw)
+
+* Bug fix #109
+
 ### [@boshen](https://github.com/Boshen)
 
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
@@ -31,6 +35,10 @@
 
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
+
+### [@peterjkirby: Peter Kirby](https://github.com/peterjkirby)
+
+* Bug fix #97
 
 ### [@sdbondi: Stan Bondi](https://github.com/sdbondi)
 
