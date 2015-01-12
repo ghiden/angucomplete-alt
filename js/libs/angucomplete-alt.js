@@ -467,7 +467,7 @@ angular.module('angucomplete-alt', [] )
 
       function searchTimerComplete(str) {
         // Begin the search
-        if (str.length < minlength) {
+        if (!str || str.length < minlength) {
           return;
         }
         if (scope.localData) {
@@ -547,6 +547,12 @@ angular.module('angucomplete-alt', [] )
 
           if (scope.focusOut) {
             scope.focusOut();
+          }
+
+          if (scope.overrideSuggestions) {
+            if (scope.searchStr && scope.searchStr.length > 0) {
+              handleOverrideSuggestions();
+            }
           }
         }
       };
