@@ -550,7 +550,7 @@ angular.module('angucomplete-alt', [] )
           }
 
           if (scope.overrideSuggestions) {
-            if (scope.searchStr && scope.searchStr.length > 0) {
+            if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
               handleOverrideSuggestions();
             }
           }
