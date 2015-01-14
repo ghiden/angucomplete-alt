@@ -19,6 +19,7 @@
   "smarttabs": true,
   "white": false,
   "globals": {
+    "define": false,
     "angular": false,
     "_": false,
     "_V_": false,
