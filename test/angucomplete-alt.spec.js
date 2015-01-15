@@ -742,6 +742,7 @@ describe('angucomplete-alt', function() {
 
       eKeydown.which = KEY_TAB;
       inputField.trigger(eKeydown);
+      $scope.$digest();
       expect($scope.selectedCountry.originalObject).toEqual($scope.countries[0]);
     });
 
@@ -769,6 +770,7 @@ describe('angucomplete-alt', function() {
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_TAB;
       inputField.trigger(eKeydown);
+      $scope.$digest();
       expect($scope.selectedCountry.originalObject).toEqual($scope.countries[0]);
     });
 
