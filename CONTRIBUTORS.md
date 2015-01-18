@@ -2,6 +2,10 @@
 
 ---
 
+### [@alexbeletsky: Alexander Beletsky](https://github.com/alexbeletsky)
+
+* Publish to NPM #111
+
 ### [@alindber: Andy Lindberg](https://github.com/alindber)
 
 * Required support #23
