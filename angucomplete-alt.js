@@ -319,8 +319,15 @@ angular.module('angucomplete-alt', [] )
           event.preventDefault();
           if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
             scope.$apply(function() {
-              scope.currentIndex ++;
-              updateInputField();
+                if (!isObject(scope.results[scope.currentIndex + 1])) {
+                    while ((scope.currentIndex + 1) < scope.results.length && !isObject(scope.results[scope.currentIndex + 1])) {
+                        scope.currentIndex++;
+                    }
+                }
+                scope.currentIndex++;
+                if (isObject(scope.results[scope.currentIndex])) {
+                    updateInputField();
+                }
             });
 
             if (isScrollOn) {
@@ -334,8 +341,15 @@ angular.module('angucomplete-alt', [] )
           event.preventDefault();
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
-              scope.currentIndex --;
-              updateInputField();
+                if (!isObject(scope.results[scope.currentIndex - 1])) {
+                    while (scope.currentIndex >= 1 && !isObject(scope.results[scope.currentIndex - 1])) {
+                        scope.currentIndex--;
+                    }
+                }
+                scope.currentIndex--;
+                if (isObject(scope.results[scope.currentIndex])) {
+                    updateInputField();
+                }
             });
 
             if (isScrollOn) {
@@ -480,49 +494,89 @@ angular.module('angucomplete-alt', [] )
         }
       }
 
-      function processResults(responseData, str) {
-        var i, description, image, text, formattedText, formattedDesc;
+        var isArray = Array.isArray || function(obj) {
+                return toString.call(obj) === '[object Array]';
+            };
 
-        if (responseData && responseData.length > 0) {
-          scope.results = [];
+        var isObject = function (obj) {
+            var type = typeof obj;
+            return type === 'function' || type === 'object' && !!obj;
+        };
 
-          for (i = 0; i < responseData.length; i++) {
+        var keys = function (obj) {
+            if (!isObject(obj)) return [];
+            if (Object.keys) return Object.keys(obj);
+            var keys = [];
+            for (var key in obj) if (_.has(obj, key)) keys.push(key);
+            return keys;
+        };
+
+        function fill_results(obj, str, group_title) {
+
+            var description, image, text, formattedText, formattedDesc;
+
             if (scope.titleField && scope.titleField !== '') {
-              text = formattedText = extractTitle(responseData[i]);
+                text = formattedText = extractTitle(obj);
             }
 
             description = '';
             if (scope.descriptionField) {
-              description = formattedDesc = extractValue(responseData[i], scope.descriptionField);
+                description = formattedDesc = extractValue(obj, scope.descriptionField);
             }
 
             image = '';
             if (scope.imageField) {
-              image = extractValue(responseData[i], scope.imageField);
+                image = extractValue(obj, scope.imageField);
             }
 
             if (scope.matchClass) {
-              formattedText = findMatchString(text, str);
-              formattedDesc = findMatchString(description, str);
+                formattedText = findMatchString(text, str);
+                formattedDesc = findMatchString(description, str);
             }
 
             scope.results[scope.results.length] = {
-              title: formattedText,
-              description: formattedDesc,
-              image: image,
-              originalObject: responseData[i]
+                title: formattedText,
+                description: formattedDesc,
+                image: image,
+                originalObject: obj
             };
 
-            if (scope.autoMatch) {
-              checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description || ''}, scope.searchStr);
+            if (group_title) { // add extra info
+                scope.results[scope.results.length - 1].group_title =  group_title;
             }
-          }
 
-        } else {
-          scope.results = [];
+            if (scope.autoMatch) {
+                checkExactMatch(scope.results[scope.results.length - 1],
+                    {title: text, desc: description || ''}, scope.searchStr);
+            }
         }
-      }
+
+        function processResults(responseData, str) {
+            var i, j, l, le, k;
+
+            scope.results = [];
+
+            if (responseData) {
+
+                if (isArray(responseData) && responseData.length > 0) { // classic
+                    for (i = 0, l = responseData.length; i < l; i++) {
+                        fill_results(responseData[i], str);
+                    }
+                }
+                else if (isObject(responseData)) { // grouped
+                    k = keys(responseData); // get the keys (profiles, groups...)
+                    for (var i = 0, l = k.length; i < l; i++) {
+                        le = responseData[k[i]].length;
+                        if (le > 0) {
+                            scope.results[scope.results.length] = k[i];
+                            for (j = 0; j < le; j++) {
+                                fill_results(responseData[k[i]][j], str, k[i]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
       scope.onFocusHandler = function() {
         if (scope.focusIn) {
@@ -563,19 +617,21 @@ angular.module('angucomplete-alt', [] )
 
       scope.selectResult = function(result) {
         // Restore original values
-        if (scope.matchClass) {
-          result.title = extractTitle(result.originalObject);
-          result.description = extractValue(result.originalObject, scope.descriptionField);
-        }
+          if (isObject(scope.results[scope.currentIndex ])) {
+              if (scope.matchClass) {
+                  result.title = extractTitle(result.originalObject);
+                  result.description = extractValue(result.originalObject, scope.descriptionField);
+              }
 
-        if (scope.clearSelected) {
-          scope.searchStr = null;
-        }
-        else {
-          scope.searchStr = result.title;
-        }
-        callOrAssign(result);
-        clearResults();
+              if (scope.clearSelected) {
+                  scope.searchStr = null;
+              }
+              else {
+                  scope.searchStr = result.title;
+              }
+              callOrAssign(result);
+              clearResults();
+          }
       };
 
       scope.inputChangeHandler = function(str) {
