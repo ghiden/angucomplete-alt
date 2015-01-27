@@ -17,6 +17,9 @@
     */
     margin-top: -6px;
     background-color: #ffffff;
+    overflow-y: auto;
+    min-height: 50px;
+    max-height: 300px;
 }
 
 .angucomplete-searching {
