@@ -10,7 +10,7 @@
 'use strict';
 
 angular.module('angucomplete-alt', [] )
-  .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$location', '$templateCache', function ($q, $parse, $http, $sce, $timeout, $location, $templateCache) {
+  .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', function ($q, $parse, $http, $sce, $timeout, $templateCache) {
   // keyboard events
   var KEY_DW  = 40;
   var KEY_RT  = 39;
