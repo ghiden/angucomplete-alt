@@ -10,7 +10,7 @@
 'use strict';
 
 angular.module('angucomplete-alt', [] )
-  .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', function ($q, $parse, $http, $sce, $timeout, $templateCache) {
+  .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$location', '$templateCache', function ($q, $parse, $http, $sce, $timeout, $location, $templateCache) {
   // keyboard events
   var KEY_DW  = 40;
   var KEY_RT  = 39;
@@ -58,6 +58,7 @@ angular.module('angucomplete-alt', [] )
     require: '^?form',
     scope: {
       selectedObject: '=',
+      moreResults: '=',
       disableInput: '=',
       initialValue: '@',
       localData: '=',
@@ -613,6 +614,12 @@ angular.module('angucomplete-alt', [] )
 
       scope.hoverRow = function(index) {
         scope.currentIndex = index;
+      };
+
+      scope.getMoreResults = function () {
+        if (typeof scope.moreResults === 'function') {
+            scope.moreResults(scope.searchStr);
+        }
       };
 
       scope.selectResult = function(result) {
