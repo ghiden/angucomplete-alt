@@ -496,6 +496,37 @@
         function processResults(responseData, str) {
           var i, description, image, text, formattedText, formattedDesc;
 
+          // show results beginning with the given string first
+		      // a => Amsterdam Appelscha Benidorm Zurich
+    		  responseData.sort(function(x, y) {
+    		    var sortValue;
+    		  	var firstName, secondName;
+    
+    		  	// sort in ascending order => return negative when we want to show ABN AMRO before Delta Loyd (when searching on 'a')
+    		  	if (x.name && !y.name) {
+    				  sortValue = -1; // give existing names precedence over non existing or empty names
+      			} else if (!x.name && y.name) {
+      				sortValue = 1;
+      			} else if (!x.name && !y.name) {
+      				sortValue = 0;
+      			} else if (x.name && y.name) {
+      				firstName = x.name.toLowerCase();
+      				secondName = y.name.toLowerCase();
+    
+      				if (firstName.indexOf(str) === 0 && secondName.indexOf(str) !== 0) {
+      					sortValue = -1; // give names starting with the search string precedence
+      				} else if (firstName.indexOf(str) !== 0 && secondName.indexOf(str) == 0) {
+      					sortValue = 1;
+      				} else if (firstName.indexOf(str) === 0 && secondName.indexOf(str) === 0 ||
+      						       firstName.indexOf(str) !== 0 && secondName.indexOf(str) !== 0) {
+      					// when both names do or don't start with the search string => sort alphabetically
+      					sortValue =  firstName < secondName ? -1 : firstName > secondName ? 1 : 0;
+      				}
+      			}
+
+		  	    return sortValue;
+		      });
+		  
           if (responseData && responseData.length > 0) {
             scope.results = [];
 
