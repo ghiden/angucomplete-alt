@@ -96,7 +96,8 @@
         inputChanged: '=',
         autoMatch: '@',
         focusOut: '&',
-        focusIn: '&'
+        focusIn: '&',
+        defaultSelectedIndex: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -530,6 +531,10 @@
                 checkExactMatch(scope.results[scope.results.length-1],
                     {title: text, desc: description || ''}, scope.searchStr);
               }
+            }
+
+            if (scope.defaultSelectedIndex !== undefined) {
+            	scope.currentIndex = scope.defaultSelectedIndex;
             }
 
           } else {
