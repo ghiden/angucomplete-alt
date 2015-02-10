@@ -113,7 +113,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
 | template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) |  No | "/my-custom-template.html" |
-| default-selected-index | Set the default chosen index | No | 0 |
+| default-selected-index | Set the default index | No | 0 |
 
 ### Scrollbar
 
