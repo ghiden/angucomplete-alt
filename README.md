@@ -45,6 +45,12 @@ Download the package, and include the dist/angucomplete-alt.min.js file in your 
 bower install angucomplete-alt --save
 ```
 
+Or
+
+```bash
+npm install angucomplete-alt --save
+```
+
 Then add the angucomplete-alt module to your Angular App file, e.g.
 
 ```js
