@@ -38,6 +38,7 @@
     var MIN_LENGTH = 3;
     var PAUSE = 500;
     var BLUR_TIMEOUT = 200;
+    var ROW_HEIGHT = 54;
 
     // string constants
     var REQUIRED_CLASS = 'autocomplete-required';
@@ -49,7 +50,7 @@
     $templateCache.put(TEMPLATE_URL,
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
         '  <input id="{{id}}_value" ng-model="searchStr" ng-disabled="disableInput" type="text" placeholder="{{placeholder}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
-        '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
+        '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown" ng-style="{\'height\': rowHeight*results.length}">' +
         '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
         '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
         '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
@@ -118,7 +119,8 @@
         elem.on('mousedown', function(event) {
           mousedownOn = event.target.id;
         });
-
+        
+        scope.rowHeight = ROW_HEIGHT;
         scope.currentIndex = null;
         scope.searching = false;
         scope.searchStr = scope.initialValue;
