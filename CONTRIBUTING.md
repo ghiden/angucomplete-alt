@@ -12,6 +12,10 @@ grunt # no arguments, just grunt
 
 * No tabs please. Indent with 2 spaces.
 
+* Do not generate minified version.
+
+* Do not update package.json and bower.json unless you have a strong reason to do it.
+
 ### How to run examples:
 
 ```bash
