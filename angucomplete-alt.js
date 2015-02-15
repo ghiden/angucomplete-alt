@@ -75,6 +75,7 @@
         initialValue: '@',
         localData: '=',
         remoteUrlRequestFormatter: '=',
+        remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
         remoteUrlErrorCallback: '=',
         id: '@',
@@ -426,6 +427,9 @@
           if (scope.remoteUrlRequestFormatter) {
             params = {params: scope.remoteUrlRequestFormatter(str)};
             url = scope.remoteUrl;
+          }
+          if (!!scope.remoteUrlRequestWithCredentials) {
+            params.withCredentials = true;
           }
           cancelHttpRequest();
           httpCanceller = $q.defer();
