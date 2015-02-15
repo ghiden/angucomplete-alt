@@ -203,8 +203,10 @@
         }
 
         function findMatchString(target, str) {
-          str = str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          var result, matches, re = new RegExp(str, 'i');
+          var result, matches, re;
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+          // Escape user input to be treated as a literal string within a regular expression
+          re = new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
           if (!target) { return; }
           matches = target.match(re);
           if (matches) {
