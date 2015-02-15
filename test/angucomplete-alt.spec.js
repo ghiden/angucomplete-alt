@@ -387,6 +387,28 @@ describe('angucomplete-alt', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
+    it('should url encode input string', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" remote-url-error-callback="errorCB" minlength="1"/>');
+      $scope.errorCB = jasmine.createSpy('errorCB');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var queryTerm = '//';
+      var results = {data: [{name: 'john'}]};
+      var encodedQueryTerm = encodeURIComponent(queryTerm);
+      $httpBackend.expectGET('names?q=' + encodedQueryTerm).respond(0);
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = '/'.charCodeAt(0);
+      inputField.val(queryTerm);
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      expect(element.isolateScope().searching).toBe(true);
+      $timeout.flush();
+      $httpBackend.flush();
+    });
+
     it('should not do anything when request is canceled', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" remote-url-error-callback="errorCB" minlength="1"/>');
       $scope.errorCB = jasmine.createSpy('errorCB');

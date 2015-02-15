@@ -424,7 +424,7 @@
 
         function getRemoteResults(str) {
           var params = {},
-              url = scope.remoteUrl + str;
+              url = scope.remoteUrl + encodeURIComponent(str);
           if (scope.remoteUrlRequestFormatter) {
             params = {params: scope.remoteUrlRequestFormatter(str)};
             url = scope.remoteUrl;
