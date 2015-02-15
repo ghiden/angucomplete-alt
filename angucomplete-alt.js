@@ -203,6 +203,7 @@
         }
 
         function findMatchString(target, str) {
+          str = str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           var result, matches, re = new RegExp(str, 'i');
           if (!target) { return; }
           matches = target.match(re);
