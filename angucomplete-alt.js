@@ -70,10 +70,11 @@
       restrict: 'EA',
       require: '^?form',
       scope: {
+        maxTotalResultsCount: '=',
         selectedObject: '=',
         disableInput: '=',
         initialValue: '@',
-        localData: '=',
+        localData: '@',
         remoteUrlRequestFormatter: '=',
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
@@ -121,6 +122,8 @@
           mousedownOn = event.target.id;
         });
 
+        scope.isUseCache = scope.maxTotalResultsCount !== undefined;
+        scope.lastSearchStr = null;
         scope.currentIndex = null;
         scope.searching = false;
         scope.searchStr = scope.initialValue;
@@ -252,6 +255,10 @@
             });
           }
           else {
+            if (scope.searchStr.indexOf(scope.lastSearchStr) !== 0) {
+              scope.localData = null;
+            }
+
             if (!scope.searchStr || scope.searchStr === '') {
               scope.showDropdown = false;
             } else if (scope.searchStr.length >= minlength) {
@@ -265,6 +272,7 @@
 
               searchTimer = $timeout(function() {
                 searchTimerComplete(scope.searchStr);
+                scope.lastSearchStr = scope.searchStr;
               }, scope.pause);
             }
 
@@ -503,6 +511,10 @@
 
         function processResults(responseData, str) {
           var i, description, image, text, formattedText, formattedDesc;
+
+          if (scope.isUseCache && responseData.length < scope.maxTotalResultsCount) {
+            scope.localData = responseData;
+          }
 
           if (responseData && responseData.length > 0) {
             scope.results = [];
