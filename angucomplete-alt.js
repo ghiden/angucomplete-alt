@@ -78,6 +78,7 @@
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
         remoteUrlErrorCallback: '=',
+        getRemoteDataFunction: '=',
         id: '@',
         type: '@',
         placeholder: '@',
@@ -441,6 +442,17 @@
             .error(httpErrorCallback);
         }
 
+        function getResourceResults(str) {
+          cancelHttpRequest();
+
+          httpCanceller = $q.defer();
+          var params    = { timeout: httpCanceller.promise };
+
+          scope.getRemoteDataFunction(str, params).$promise
+            .then(httpSuccessCallbackGen(str))
+            .catch(httpErrorCallback);
+        }
+
         function clearResults() {
           scope.showDropdown = false;
           scope.results = [];
@@ -496,7 +508,9 @@
               getLocalResults(str);
             });
           }
-          else {
+          else if (scope.getRemoteDataFunction) {
+            getResourceResults(str);
+          } else {
             getRemoteResults(str);
           }
         }
