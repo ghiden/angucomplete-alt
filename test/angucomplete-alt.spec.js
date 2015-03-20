@@ -35,6 +35,14 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
       expect(element.find('#ex1_value').attr('placeholder')).toEqual('Search countries');
     });
+      
+    it('should render maxlength string', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" maxlength="25" />');
+      $scope.selectedCountry = null;
+      $compile(element)($scope);
+      $scope.$digest();
+      expect(element.find('#ex1_value').attr('maxlength')).toEqual('25');
+    });
 
   });
 

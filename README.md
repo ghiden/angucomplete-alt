@@ -91,6 +91,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | :------------- |:-------------| :-----:| :-----|
 | id | A unique ID for the field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | members |
 | placeholder | Placeholder text for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | Search members |
+| maxlength | Maxlength attribute for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 25 |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 400 |
 | selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | http://myserver.com/api/users/find?searchstr= |
