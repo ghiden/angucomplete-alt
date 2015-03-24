@@ -107,7 +107,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | remote-url-request-with-credentials | A boolean that accepts parameters with credentials. | No | true or false |
 | remote-url-response-formatter | A function on the scope that will modify raw response from remote API before it is rendered in the drop-down.  Useful for adding data that may not be available from the API.  The specified function must return the object in the format that angucomplete understands. | No | addImageUrlToObject |
-| remote-url-request-formatter-extra-param | A extra parameter to pass in the remote-url-request-formatter function. |
+| remote-url-request-formatter-extra-param | A extra parameter to pass in the remote-url-request-formatter function. | No | A model |
 | remote-url-error-callback | A callback funciton to handle error response from $http.get | No | httpErrorCallbackFn |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. [example](http://ghiden.github.io/angucomplete-alt/#example3) | No | true |
 | override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](http://ghiden.github.io/angucomplete-alt/#example4) | No | true |
