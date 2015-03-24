@@ -76,6 +76,7 @@
         initialValue: '@',
         localData: '=',
         remoteUrlRequestFormatter: '=',
+        remoteUrlRequestFormatterExtraParam: '=',
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
         remoteUrlErrorCallback: '=',
@@ -428,7 +429,7 @@
           var params = {},
               url = scope.remoteUrl + encodeURIComponent(str);
           if (scope.remoteUrlRequestFormatter) {
-            params = {params: scope.remoteUrlRequestFormatter(str)};
+            params = {params: scope.remoteUrlRequestFormatter(str, scope.remoteUrlRequestFormatterExtraParam)};
             url = scope.remoteUrl;
           }
           if (!!scope.remoteUrlRequestWithCredentials) {
