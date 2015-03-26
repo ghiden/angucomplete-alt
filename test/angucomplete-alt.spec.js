@@ -1369,4 +1369,67 @@ describe('angucomplete-alt', function() {
       expect(inputField.val()).toEqual('e');
     });
   });
+
+  describe('set minlenght to 0', function() {
+    it('should show all items when focused', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="0"/>');
+      $scope.countrySelected = null;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      expect(element.find('.angucomplete-row').length).toBe(0);
+      // TODO: should replace all triggers with this triggerHandler
+      // http://sravi-kiran.blogspot.co.nz/2013/12/TriggeringEventsInAngularJsDirectiveTests.html
+      inputField.triggerHandler('focus');
+      $scope.$digest();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+
+    it('should remove highlight when input becomes empty', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="0" match-class="highlight"/>');
+      $scope.countrySelected = null;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      inputField.triggerHandler('focus');
+      $scope.$digest();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+      element.find('.angucomplete-row .highlight').each(function() {
+        expect($(this).text().length).toBe(0);
+      });
+
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.triggerHandler('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      element.find('.angucomplete-row .highlight').each(function() {
+        expect($(this).text().length).toBeGreaterThan(0);
+      });
+
+      eKeyup.which = KEY_DEL;
+      inputField.val('');
+      inputField.triggerHandler('input');
+      inputField.trigger(eKeyup);
+      $scope.$digest();
+      element.find('.angucomplete-row .highlight').each(function() {
+        expect($(this).text().length).toBe(0);
+      });
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+  });
 });
