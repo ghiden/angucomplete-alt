@@ -546,9 +546,22 @@
           }
         }
 
+        function showAll() {
+          if (scope.localData) {
+            processResults(scope.localData, '');
+          }
+          else {
+            getRemoteResults('');
+          }
+        }
+
         scope.onFocusHandler = function() {
           if (scope.focusIn) {
             scope.focusIn();
+          }
+          if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+            scope.showDropdown = true;
+            showAll();
           }
         };
 
@@ -610,6 +623,10 @@
           if (str.length < minlength) {
             clearResults();
           }
+          else if (str.length === 0 && minlength === 0) {
+            showAll();
+          }
+
           if (scope.inputChanged) {
             str = scope.inputChanged(str);
           }
@@ -623,7 +640,7 @@
 
         // check min length
         if (scope.minlength && scope.minlength !== '') {
-          minlength = scope.minlength;
+          minlength = parseInt(scope.minlength, 10);
         }
 
         // check pause time
