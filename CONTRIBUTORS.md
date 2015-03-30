@@ -17,11 +17,12 @@
 
 ### [@boshen](https://github.com/Boshen)
 
+* Collaborator and excellent developer
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
-### [@foozee](https://github.com/foozee)
+### [@termleech](https://github.com/termleech)
 
-* Watch initial value #26
+* Add maxlength #136
 
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
