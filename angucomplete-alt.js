@@ -623,7 +623,7 @@
           if (str.length < minlength) {
             clearResults();
           }
-          else if (minlength === 0) {
+          else if (str.length === 0 && minlength === 0) {
             showAll();
           }
 
