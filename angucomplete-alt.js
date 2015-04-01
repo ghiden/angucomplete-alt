@@ -467,7 +467,7 @@
 
             for (s = 0; s < searchFields.length && !match; s++) {
               value = extractValue(scope.localData[i], searchFields[s]) || '';
-              match = (scope.softMatch == 'true') ? checkSoftMatch(value, str) : (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
+              match = (scope.softMatch) ? checkSoftMatch(value, str) : (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
             }
 
             if (match) {
