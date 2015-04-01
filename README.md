@@ -122,7 +122,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
 | template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) |  No | "/my-custom-template.html" |
-| soft-match | Allows the user to enter multiple search terms using spaces. |  No | true |
+| soft-match | Allows the user to enter multiple search terms using spaces. Does not work in combination with match-class. | No | true |
 
 ### Scrollbar
 
