@@ -461,18 +461,18 @@
               searchFields = scope.searchFields.split(','),
               matches = [];
 
-          for (i = 0; i < scope.localData.length; i++) {
+          angular.forEach(scope.localData, function(value, key) {
             match = false;
 
             for (s = 0; s < searchFields.length; s++) {
-              value = extractValue(scope.localData[i], searchFields[s]) || '';
+              value = extractValue(scope.localData[key], searchFields[s]) || '';
               match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
             }
 
             if (match) {
-              matches[matches.length] = scope.localData[i];
+              matches[matches.length] = scope.localData[key];
             }
-          }
+          });
 
           scope.searching = false;
           processResults(matches, str);
