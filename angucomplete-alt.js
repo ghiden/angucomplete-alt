@@ -99,7 +99,8 @@
         inputChanged: '=',
         autoMatch: '@',
         focusOut: '&',
-        focusIn: '&'
+        focusIn: '&',
+        softMatch: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -468,9 +469,9 @@
           for (i = 0; i < scope.localData.length; i++) {
             match = false;
 
-            for (s = 0; s < searchFields.length; s++) {
+            for (s = 0; s < searchFields.length && !match; s++) {
               value = extractValue(scope.localData[i], searchFields[s]) || '';
-              match = match || (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
+              match = (scope.softMatch) ? checkSoftMatch(value, str) : (value.toLowerCase().indexOf(str.toLowerCase()) >= 0);
             }
 
             if (match) {
@@ -480,6 +481,18 @@
 
           scope.searching = false;
           processResults(matches, str);
+        }
+
+        function checkSoftMatch(value, str){
+          // Checks if split strs match in value
+          var strArray = str.split(' ');
+
+          for (var i = 0; i < strArray.length; i++) {
+            if (!(value.toLowerCase().indexOf(strArray[i].toLowerCase()) >= 0)) {
+              return false;
+            }
+          }
+          return true;
         }
 
         function checkExactMatch(result, obj, str){
