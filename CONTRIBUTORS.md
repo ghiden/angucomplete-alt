@@ -40,6 +40,10 @@
 
 * Clear input #61
 
+### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
+
+* Add input name and a not-empty class #124
+
 ### [@mmBs](https://github.com/mmBs)
 
 * Add type attribute #96
