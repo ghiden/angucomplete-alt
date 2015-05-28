@@ -79,7 +79,7 @@
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
         remoteUrlErrorCallback: '=',
-        getRemoteDataFunction: '=',
+        remoteApiHandler: '=',
         id: '@',
         type: '@',
         placeholder: '@',
@@ -405,6 +405,10 @@
 
         function httpSuccessCallbackGen(str) {
           return function(responseData, status, headers, config) {
+            // normalize return obejct from promise
+            if (!status && !headers && !config) {
+              responseData = responseData.data;
+            }
             scope.searching = false;
             processResults(
               extractValue(responseFormatter(responseData), scope.remoteUrlDataField),
@@ -413,6 +417,10 @@
         }
 
         function httpErrorCallback(errorRes, status, headers, config) {
+          // normalize return obejct from promise
+          if (!status && !headers && !config) {
+            status = errorRes.status;
+          }
           if (status !== 0) {
             if (scope.remoteUrlErrorCallback) {
               scope.remoteUrlErrorCallback(errorRes, status, headers, config);
@@ -449,13 +457,12 @@
             .error(httpErrorCallback);
         }
 
-        function getResourceResults(str) {
+        function getRemoteResultsWithCustomHandler(str) {
           cancelHttpRequest();
 
           httpCanceller = $q.defer();
-          var params    = { timeout: httpCanceller.promise };
 
-          scope.getRemoteDataFunction(str, params).$promise
+          scope.remoteApiHandler(str, httpCanceller.promise)
             .then(httpSuccessCallbackGen(str))
             .catch(httpErrorCallback);
         }
@@ -515,8 +522,8 @@
               getLocalResults(str);
             });
           }
-          else if (scope.getRemoteDataFunction) {
-            getResourceResults(str);
+          else if (scope.remoteApiHandler) {
+            getRemoteResultsWithCustomHandler(str);
           } else {
             getRemoteResults(str);
           }
@@ -569,6 +576,9 @@
         function showAll() {
           if (scope.localData) {
             processResults(scope.localData, '');
+          }
+          else if (scope.remoteApiHandler) {
+            getRemoteResultsWithCustomHandler('');
           }
           else {
             getRemoteResults('');

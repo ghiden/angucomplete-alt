@@ -32,6 +32,10 @@
 
 * Escape regular expression #123
 
+### [@jbuquet: Javier Buquet](https://github.com/jbuquet)
+
+* Add custom API handler #128
+
 ### [@jermspeaks: Jeremy Wong](https://github.com/jermspeaks)
 
 * Support withCredentials for $http #113

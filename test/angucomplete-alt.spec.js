@@ -395,6 +395,32 @@ describe('angucomplete-alt', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
+    it('should process via custom handler', inject(function($http) {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-api-handler="postFn" search-fields="name" title-field="name" remote-url-data-field="data" minlength="1"/>');
+      var url = '/api';
+      $scope.postFn = function(str, timeout) {
+        return $http.post(url, {q: str}, {timeout: timeout});
+      };
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var queryTerm = 'j';
+      var results = {data: [{name: 'john'}]};
+      $httpBackend.expectPOST('/api', {q: queryTerm}).respond(200, results);
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = queryTerm.charCodeAt(0);
+      inputField.val(queryTerm);
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      expect(element.isolateScope().searching).toBe(true);
+      $timeout.flush();
+      $httpBackend.flush();
+
+      expect(element.find('.angucomplete-row').length).toBe(1);
+    }));
+
     it('should url encode input string', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" remote-url-error-callback="errorCB" minlength="1"/>');
       $scope.errorCB = jasmine.createSpy('errorCB');
