@@ -504,6 +504,7 @@
         }
 
         function checkExactMatch(result, obj, str){
+          if (!str) { return; }
           for(var key in obj){
             if(obj[key].toLowerCase() === str.toLowerCase()){
               scope.selectResult(result);
