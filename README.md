@@ -168,6 +168,15 @@ remote-url-request-formatter
 remote-url-request-with-credentials
 ```
 
+### Examples
+
+To run examples, cd into 'examples' directory and run static http server of your choice:
+
+```bash
+cd examples
+python -m SimpleHTTPServer
+```
+
 ### Contributors
 
 Here is the list of [contributors](CONTRIBUTORS.md).
