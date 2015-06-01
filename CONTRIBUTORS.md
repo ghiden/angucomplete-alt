@@ -20,6 +20,10 @@
 * Collaborator and excellent developer
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
+### [@davidgeary: David Geary](https://github.com/davidgeary)
+
+* Missing 'type' field on input element when not specified #167
+
 ### [@termleech](https://github.com/termleech)
 
 * Add maxlength #136
