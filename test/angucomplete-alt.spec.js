@@ -44,6 +44,14 @@ describe('angucomplete-alt', function() {
       expect(element.find('#ex1_value').attr('maxlength')).toEqual('25');
     });
 
+    it('should render default type attribute for input element if not explicitly specified', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" selected-object="selectedCountry" title-field="name"></div>');
+      $scope.selectedCountry = null;
+      $compile(element)($scope);
+      $scope.$digest();
+      expect(element.find('#ex1_value').attr('type')).toEqual('text');
+    });
+
   });
 
   describe('Local data', function() {

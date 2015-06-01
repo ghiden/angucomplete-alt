@@ -701,6 +701,8 @@
           }
         }
 
+        scope.type = attrs.type ? attrs.type : 'text';
+
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
         scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
