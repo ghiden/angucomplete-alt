@@ -24,10 +24,6 @@
 
 * Missing 'type' field on input element when not specified #167
 
-### [@termleech](https://github.com/termleech)
-
-* Add maxlength #136
-
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
 * Add css to bower.json main #68
@@ -76,6 +72,10 @@
 ### [@SpaceK33z: Kees Kluskens](https://github.com/SpaceK33z)
 
 * Bug fix #62
+
+### [@termleech](https://github.com/termleech)
+
+* Add maxlength #136
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 
