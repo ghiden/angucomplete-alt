@@ -1302,7 +1302,6 @@ describe('angucomplete-alt', function() {
       expect(element.find('.angucomplete-row').length).toBe(2);
 
       // make a selection
-      var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
       inputField.trigger(eKeydown);
       eKeydown.which = KEY_EN;
