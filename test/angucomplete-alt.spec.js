@@ -1268,6 +1268,54 @@ describe('angucomplete-alt', function() {
       expect(inputField1.val()).toBe('');
       expect(inputField2.val()).toBe('');
     });
+
+    it('should clear input fields', function() {
+      var element = angular.element(
+        '<form name="name">' +
+        '  <div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName" title-field="firstName" minlength="1" field-required="true"/>' +
+        '</form>'
+      );
+      $scope.clearInput = function(id) {
+        $scope.$broadcast('angucomplete-alt:clearInput', id);
+      };
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {firstName: 'Emma'},
+        {firstName: 'Elvis'},
+        {firstName: 'John'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+
+      var inputField = element.find('#ex1_value');
+      var eKeydown = $.Event('keydown');
+      var eKeyup = $.Event('keyup');
+
+      inputField.val('e');
+      inputField.trigger('input');
+      eKeyup.which = 'e'.charCodeAt(0);
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+
+      expect(element.find('.angucomplete-row').length).toBe(2);
+
+      // make a selection
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect($scope.selectedPerson).toBeDefined();
+
+      $scope.clearInput('ex1');
+      $scope.$digest();
+
+      expect(inputField.val()).toBe('');
+      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+    });
   });
 
   describe('Update input field text', function() {

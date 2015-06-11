@@ -141,15 +141,10 @@
         });
 
         scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
-          if (!elementId) {
+          if (!elementId || elementId === scope.id) {
             scope.searchStr = null;
+            handleRequired(false);
             clearResults();
-          }
-          else { // id is given
-            if (scope.id === elementId) {
-              scope.searchStr = null;
-              clearResults();
-            }
           }
         });
 
