@@ -121,7 +121,12 @@
         var unbindInitialValue;
 
         elem.on('mousedown', function(event) {
-          mousedownOn = event.target.id;
+          if (event.target.id) {
+            mousedownOn = event.target.id;
+          }
+          else {
+            mousedownOn = event.target.className;
+          }
         });
 
         scope.currentIndex = null;
@@ -597,7 +602,7 @@
         };
 
         scope.hideResults = function(event) {
-          if (mousedownOn === scope.id + '_dropdown') {
+          if (mousedownOn && mousedownOn.indexOf('angucomplete') >= 0) {
             mousedownOn = null;
           }
           else {
