@@ -121,7 +121,12 @@
         var unbindInitialValue;
 
         elem.on('mousedown', function(event) {
-          mousedownOn = event.target.id;
+          if (event.target.id) {
+            mousedownOn = event.target.id;
+          }
+          else {
+            mousedownOn = event.target.className;
+          }
         });
 
         scope.currentIndex = null;
@@ -136,15 +141,10 @@
         });
 
         scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
-          if (!elementId) {
+          if (!elementId || elementId === scope.id) {
             scope.searchStr = null;
+            handleRequired(false);
             clearResults();
-          }
-          else { // id is given
-            if (scope.id === elementId) {
-              scope.searchStr = null;
-              clearResults();
-            }
           }
         });
 
@@ -597,7 +597,7 @@
         };
 
         scope.hideResults = function(event) {
-          if (mousedownOn === scope.id + '_dropdown') {
+          if (mousedownOn && mousedownOn.indexOf('angucomplete') >= 0) {
             mousedownOn = null;
           }
           else {
@@ -700,6 +700,8 @@
             handleRequired(false);
           }
         }
+
+        scope.type = attrs.type ? attrs.type : 'text';
 
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
