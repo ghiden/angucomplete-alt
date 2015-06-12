@@ -142,7 +142,9 @@
             } else if (typeof newval === 'string' && newval.length > 0) {
               scope.searchStr = newval;
             } else {
-              console.error('Tried to set initial value of angucomplete to', newval, 'which is an invalid value');
+              if (console && console.error) {
+                console.error('Tried to set initial value of angucomplete to', newval, 'which is an invalid value');
+              }
             }
 
             handleRequired(true);
