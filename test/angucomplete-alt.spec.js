@@ -995,7 +995,7 @@ describe('angucomplete-alt', function() {
   });
 
   describe('initial value', function() {
-    it('should set initial value', function() {
+    it('should set initial value from string', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
@@ -1011,7 +1011,7 @@ describe('angucomplete-alt', function() {
       expect(element.isolateScope().searchStr).toBe('Japan');
     });
 
-    it('should set initial value', function() {
+    it('should set initial value from object', function() {
 
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="grabCountryCode" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
 
