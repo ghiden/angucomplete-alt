@@ -118,7 +118,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | field-required-class | Set custom class name for required. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
-| initial-value | Initial value for internal ng-model. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | "some string" |
+| initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | myInitialValue (object/string) |
 | input-changed | A callback function that is called when input field is changed. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](http://ghiden.github.io/angucomplete-alt/#example11) |  No | true |
 | focus-in | A function or expression to be called when input field gets focused. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusIn() |

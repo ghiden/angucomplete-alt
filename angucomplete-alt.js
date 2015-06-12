@@ -73,7 +73,7 @@
       scope: {
         selectedObject: '=',
         disableInput: '=',
-        initialValue: '@',
+        initialValue: '=',
         localData: '=',
         remoteUrlRequestFormatter: '=',
         remoteUrlRequestWithCredentials: '@',
@@ -131,12 +131,21 @@
 
         scope.currentIndex = null;
         scope.searching = false;
-        scope.searchStr = scope.initialValue;
-        unbindInitialValue = scope.$watch('initialValue', function(newval, oldval){
-          if (newval && newval.length > 0) {
-            scope.searchStr = scope.initialValue;
-            handleRequired(true);
+        unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
+
+          if (newval) {
             unbindInitialValue();
+
+            if (typeof newval === 'object') {
+              scope.searchStr = extractTitle(newval);
+              callOrAssign({originalObject: newval});
+            } else if (typeof newval === 'string' && newval.length > 0) {
+              scope.searchStr = newval;
+            } else {
+              console.error('Tried to set initial value of angucomplete to', newval, 'which is an invalid value');
+            }
+
+            handleRequired(true);
           }
         });
 
@@ -706,7 +715,7 @@
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
         scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
-        
+
         // set max length (default to maxlength deault from html
         scope.maxlength = attrs.maxlength ? attrs.maxlength : MAX_LENGTH;
 
