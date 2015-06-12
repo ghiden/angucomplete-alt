@@ -15,6 +15,10 @@
 
 * Bug fix #109
 
+### [@antony: Antony Jones](https://github.com/antony)
+
+* Allow the user to set an initial value OBJECT instead of just a string #173
+
 ### [@boshen](https://github.com/Boshen)
 
 * Collaborator and excellent developer
