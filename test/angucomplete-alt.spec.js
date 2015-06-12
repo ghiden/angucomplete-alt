@@ -35,7 +35,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
       expect(element.find('#ex1_value').attr('placeholder')).toEqual('Search countries');
     });
-      
+
     it('should render maxlength string', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" maxlength="25" />');
       $scope.selectedCountry = null;
@@ -995,8 +995,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('initial value', function() {
-    it('should set initial value', function() {
-      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="{{initialValue}}"/>');
+    it('should set initial value from string', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
@@ -1011,8 +1011,33 @@ describe('angucomplete-alt', function() {
       expect(element.isolateScope().searchStr).toBe('Japan');
     });
 
+    it('should set initial value from object', function() {
+
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="grabCountryCode" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
+
+      $scope.countryCode = null;
+      $scope.grabCountryCode = function(value) {
+        $scope.countryCode = value.originalObject.code;
+      };
+
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      $scope.initialValue = {name: 'Aland Islands', code: 'AX'};
+      $scope.$digest();
+
+      expect(element.isolateScope().searchStr).toBe('Aland Islands');
+      expect($scope.countryCode).toBe('AX');
+
+    });
+
     it('should set validity to true', function() {
-      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="{{initialValue}}" field-required="true"/></form>');
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue" field-required="true"/></form>');
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
