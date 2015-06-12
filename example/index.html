@@ -163,13 +163,13 @@
         <h3><a name="example9" class="page-anchor">Example 9 - Initial Value</a></h3>
         <div class="padded-row">
           <form>
-            <div angucomplete-alt id="ex9" placeholder="Search countries" pause="100" selected-object="countrySelected9" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true" initial-value="{{countrySelected9.title}}">
+            <div angucomplete-alt id="ex9" placeholder="Search countries" pause="100" selected-object="countrySelectedFn9" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true" initial-value="countrySelected9">
             </div>
           </form>
         </div>
         <div class="result">
           <div class="" ng-show="countrySelected9">
-            You selected <span class="bold-span">{{countrySelected9.title}}</span>
+            You selected <span class="bold-span">{{countrySelected9.name}}</span>
           </div>
         </div>
 

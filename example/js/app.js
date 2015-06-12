@@ -262,7 +262,14 @@ app.controller('MainController', ['$scope', '$http',
       {name: 'Zimbabwe', code: 'ZW'}
     ];
 
-    $scope.countrySelected9 = {title: 'Chile'};
+    $scope.countrySelected9 = {name: 'Zimbabwe', code: 'ZW'};
+    $scope.countrySelectedFn9 = function(selected) {
+      if (selected) {
+        $scope.countrySelected9 = selected.originalObject;
+      } else {
+        $scope.countrySelected9 = null;
+      }
+    }
 
     $scope.inputChanged = function(str) {
       $scope.console10 = str;
