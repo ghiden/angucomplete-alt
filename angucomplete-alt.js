@@ -165,6 +165,7 @@
         }
 
         function callOrAssign(value) {
+          unbindInitialValue();
           if (typeof scope.selectedObject === 'function') {
             scope.selectedObject(value);
           }
