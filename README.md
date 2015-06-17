@@ -172,13 +172,15 @@ remote-url-request-with-credentials
 
 Callbacks ```selected-object``` and ```input-changed``` are called with the following method signature:
 
-```function ($item) {
+```
+function ($item) {
 
   $item.title // or description, or image - from your angucomplete attribute configuration
   $item.originalObject // the actual object which was selected
   this.$parent // the control which caused the change, contains useful things like $index for use in ng-repeat.
 
-}```
+}
+```
 
 ### Examples
 
