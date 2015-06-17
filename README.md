@@ -95,7 +95,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | placeholder | Placeholder text for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | Search members |
 | maxlength | Maxlength attribute for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 25 |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 400 |
-| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
+| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | results |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined). If you want to access nested field, use dot to connect attributes (e.g. name.first). [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | firstName,lastName |
@@ -119,7 +119,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | myInitialValue (object/string) |
-| input-changed | A callback function that is called when input field is changed. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
+| input-changed | A callback function that is called when input field is changed. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](http://ghiden.github.io/angucomplete-alt/#example11) |  No | true |
 | focus-in | A function or expression to be called when input field gets focused. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusIn() |
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
@@ -167,6 +167,18 @@ remote-url
 remote-url-request-formatter
 remote-url-request-with-credentials
 ```
+
+### Callback behaviour
+
+Callbacks ```selected-object``` and ```input-changed``` are called with the following method signature:
+
+```function ($item) {
+
+  $item.title // or description, or image - from your angucomplete attribute configuration
+  $item.originalObject // the actual object which was selected
+  this.$parent // the control which caused the change, contains useful things like $index for use in ng-repeat.
+
+}```
 
 ### Examples
 
