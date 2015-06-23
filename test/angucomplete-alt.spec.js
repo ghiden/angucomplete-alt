@@ -1339,6 +1339,7 @@ describe('angucomplete-alt', function() {
 
       expect(inputField.val()).toBe('');
       expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect($scope.selectedPerson).toBeUndefined();
     });
   });
 

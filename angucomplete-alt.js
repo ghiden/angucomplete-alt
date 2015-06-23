@@ -154,6 +154,7 @@
         scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
           if (!elementId || elementId === scope.id) {
             scope.searchStr = null;
+            callOrAssign();
             handleRequired(false);
             clearResults();
           }
