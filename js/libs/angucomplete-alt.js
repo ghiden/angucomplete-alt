@@ -49,7 +49,7 @@
     // Set the default template for this directive
     $templateCache.put(TEMPLATE_URL,
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
-        '  <input id="{{id}}_value" name={{inputName}} ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{type}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+        '  <input id="{{id}}_value" name={{inputName}} ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{inputType}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
         '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
         '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
         '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
@@ -154,6 +154,7 @@
         scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
           if (!elementId || elementId === scope.id) {
             scope.searchStr = null;
+            callOrAssign();
             handleRequired(false);
             clearResults();
           }
@@ -288,7 +289,9 @@
             }
 
             if (validState && validState !== scope.searchStr && !scope.clearSelected) {
-              callOrAssign(undefined);
+              scope.$apply(function() {
+                callOrAssign();
+              });
             }
           }
         }
@@ -608,7 +611,9 @@
         };
 
         scope.hideResults = function(event) {
-          if (mousedownOn && mousedownOn.indexOf('angucomplete') >= 0) {
+          if (mousedownOn &&
+              (mousedownOn === scope.id + '_dropdown' ||
+               mousedownOn.indexOf('angucomplete') >= 0)) {
             mousedownOn = null;
           }
           else {
@@ -712,7 +717,7 @@
           }
         }
 
-        scope.type = attrs.type ? attrs.type : 'text';
+        scope.inputType = attrs.type ? attrs.type : 'text';
 
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
