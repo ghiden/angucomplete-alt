@@ -289,7 +289,9 @@
             }
 
             if (validState && validState !== scope.searchStr && !scope.clearSelected) {
-              callOrAssign(undefined);
+              scope.$apply(function() {
+                callOrAssign();
+              });
             }
           }
         }
