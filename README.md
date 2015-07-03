@@ -24,7 +24,7 @@ To see a demo go here: http://ghiden.github.io/angucomplete-alt
 * Blur event handling, thanks to @leejsinclair
 * Override suggestions
 * You can either bind an object or callback function
-    * bind an object: it works as regular two-way-data-binding
+    * bind an object: it works as one-way-data-binding. It gets set when a selection is made.
     * callback function: when a selection is made by user, this callback is called with the selected object. When the selection is deselected, the callback is called with undefined. Thanks to @nekcih for proposing this feature.
 * Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable. Thanks to @alindber for the initial idea.
 * Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
@@ -95,7 +95,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | placeholder | Placeholder text for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | Search members |
 | maxlength | Maxlength attribute for the search field. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 25 |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](http://ghiden.github.io/angucomplete-alt/#example1) | No | 400 |
-| selected-object | Either an object in your scope or callback function. If you set an object, it will be two-way-bound data as usual. If you set a callback, it gets called when selection is made. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
+| selected-object | Either an object in your scope or callback function. If you set an object, it will be passed to the directive with '=' sign but it is actually one-way-bound data. So, setting it from your scope has no effect on input string. If you set a callback, it gets called when selection is made. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | selectedObject or objectSelectedCallback |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. [example](http://ghiden.github.io/angucomplete-alt/#example5) | No | results |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined). If you want to access nested field, use dot to connect attributes (e.g. name.first). [example](http://ghiden.github.io/angucomplete-alt/#example1) | Yes | firstName,lastName |
