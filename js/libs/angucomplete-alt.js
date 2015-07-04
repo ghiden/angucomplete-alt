@@ -123,6 +123,9 @@
         elem.on('mousedown', function(event) {
           if (event.target.id) {
             mousedownOn = event.target.id;
+            if (mousedownOn === scope.id + '_dropdown') {
+              document.body.addEventListener('click', clickoutHandlerForDropdown);
+            }
           }
           else {
             mousedownOn = event.target.className;
@@ -159,6 +162,13 @@
             clearResults();
           }
         });
+
+        // #194 dropdown list not consistent in collapsing (bug).
+        function clickoutHandlerForDropdown(event) {
+          mousedownOn = null;
+          scope.hideResults(event);
+          document.body.removeEventListener('click', clickoutHandlerForDropdown);
+        }
 
         // for IE8 quirkiness about event.which
         function ie8EventNormalizer(event) {
@@ -210,7 +220,9 @@
           if (key) {
             keys= key.split('.');
             result = obj;
-            keys.forEach(function(k) { result = result[k]; });
+            for (var i = 0; i < keys.length; i++) {
+              result = result[keys[i]];
+            }
           }
           else {
             result = obj;
