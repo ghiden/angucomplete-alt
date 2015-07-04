@@ -114,8 +114,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | remote-api-handler | This gives a way to fully delegate handling of remote search API. This function takes user input string and timeout promise, and it needs to return a promise. For example, if your search API is based on POST, you can use this function to create your own http handler. See example below | No | - |
 | clear-selected | To clear out input field upon selecting an item, set this attribute to true. [example](http://ghiden.github.io/angucomplete-alt/#example3) | No | true |
 | override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](http://ghiden.github.io/angucomplete-alt/#example4) | No | true |
-| field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required". [example](http://ghiden.github.io/angucomplete-alt/#example8) | No | true |
-| field-required-class | Set custom class name for required. | No | "match" |
+| field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required". [example](http://ghiden.github.io/angucomplete-alt/#example8) If you need to validate more than one directives, you have to provide unique field-required-class for each directive. | No | true |
+| field-required-class | Set custom class name for required. Unique class names need to be set when you have multiple directives to validate. | No | "match" |
 | text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
 | text-no-results | Custom string to show when there is no match. | No | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | myInitialValue (object/string) |
