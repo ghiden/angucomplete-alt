@@ -1539,4 +1539,27 @@ describe('angucomplete-alt', function() {
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
   });
+
+  describe('Numeric data', function() {
+    it('should handle nemeric data', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" minlength="1"/>');
+      $scope.selectedUser = undefined;
+      $scope.users = [
+        {name: 'Alice', id: 1},
+        {name: 'Bob', id: 2},
+        {name: 'Chris', id: 3}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = '1'.charCodeAt(0);
+      inputField.val(1);
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(1);
+    });
+  });
 });
