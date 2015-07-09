@@ -236,9 +236,10 @@
           // Escape user input to be treated as a literal string within a regular expression
           re = new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
           if (!target) { return; }
-          matches = target.toString().match(re);
+          if (!target.match || !target.replace) { target = target.toString(); }
+          matches = target.match(re);
           if (matches) {
-            result = target.toString().replace(re,
+            result = target.replace(re,
                 '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
           }
           else {

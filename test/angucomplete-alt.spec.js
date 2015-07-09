@@ -1582,5 +1582,31 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect(element.find('.angucomplete-row').length).toBe(1);
     });
+
+    it('should handle match class, multiple matches ', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" description-field="amount" minlength="2" match-class="highlight"/>');
+      $scope.selectedUser = undefined;
+      $scope.users = [
+        {name: 'Alice', id: 100, amount: 100},
+        {name: 'Bob', id: 101, amount: 123},
+        {name: 'Chris', id: 110, amount: 200}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = '1'.charCodeAt(0);
+      inputField.val(1);
+      inputField.trigger('input');
+      inputField.trigger(e);
+
+      e.which = '0'.charCodeAt(0);
+      inputField.val(10);
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
   });
 });
