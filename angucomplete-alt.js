@@ -102,7 +102,7 @@
             focusOut: '&',
             focusIn: '&',
             searchStr: '@',
-            hideOnEmpty: '=',
+            hideOnEmpty: '@',
             inputName: '@'
           },
           templateUrl: function(element, attrs) {
