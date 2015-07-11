@@ -119,6 +119,7 @@
         var isScrollOn = false;
         var mousedownOn = null;
         var unbindInitialValue;
+        var resultSelected = false;
 
         elem.on('mousedown', function(event) {
           if (event.target.id) {
@@ -152,6 +153,26 @@
 
             handleRequired(true);
           }
+        });
+
+        scope.$watch('searchStr', function(newValue, oldValue){
+
+          if (oldValue === newValue || !scope.searchStr || resultSelected) {
+            resultSelected = false;
+            return;
+          }
+
+          initResults();
+
+          if (searchTimer) {
+            $timeout.cancel(searchTimer);
+          }
+
+          scope.searching = true;
+
+          searchTimer = $timeout(function() {
+            searchTimerComplete(scope.searchStr);
+          }, scope.pause);
         });
 
         scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
@@ -669,6 +690,9 @@
         };
 
         scope.selectResult = function(result) {
+
+          resultSelected = true;
+
           // Restore original values
           if (scope.matchClass) {
             result.title = extractTitle(result.originalObject);
