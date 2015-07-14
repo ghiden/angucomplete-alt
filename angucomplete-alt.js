@@ -280,33 +280,6 @@
               inputField.val(scope.searchStr);
             });
           }
-          else {
-            if (minlength === 0 && !scope.searchStr) {
-              return;
-            }
-
-            if (!scope.searchStr || scope.searchStr === '') {
-              scope.showDropdown = false;
-            } else if (scope.searchStr.length >= minlength) {
-              initResults();
-
-              if (searchTimer) {
-                $timeout.cancel(searchTimer);
-              }
-
-              scope.searching = true;
-
-              searchTimer = $timeout(function() {
-                searchTimerComplete(scope.searchStr);
-              }, scope.pause);
-            }
-
-            if (validState && validState !== scope.searchStr && !scope.clearSelected) {
-              scope.$apply(function() {
-                callOrAssign();
-              });
-            }
-          }
         }
 
         function handleOverrideSuggestions(event) {
@@ -689,9 +662,31 @@
           if (str.length < minlength) {
             clearResults();
           }
-          else if (str.length === 0 && minlength === 0) {
-            scope.searching = false;
-            showAll();
+          else if (str.length === 0) {
+            if(minlength === 0) {
+              scope.searching = false;
+              showAll();
+            } else{
+              scope.showDropdown = false;
+            }
+          } else {
+            initResults();
+
+            if (searchTimer) {
+              $timeout.cancel(searchTimer);
+            }
+
+            scope.searching = true;
+
+            searchTimer = $timeout(function() {
+              searchTimerComplete(scope.searchStr);
+            }, scope.pause);
+          }
+
+          if (validState && validState !== str && !scope.clearSelected) {
+            scope.$apply(function() {
+              callOrAssign();
+            });
           }
 
           if (scope.inputChanged) {
