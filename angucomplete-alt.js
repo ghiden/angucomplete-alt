@@ -101,7 +101,8 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
-        inputName: '@'
+        inputName: '@',
+        searchStr: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
