@@ -109,6 +109,7 @@
       },
       link: function(scope, elem, attrs, ctrl) {
         var inputField = elem.find('input');
+        var inputExists = inputField.length > 0;
         var minlength = MIN_LENGTH;
         var searchTimer = null;
         var hideTimer;
@@ -120,8 +121,11 @@
         var isScrollOn = false;
         var mousedownOn = null;
         var unbindInitialValue;
+        var unbindKeydown;
+        var unbindKeyup;
+        var unbindMousedown;
 
-        elem.on('mousedown', function(event) {
+        unbindMousedown = elem.on('mousedown', function(event) {
           if (event.target.id) {
             mousedownOn = event.target.id;
             if (mousedownOn === scope.id + '_dropdown') {
@@ -277,9 +281,11 @@
           }
           else if (which === KEY_ES) {
             clearResults();
-            scope.$apply(function() {
-              inputField.val(scope.searchStr);
-            });
+            if(inputExists) {
+              scope.$apply(function () {
+                inputField.val(scope.searchStr);
+              });
+            }
           }
           else {
             if (minlength === 0 && !scope.searchStr) {
@@ -374,7 +380,9 @@
             if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
               scope.$apply(function() {
                 scope.currentIndex ++;
-                updateInputField();
+                if(inputExists) {
+                  updateInputField();
+                }
               });
 
               if (isScrollOn) {
@@ -389,7 +397,9 @@
             if (scope.currentIndex >= 1) {
               scope.$apply(function() {
                 scope.currentIndex --;
-                updateInputField();
+                if(inputExists) {
+                  updateInputField();
+                }
               });
 
               if (isScrollOn) {
@@ -402,7 +412,9 @@
             else if (scope.currentIndex === 0) {
               scope.$apply(function() {
                 scope.currentIndex = -1;
-                inputField.val(scope.searchStr);
+                if(inputExists) {
+                  inputField.val(scope.searchStr);
+                }
               });
             }
           } else if (which === KEY_TAB) {
@@ -746,9 +758,15 @@
         // set max length (default to maxlength deault from html
         scope.maxlength = attrs.maxlength ? attrs.maxlength : MAX_LENGTH;
 
-        // register events
-        inputField.on('keydown', keydownHandler);
-        inputField.on('keyup', keyupHandler);
+        // register events on input field if exists.
+        if(inputExists) {
+          unbindKeydown = inputField.on('keydown', keydownHandler);
+          unbindKeyup = inputField.on('keyup', keyupHandler);
+        }
+        else{
+          scope.keydownHandler = keydownHandler;
+          scope.keyupHandler = keyupHandler;
+        }
 
         // set response formatter
         responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
@@ -756,6 +774,11 @@
         scope.$on('$destroy', function() {
           // take care of required validity when it gets destroyed
           handleRequired(true);
+          if(inputExists) {
+            inputField.off(unbindKeydown);
+            inputField.off(unbindKeyup);
+            inputField.off(unbindMousedown);
+          }
         });
 
         // set isScrollOn
