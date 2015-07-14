@@ -102,7 +102,8 @@
         focusOut: '&',
         focusIn: '&',
         inputName: '@',
-        searchStr: '@'
+        searchStr: '@',
+        hideOnEmpty: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -617,6 +618,10 @@
 
           } else {
             scope.results = [];
+
+            if(scope.hideOnEmpty) {
+              scope.showDropdown = false;
+            }
           }
         }
 
