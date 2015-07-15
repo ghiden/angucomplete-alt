@@ -251,7 +251,7 @@
         function handleRequired(valid) {
           scope.notEmpty = valid;
           validState = scope.searchStr;
-          if (scope.fieldRequired && ctrl) {
+          if (scope.fieldRequired === 'true' && ctrl) {
             ctrl.$setValidity(requiredClassName, valid);
           }
         }
