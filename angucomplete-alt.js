@@ -134,10 +134,9 @@
 
         scope.currentIndex = null;
         scope.searching = false;
-        unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
+        scope.$watch('initialValue', function(newval, oldval) {
 
           if (newval) {
-            unbindInitialValue();
 
             if (typeof newval === 'object') {
               scope.searchStr = extractTitle(newval);
@@ -151,6 +150,10 @@
             }
 
             handleRequired(true);
+          }
+          else {
+              scope.searchStr = null;
+              handleRequired(false);
           }
         });
 
