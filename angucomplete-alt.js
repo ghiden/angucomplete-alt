@@ -511,7 +511,7 @@
         }
 
         function initResults() {
-          scope.showDropdown = true;
+          scope.showDropdown = !scope.hideOnEmpty;
           scope.currentIndex = -1;
           scope.results = [];
         }
@@ -604,12 +604,10 @@
               }
             }
 
+            scope.showDropdown = true;
+
           } else {
             scope.results = [];
-
-            if(scope.hideOnEmpty) {
-              scope.showDropdown = false;
-            }
           }
         }
 
