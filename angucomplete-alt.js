@@ -607,11 +607,13 @@
                 var exactMatch = checkExactMatch(result,
                     {title: text, desc: description || ''}, scope.searchStr);
 
-                if(exactMatch && scope.autoMatch) {
-                  scope.selectResult(result);
-                }
-                else{
-                  scope.currentIndex = currentIndex;
+                if(exactMatch) {
+                  if (scope.autoMatch) {
+                    scope.selectResult(result);
+                  }
+                  else {
+                    scope.currentIndex = currentIndex;
+                  }
                 }
               }
             }
