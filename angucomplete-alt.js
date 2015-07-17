@@ -103,7 +103,8 @@
         focusIn: '&',
         inputName: '@',
         searchStr: '@',
-        hideOnEmpty: '@'
+        hideOnEmpty: '@',
+        highlightExactMatch: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -539,13 +540,15 @@
         }
 
         function checkExactMatch(result, obj, str){
-          if (!str) { return; }
-          for(var key in obj){
-            if(obj[key].toLowerCase() === str.toLowerCase()){
-              scope.selectResult(result);
-              return;
+          var matched = false;
+          if (str) {
+            for (var key in obj) {
+              if (obj[key].toLowerCase() === str.toLowerCase()) {
+                matched = true;
+              }
             }
           }
+          return matched;
         }
 
         function searchTimerComplete(str) {
@@ -598,9 +601,18 @@
                 originalObject: responseData[i]
               };
 
-              if (scope.autoMatch) {
-                checkExactMatch(scope.results[scope.results.length-1],
+              if (scope.autoMatch || scope.highlightExactMatch) {
+                var currentIndex = scope.results.length-1;
+                var result = scope.results[currentIndex];
+                var exactMatch = checkExactMatch(result,
                     {title: text, desc: description || ''}, scope.searchStr);
+
+                if(exactMatch && scope.autoMatch) {
+                  scope.selectResult(result);
+                }
+                else{
+                  scope.currentIndex = currentIndex;
+                }
               }
             }
 
