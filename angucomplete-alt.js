@@ -509,7 +509,7 @@
         }
 
         function initResults() {
-          scope.showDropdown = true;
+		  scope.showDropdown = scope.displaySearching;
           scope.currentIndex = -1;
           scope.results = [];
         }
@@ -605,6 +605,11 @@
           } else {
             scope.results = [];
           }
+		  if (scope.results.length === 0 && !scope.displayNoResult) {
+			scope.showDropdown = false;
+		  } else {
+			scope.showDropdown = true;
+		  }
         }
 
         function showAll() {
@@ -741,6 +746,8 @@
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
         scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
+		scope.displayNoResult = attrs.displayNoResult === "false" ? false : true;
+		scope.displaySearching = attrs.displaySearching === "false" ? false : true;
 
         // set max length (default to maxlength deault from html
         scope.maxlength = attrs.maxlength ? attrs.maxlength : MAX_LENGTH;
