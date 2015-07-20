@@ -116,8 +116,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](http://ghiden.github.io/angucomplete-alt/#example4) | No | true |
 | field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form. Default class name is "autocomplete-required". [example](http://ghiden.github.io/angucomplete-alt/#example8) If you need to validate more than one directives, you have to provide unique field-required-class for each directive. | No | true |
 | field-required-class | Set custom class name for required. Unique class names need to be set when you have multiple directives to validate. | No | "match" |
-| text-searching | Custom string to show when search is in progress. | No | "Searching for items..." |
-| text-no-results | Custom string to show when there is no match. | No | "Not found" |
+| text-searching | Custom string to show when search is in progress. Set this to 'false' prevents text to show up. | No | "Searching for items..." |
+| text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | myInitialValue (object/string) |
 | input-changed | A callback function that is called when input field is changed. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](http://ghiden.github.io/angucomplete-alt/#example11) |  No | true |
