@@ -20,6 +20,10 @@
 * Allow the user to set an initial value OBJECT instead of just a string #173
 * Documentation update #180
 
+### [@baloo2401](https://github.com/baloo2401)
+
+* display-searching and display-no-result #129
+
 ### [@boshen](https://github.com/Boshen)
 
 * Collaborator and excellent developer
