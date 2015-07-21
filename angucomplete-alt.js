@@ -749,8 +749,8 @@
         // set strings for "Searching..." and "No results"
         scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
         scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
-        displaySearching = scope.textSearching === "false" ? false : true;
-        displayNoResults = scope.textNoResults === "false" ? false : true;
+        displaySearching = scope.textSearching === 'false' ? false : true;
+        displayNoResults = scope.textNoResults === 'false' ? false : true;
 
         // set max length (default to maxlength deault from html
         scope.maxlength = attrs.maxlength ? attrs.maxlength : MAX_LENGTH;
