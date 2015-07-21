@@ -98,6 +98,7 @@
         fieldRequired: '@',
         fieldRequiredClass: '@',
         inputChanged: '=',
+        noResult: '=',
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
@@ -606,6 +607,9 @@
 
           } else {
             scope.results = [];
+            if(scope.noResult){
+              scope.noResult(str);
+            }
           }
 
           if (scope.results.length === 0 && !displayNoResults) {

@@ -120,6 +120,7 @@ var app = angular.module('app', ["angucomplete-alt"]);
 | text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](http://ghiden.github.io/angucomplete-alt/#example9) | No | myInitialValue (object/string) |
 | input-changed | A callback function that is called when input field is changed. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](http://ghiden.github.io/angucomplete-alt/#example10) |  No | inputChangedFn |
+| no-result | A callback function that is called when no result found |  No | - |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](http://ghiden.github.io/angucomplete-alt/#example11) |  No | true |
 | focus-in | A function or expression to be called when input field gets focused. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusIn() |
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
