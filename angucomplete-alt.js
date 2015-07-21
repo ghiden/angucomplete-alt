@@ -607,7 +607,9 @@
 
           } else {
             scope.results = [];
-            scope.noResult(str);
+            if(scope.noResult){
+              scope.noResult(str);
+            }
           }
 
           if (scope.results.length === 0 && !displayNoResults) {
