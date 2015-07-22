@@ -104,7 +104,8 @@
         inputName: '@',
         searchStr: '@',
         hideOnEmpty: '@',
-        highlightExactMatch: '@'
+        highlightExactMatch: '@',
+        checkExactMatch: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -539,18 +540,6 @@
           processResults(matches, str);
         }
 
-        function checkExactMatch(result, obj, str){
-          var matched = false;
-          if (str) {
-            for (var key in obj) {
-              if (obj[key].toLowerCase() === str.toLowerCase()) {
-                matched = true;
-              }
-            }
-          }
-          return matched;
-        }
-
         function searchTimerComplete(str) {
           // Begin the search
           if (!str || str.length < minlength) {
@@ -604,7 +593,7 @@
               if (scope.autoMatch || scope.highlightExactMatch) {
                 var currentIndex = scope.results.length-1;
                 var result = scope.results[currentIndex];
-                var exactMatch = checkExactMatch(result,
+                var exactMatch = scope.checkExactMatch(result,
                     {title: text, desc: description || ''}, scope.searchStr);
 
                 if(exactMatch) {
@@ -702,6 +691,20 @@
           callOrAssign(result);
           clearResults();
         };
+
+        if(!scope.checkExactMatch) {
+          scope.checkExactMatch = function (result, obj, str) {
+            var matched = false;
+            if (str) {
+              for (var key in obj) {
+                if (obj[key].toLowerCase() === str.toLowerCase()) {
+                  matched = true;
+                }
+              }
+            }
+            return matched;
+          };
+        }
 
         scope.inputChangeHandler = function(str) {
           if (str.length < minlength) {
