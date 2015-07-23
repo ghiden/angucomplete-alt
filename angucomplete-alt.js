@@ -514,7 +514,6 @@
         function initResults() {
           scope.showDropdown = !scope.hideOnEmpty;
           scope.currentIndex = -1;
-          scope.results = [];
         }
 
         function getLocalResults(str) {
@@ -554,6 +553,7 @@
         function searchTimerComplete(str) {
           // Begin the search
           if (!str || str.length < minlength) {
+            scope.results = [];
             return;
           }
           if (scope.localData) {
