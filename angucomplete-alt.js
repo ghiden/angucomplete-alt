@@ -103,7 +103,7 @@
         focusIn: '&',
         inputName: '@',
         searchStr: '@',
-        hideOnEmpty: '@',
+        hideWhileSearching: '@',
         highlightExactMatch: '@'
       },
       templateUrl: function(element, attrs) {
@@ -512,7 +512,7 @@
         }
 
         function initResults() {
-          scope.showDropdown = !scope.hideOnEmpty;
+          scope.showDropdown = !scope.hideWhileSearching;
           scope.currentIndex = -1;
         }
 
