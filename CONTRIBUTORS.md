@@ -2,26 +2,64 @@
 
 ---
 
+### [@alexbeletsky: Alexander Beletsky](https://github.com/alexbeletsky)
+
+* Publish to NPM #111, #121
+
 ### [@alindber: Andy Lindberg](https://github.com/alindber)
 
 * Required support #23
 * Auto match #29
 
+### [@andretw: Andre Lee](https://github.com/andretw)
+
+* Bug fix #109
+
+### [@antony: Antony Jones](https://github.com/antony)
+
+* Allow the user to set an initial value OBJECT instead of just a string #173
+* Documentation update #180
+
+### [@baloo2401](https://github.com/baloo2401)
+
+* display-searching and display-no-result #129
+
 ### [@boshen](https://github.com/Boshen)
 
+* Collaborator and excellent developer
 * Add autocapitalize="off" autocorrect="off" autocomplete="off" #15
 
-### [@foozee](https://github.com/foozee)
+### [@davidgeary: David Geary](https://github.com/davidgeary)
 
-* Watch initial value #26
+* Missing 'type' field on input element when not specified #167
 
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
 * Add css to bower.json main #68
 
+### [@iamgurdip](https://github.com/iamgurdip)
+
+* Escape regular expression #123
+
+### [@jbuquet: Javier Buquet](https://github.com/jbuquet)
+
+* Add custom API handler #128
+
+### [@jermspeaks: Jeremy Wong](https://github.com/jermspeaks)
+
+* Support withCredentials for $http #113
+
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
+
+### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
+
+* Add input name and a not-empty class #124
+
+### [@mmBs](https://github.com/mmBs)
+
+* Add type attribute #96
 
 ### [@mrdevin: David Hartman](https://github.com/mrdevin)
 
@@ -32,6 +70,10 @@
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
 
+### [@peterjkirby: Peter Kirby](https://github.com/peterjkirby)
+
+* Bug fix #97
+
 ### [@sdbondi: Stan Bondi](https://github.com/sdbondi)
 
 * Custom template #74
@@ -40,9 +82,17 @@
 
 * Bug fix #62
 
+### [@termleech](https://github.com/termleech)
+
+* Add maxlength #136
+
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 
 * Added delete keystroke together with backspace #4
+
+### [@tuduong2](https://github.com/tuduong2)
+
+* Encode search parameter #119
 
 ### [@urecio](https://github.com/urecio)
 

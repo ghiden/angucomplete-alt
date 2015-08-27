@@ -712,20 +712,19 @@
           scope.selectResult = function (result) {
             // Restore original values
 
-              if (scope.matchClass) {
-                result.title = extractTitle(result.originalObject);
-                result.description = extractValue(result.originalObject, scope.descriptionField);
-              }
+            if (scope.matchClass) {
+              result.title = extractTitle(result.originalObject);
+              result.description = extractValue(result.originalObject, scope.descriptionField);
+            }
 
-              if (scope.clearSelected) {
-                scope.searchStr = null;
-              }
-              else {
-                scope.searchStr = result.title;
-              }
-              callOrAssign(result);
-              clearResults();
-
+            if (scope.clearSelected) {
+              scope.searchStr = null;
+            }
+            else {
+              scope.searchStr = result.title;
+            }
+            callOrAssign(result);
+            clearResults();
           };
 
           scope.inputChangeHandler = function (str) {
