@@ -520,6 +520,7 @@
             if (!str) {
               return;
             }
+
             for (var key in obj) {
               if (obj[key].toLowerCase() === str.toLowerCase()) {
                 scope.selectResult(result);
@@ -546,7 +547,7 @@
           }
 
           var isArray = Array.isArray || function (obj) {
-                return toString.call(obj) === '[object Array]';
+                return obj.toString() === '[object Array]';
               };
 
           var isObject = function (obj) {
@@ -555,10 +556,18 @@
           };
 
           var keys = function (obj) {
-            if (!isObject(obj)) return [];
-            if (Object.keys) return Object.keys(obj);
+            if (!isObject(obj)) {
+              return [];
+            }
+            if (Object.keys) {
+              return Object.keys(obj);
+            }
             var keys = [];
-            for (var key in obj) if (_.has(obj, key)) keys.push(key);
+            for (var key in obj) {
+              if (_.has(obj, key)) {
+                keys.push(key);
+              }
+            }
             return keys;
           };
 
@@ -605,7 +614,7 @@
           function processResults(responseData, str) {
             var i, j, l, le, k;
 
-            if (responseData && responseData.length > 0) {
+            if (responseData) {
               scope.results = [];
 
               if (isArray(responseData) && responseData.length > 0) { // classic
@@ -702,7 +711,7 @@
 
           scope.selectResult = function (result) {
             // Restore original values
-            if (isObject(scope.results[scope.currentIndex ])) {
+
               if (scope.matchClass) {
                 result.title = extractTitle(result.originalObject);
                 result.description = extractValue(result.originalObject, scope.descriptionField);
@@ -716,7 +725,7 @@
               }
               callOrAssign(result);
               clearResults();
-            }
+
           };
 
           scope.inputChangeHandler = function (str) {
