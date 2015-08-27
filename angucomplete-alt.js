@@ -360,7 +360,6 @@
               event.preventDefault();
               if (scope.currentIndex >= 1) {
                 scope.$apply(function () {
-                  scope.currentIndex--;
                   if (!isObject(scope.results[scope.currentIndex - 1])) {
                     while (scope.currentIndex >= 1 && !isObject(scope.results[scope.currentIndex - 1])) {
                       scope.currentIndex--;
