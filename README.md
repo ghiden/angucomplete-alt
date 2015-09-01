@@ -88,6 +88,8 @@ var app = angular.module('app', ["angucomplete-alt"]);
               input-class="form-control form-control-small"/>
 ```
 
+It expects the returned results from remote API to have a root object. In the above example, 'results' is an array of search results.
+
 ### Description of attributes
 | Attribute        | Description           | Required | Example  |
 | :------------- |:-------------| :-----:| :-----|
