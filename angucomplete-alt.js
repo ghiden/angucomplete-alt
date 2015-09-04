@@ -105,7 +105,8 @@
         searchStr: '@',
         hideWhileSearching: '=',
         highlightExactMatch: '=',
-        hideTextSearching: '='
+        hideTextSearching: '=',
+        hideNoResults: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -513,7 +514,7 @@
         }
 
         function initResults() {
-          scope.showDropdown = !scope.hideWhileSearching;
+          scope.showDropdown = !scope.hideWhileSearching || !(scope.hideNoResults && scope.results.length === 0);
           scope.currentIndex = -1;
         }
 
@@ -619,10 +620,16 @@
               }
             }
 
-            scope.showDropdown = true;
+            if (scope.results.length === 0 && scope.hideNoResults) {
+              scope.showDropdown = false;
+            } else {
+              scope.showDropdown = true;
+            }
 
           } else {
             scope.results = [];
+            if (scope.hideNoResults) {
+              scope.showDropdown = false;
           }
         }
 
