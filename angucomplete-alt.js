@@ -604,12 +604,12 @@
               };
 
               if (scope.autoMatch || scope.highlightExactMatch) {
-                var currentIndex = scope.results.length-1;
+                var currentIndex = scope.results.length - 1;
                 var result = scope.results[currentIndex];
                 var exactMatch = checkExactMatch(result,
                     {title: text, desc: description || ''}, scope.searchStr);
 
-                if(exactMatch) {
+                if (exactMatch) {
                   if (scope.autoMatch) {
                     scope.selectResult(result);
                   }
@@ -630,6 +630,7 @@
             scope.results = [];
             if (scope.hideNoResults) {
               scope.showDropdown = false;
+            }
           }
         }
 
