@@ -473,7 +473,7 @@
 
       function initResults() {
         scope.showDropdown = displaySearching;
-        scope.currentIndex = -1;
+        scope.currentIndex = scope.focusFirst ? 0 : -1;
         scope.results = [];
       }
 
@@ -769,7 +769,8 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
-        inputName: '@'
+        inputName: '@',
+        focusFirst: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
