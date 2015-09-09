@@ -127,6 +127,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | focus-out | A function or expression to be called when input field lose focus. [example](http://ghiden.github.io/angucomplete-alt/#example12) |  No | focusOut() |
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) |  No | disableInput |
 | template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) |  No | "/my-custom-template.html" |
+| focus-first | Automatically select the first match from the result list. |  No | true |
 
 ### Scrollbar
 
