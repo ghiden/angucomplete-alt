@@ -95,7 +95,7 @@
         }
       });
 
-      scope.currentIndex = null;
+      scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
       unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
 
