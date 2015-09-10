@@ -593,6 +593,7 @@
           scope.focusIn();
         }
         if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+          scope.currentIndex = scope.focusFirst ? 0 : scope.currentIndex;
           scope.showDropdown = true;
           showAll();
         }
