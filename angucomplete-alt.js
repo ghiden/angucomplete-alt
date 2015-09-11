@@ -718,7 +718,7 @@
 
       // register events
       inputField.on('keydown', keydownHandler);
-      inputField.on('keyup', keyupHandler);
+      inputField.on('keyup input', keyupHandler);
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
