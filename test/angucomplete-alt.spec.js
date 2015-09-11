@@ -1225,6 +1225,7 @@ describe('angucomplete-alt', function() {
       eKeyup.which = KEY_DW;
       inputField.trigger('input');
       inputField.trigger(eKeyup);
+      $timeout.flush();
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
   });
