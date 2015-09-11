@@ -1608,5 +1608,30 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
+
+    describe('focus first attribute', function() {
+      it('should focus on first row when focusFirst attribute is present', function() {
+        var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" focus-first="true"/>');
+        $scope.selectedPerson = undefined;
+        $scope.people = [
+            {name: 'Jim Beam', email: 'jbeam@aol.com'},
+            {name: 'Elvis Presly', email: 'theking@gmail.com'},
+            {name: 'John Elway', email: 'elway@nfl.com'}
+        ];
+        $compile(element)($scope);
+        $scope.$digest();
+        expect($scope.currentIndex).toEqual(0);
+
+        var inputField = element.find('#ex1_value');
+        var y = $.Event('keyup');
+        y.which = 121;
+
+        inputField.val('El');
+        inputField.trigger('input');
+        inputField.trigger(y);
+        $timeout.flush();
+        expect($scope.currentIndex).toEqual(0);
+      });
+    });
   });
 });
