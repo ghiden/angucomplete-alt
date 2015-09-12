@@ -15,6 +15,10 @@
 
 * Bug fix #109
 
+### [@annmirosh](https://github.com/annmirosh)
+
+* Fix input event for mobile device #232 #178
+
 ### [@antony: Antony Jones](https://github.com/antony)
 
 * Allow the user to set an initial value OBJECT instead of just a string #173
