@@ -10,15 +10,16 @@
 'use strict';
 
 (function (root, factory) {
-  if (typeof module !== 'undefined' && module.exports) {
+  if (root.angular) {
+    // Global Variables
+    factory(root.angular);
+  }
+  else if (typeof module !== 'undefined' && module.exports) {
     // CommonJS
     module.exports = factory(require('angular'));
   } else if (typeof define === 'function' && define.amd) {
     // AMD
     define(['angular'], factory);
-  } else {
-    // Global Variables
-    factory(root.angular);
   }
 }(window, function (angular) {
 
