@@ -1611,7 +1611,7 @@ describe('angucomplete-alt', function() {
   });
 
   describe('focus first attribute', function() {
-    it('should focus on first row when focusFirst attribute is present', function() {
+    it('should focus on first row when focusFirst attribute is set to true', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" focus-first="true"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
@@ -1621,17 +1621,19 @@ describe('angucomplete-alt', function() {
       ];
       $compile(element)($scope);
       $scope.$digest();
-      expect($scope.currentIndex).toEqual(0);
+
+      expect(element.isolateScope().focusFirst).toBeTruthy();
+      expect(element.isolateScope().currentIndex).toBe(0);
 
       var inputField = element.find('#ex1_value');
-      var y = $.Event('keyup');
-      y.which = 121;
+      var e = $.Event('keyup');
 
-      inputField.val('El');
+      e.which = 'l'.charCodeAt(0);
+      inputField.val('l');
       inputField.trigger('input');
-      inputField.trigger(y);
+      inputField.trigger(e);
       $timeout.flush();
-      expect($scope.currentIndex).toEqual(0);
+      expect(element.isolateScope().currentIndex).toBe(0);
     });
   });
 });
