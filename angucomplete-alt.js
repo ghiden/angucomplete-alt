@@ -527,7 +527,7 @@
       }
 
       function processResults(responseData, str) {
-        var i, description, image, text, formattedText, formattedDesc;
+        var i, description, image, text, formattedText, formattedDesc, last;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
@@ -559,10 +559,15 @@
               originalObject: responseData[i]
             };
 
-            if (scope.autoMatch) {
-              checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description || ''}, scope.searchStr);
-            }
+            last = {
+              text: text,
+              description: description
+            };
+          }
+
+          if (scope.autoMatch && scope.results.length === 1) {
+            checkExactMatch(scope.results[0],
+                {title: last.text, desc: last.description || ''}, scope.searchStr);
           }
 
         } else {
