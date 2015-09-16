@@ -95,7 +95,7 @@
         }
       });
 
-      scope.currentIndex = null;
+      scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
       unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
 
@@ -473,7 +473,7 @@
 
       function initResults() {
         scope.showDropdown = displaySearching;
-        scope.currentIndex = -1;
+        scope.currentIndex = scope.focusFirst ? 0 : -1;
         scope.results = [];
       }
 
@@ -593,6 +593,7 @@
           scope.focusIn();
         }
         if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+          scope.currentIndex = scope.focusFirst ? 0 : scope.currentIndex;
           scope.showDropdown = true;
           showAll();
         }
@@ -769,7 +770,8 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
-        inputName: '@'
+        inputName: '@',
+        focusFirst: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;

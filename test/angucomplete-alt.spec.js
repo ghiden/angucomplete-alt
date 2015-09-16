@@ -1610,4 +1610,79 @@ describe('angucomplete-alt', function() {
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
   });
+
+  describe('focus first attribute', function() {
+    it('should be handled by angucomplete-alt directive', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Elvis Presly', email: 'theking@gmail.com'},
+        {name: 'John Elway', email: 'elway@nfl.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(element.isolateScope().focusFirst).toBeTruthy();
+      expect(element.isolateScope().currentIndex).toEqual(0);
+    });
+
+    it('should force the focus on first match after match list update', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Elvis Presly', email: 'theking@gmail.com'},
+        {name: 'John Elway', email: 'elway@nfl.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 'l'.charCodeAt(0);
+      inputField.val('l');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.isolateScope().searchStr).toEqual('l');
+      expect(element.find('.angucomplete-row').length).toEqual(2);
+      expect(element.isolateScope().currentIndex).toEqual(0);
+    });
+
+    it('should force the focus on first match after input is blured and refocused', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Elvis Presly', email: 'theking@gmail.com'},
+        {name: 'John Elway', email: 'elway@nfl.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 'l'.charCodeAt(0);
+      inputField.val('l');
+      inputField.trigger('input');
+      inputField.trigger(e);
+
+      element.isolateScope().currentIndex = 1;
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toEqual(2);
+
+      inputField.blur();
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+
+      inputField.focus();
+      $timeout(function(){
+        expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+        expect(element.isolateScope().currentIndex).toEqual(0);
+      },0);
+    });
+  });
 });
