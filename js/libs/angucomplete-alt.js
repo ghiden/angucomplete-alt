@@ -22,8 +22,7 @@
   }
 }(window, function (angular) {
 
-  angular.module('angucomplete-alt', [] )
-    .directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', '$interpolate', function ($q, $parse, $http, $sce, $timeout, $templateCache, $interpolate) {
+  angular.module('angucomplete-alt', []).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', '$interpolate', function ($q, $parse, $http, $sce, $timeout, $templateCache, $interpolate) {
     // keyboard events
     var KEY_DW  = 40;
     var KEY_RT  = 39;
@@ -95,7 +94,7 @@
         }
       });
 
-      scope.currentIndex = null;
+      scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
       unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
 
@@ -473,7 +472,7 @@
 
       function initResults() {
         scope.showDropdown = displaySearching;
-        scope.currentIndex = -1;
+        scope.currentIndex = scope.focusFirst ? 0 : -1;
         scope.results = [];
       }
 
@@ -500,13 +499,14 @@
       }
 
       function checkExactMatch(result, obj, str){
-        if (!str) { return; }
+        if (!str) { return false; }
         for(var key in obj){
           if(obj[key].toLowerCase() === str.toLowerCase()){
             scope.selectResult(result);
-            return;
+            return true;
           }
         }
+        return false;
       }
 
       function searchTimerComplete(str) {
@@ -558,18 +558,17 @@
               image: image,
               originalObject: responseData[i]
             };
-
-            if (scope.autoMatch) {
-              checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description || ''}, scope.searchStr);
-            }
           }
 
         } else {
           scope.results = [];
         }
 
-        if (scope.results.length === 0 && !displayNoResults) {
+        if (scope.autoMatch && scope.results.length === 1 &&
+            checkExactMatch(scope.results[0],
+              {title: text, desc: description || ''}, scope.searchStr)) {
+          scope.showDropdown = false;
+        } else if (scope.results.length === 0 && !displayNoResults) {
           scope.showDropdown = false;
         } else {
           scope.showDropdown = true;
@@ -593,6 +592,7 @@
           scope.focusIn();
         }
         if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+          scope.currentIndex = scope.focusFirst ? 0 : scope.currentIndex;
           scope.showDropdown = true;
           showAll();
         }
@@ -718,7 +718,7 @@
 
       // register events
       inputField.on('keydown', keydownHandler);
-      inputField.on('keyup', keyupHandler);
+      inputField.on('keyup input', keyupHandler);
 
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
@@ -769,7 +769,8 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
-        inputName: '@'
+        inputName: '@',
+        focusFirst: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
