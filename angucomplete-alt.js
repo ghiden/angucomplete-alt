@@ -527,7 +527,7 @@
       }
 
       function processResults(responseData, str) {
-        var i, description, image, text, formattedText, formattedDesc, last;
+        var i, description, image, text, formattedText, formattedDesc;
 
         if (responseData && responseData.length > 0) {
           scope.results = [];
@@ -558,16 +558,11 @@
               image: image,
               originalObject: responseData[i]
             };
-
-            last = {
-              text: text,
-              description: description
-            };
           }
 
           if (scope.autoMatch && scope.results.length === 1) {
             checkExactMatch(scope.results[0],
-                {title: last.text, desc: last.description || ''}, scope.searchStr);
+                {title: text, desc: description || ''}, scope.searchStr);
           }
 
         } else {
