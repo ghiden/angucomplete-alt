@@ -37,6 +37,10 @@
 
 * Missing 'type' field on input element when not specified #167
 
+### [@federicojasson: Federico Jasson](https://github.com/federicojasson)
+
+* Fix auto-match #245 #246
+
 ### [@Freezystem: Nico](https://github.com/Freezystem)
 
 * Add focus-first #92 #242
