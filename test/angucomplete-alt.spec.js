@@ -1147,13 +1147,36 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Auto Selecting', function() {
+    it('should not select a suggestion when there are multiple matches', function() {
+      var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="2"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway1@example.com'},
+        {name: 'John Elway', email: 'elway2@example.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var y = $.Event('keyup');
+      y.which = 121;
+
+      inputField.val('john elway');
+      inputField.trigger('input');
+      inputField.trigger(y);
+      $timeout.flush();
+      expect($scope.selectedPerson).toBeUndefined();
+    });
+
     it('should select the first suggestion when the search text fully matches any of the attributes', function() {
       var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="2"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
-        {name: 'Elvis Presly', email: 'theking@gmail.com'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1173,9 +1196,9 @@ describe('angucomplete-alt', function() {
       var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name,email" title-field="name" description-field="email" minlength="1"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
         {name: 'Elvis Presly'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1616,9 +1639,9 @@ describe('angucomplete-alt', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
-        {name: 'Elvis Presly', email: 'theking@gmail.com'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1631,9 +1654,9 @@ describe('angucomplete-alt', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
-        {name: 'Elvis Presly', email: 'theking@gmail.com'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1655,9 +1678,9 @@ describe('angucomplete-alt', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
-        {name: 'Elvis Presly', email: 'theking@gmail.com'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
