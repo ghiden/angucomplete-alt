@@ -189,7 +189,12 @@
 
         <h3><a name="example11" class="page-anchor">Example 11 - Auto Match</a></h3>
         <div class="padded-row">
-          <div angucomplete-alt id="ex11" placeholder="Search countries" pause="100" selected-object="countrySelected10" local-data="countries" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight" auto-match="true">
+          <div angucomplete-alt id="ex11" placeholder="Search countries" pause="100" selected-object="countrySelected11" local-data="countries" search-fields="name" title-field="name" minlength="2" input-class="form-control form-control-small" match-class="highlight" auto-match="true">
+          </div>
+        </div>
+        <div class="result">
+          <div ng-show="countrySelected11">
+            You selected <span class="bold-span">{{countrySelected11.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected11.originalObject.code}}</span>
           </div>
         </div>
 
