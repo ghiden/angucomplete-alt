@@ -558,11 +558,11 @@
               image: image,
               originalObject: responseData[i]
             };
+          }
 
-            if (scope.autoMatch) {
-              checkExactMatch(scope.results[scope.results.length-1],
-                  {title: text, desc: description || ''}, scope.searchStr);
-            }
+          if (scope.autoMatch && scope.results.length === 1) {
+            checkExactMatch(scope.results[0],
+                {title: text, desc: description || ''}, scope.searchStr);
           }
 
         } else {
