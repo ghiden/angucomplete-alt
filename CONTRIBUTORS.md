@@ -37,6 +37,10 @@
 
 * Missing 'type' field on input element when not specified #167
 
+### [@Freezystem: Nico](https://github.com/Freezystem)
+
+* Add focus-first #92 #242
+
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
 * Add css to bower.json main #68
