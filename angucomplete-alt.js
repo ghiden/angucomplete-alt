@@ -500,13 +500,14 @@
       }
 
       function checkExactMatch(result, obj, str){
-        if (!str) { return; }
+        if (!str) { return false; }
         for(var key in obj){
           if(obj[key].toLowerCase() === str.toLowerCase()){
             scope.selectResult(result);
-            return;
+            return true;
           }
         }
+        return false;
       }
 
       function searchTimerComplete(str) {
@@ -560,16 +561,15 @@
             };
           }
 
-          if (scope.autoMatch && scope.results.length === 1) {
-            checkExactMatch(scope.results[0],
-                {title: text, desc: description || ''}, scope.searchStr);
-          }
-
         } else {
           scope.results = [];
         }
 
-        if (scope.results.length === 0 && !displayNoResults) {
+        if (scope.autoMatch && scope.results.length === 1 &&
+            checkExactMatch(scope.results[0],
+              {title: text, desc: description || ''}, scope.searchStr)) {
+          scope.showDropdown = false;
+        } else if (scope.results.length === 0 && !displayNoResults) {
           scope.showDropdown = false;
         } else {
           scope.showDropdown = true;
