@@ -1,13 +1,17 @@
 var app = angular.module('app', ["ngTouch", "angucomplete-alt"]);
 
-app.controller('MainController', ['$scope', '$http',
-  function MainController($scope, $http) {
+app.controller('MainController', ['$scope', '$http', '$rootScope',
+  function MainController($scope, $http, $rootScope) {
     $scope.remoteUrlRequestFn = function(str) {
       return {q: str};
     };
 
     $scope.countrySelected = function(selected) {
-      window.alert('You have selected ' + selected.title);
+      if (selected) {
+        window.alert('You have selected ' + selected.title);
+      } else {
+        console.log('cleared');
+      }
     };
 
     $scope.people = [
@@ -285,6 +289,20 @@ app.controller('MainController', ['$scope', '$http',
       var focusInputElem = document.getElementById('ex12_value');
       $scope.focusState = 'Out';
       focusInputElem.classList.add('small-input');
+    }
+
+    /***
+     * Send a broadcast to the directive in order to clear itself
+     * if an id parameter is given only this ancucomplete is cleared
+     * @param id
+     */
+    $scope.clearInput = function (id) {
+      if (id) {
+        $scope.$broadcast('angucomplete-alt:clearInput', id);
+      }
+      else{
+        $scope.$broadcast('angucomplete-alt:clearInput');
+      }
     }
 
     $scope.disableInput = true;
