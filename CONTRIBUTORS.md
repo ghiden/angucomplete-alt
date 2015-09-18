@@ -61,6 +61,10 @@
 
 * Support withCredentials for $http #113
 
+### [@JohannesFerner: Johannes Ferner](https://github.com/JohannesFerner)
+
+* Add an example on clearInput event #225 #252
+
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
