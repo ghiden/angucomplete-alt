@@ -7,7 +7,11 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
     };
 
     $scope.countrySelected = function(selected) {
-      window.alert('You have selected ' + selected.title);
+      if (selected) {
+        window.alert('You have selected ' + selected.title);
+      } else {
+        console.log('cleared');
+      }
     };
 
     $scope.people = [
