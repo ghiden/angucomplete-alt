@@ -43,6 +43,7 @@
           <li><a href="#example12">Example 12 - Track Input Focus</a></li>
           <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
           <li><a href="#example14">Example 14 - Custom Template</a></li>
+          <li><a href="#example15">Example 15 - Clear Input on Button Click</a></li>
         </ul>
       </div>
 
@@ -286,6 +287,36 @@
             You selected a custom country <span class="bold-span">{{countrySelected14.originalObject.name}}</span>
           </span>
         </div>
+      </div>
+
+
+
+      <div class="large-padded-row">
+        <h3><a name="example15" class="page-anchor">Example 15 - Clear Input on Button Click</a></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex15"
+               placeholder="Search countries"
+               maxlength="50"
+               pause="100"
+               selected-object="selectedCountry"
+               local-data="countries"
+               search-fields="name"
+               title-field="name"
+               minlength="1"
+               input-class="form-control form-control-small"
+               match-class="highlight">
+          </div>
+        </div>
+        <div class="result">
+          <label><small>This should clear the input and set the bound values to '' or null</small></label>
+          <button class="btn btn-blue btn-slim" ng-click="clearInput('ex15')">Clear #ex15</button>
+          <button class="btn btn-blue btn-slim" ng-click="clearInput()">Clear all</button>
+
+          <div ng-show="selectedCountry">
+            You selected <span class="bold-span">{{selectedCountry.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry.originalObject.code}}</span>
+          </div>
+        </div>
+
       </div>
 
     </div>
