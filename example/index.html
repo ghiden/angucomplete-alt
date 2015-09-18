@@ -43,6 +43,7 @@
           <li><a href="#example12">Example 12 - Track Input Focus</a></li>
           <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
           <li><a href="#example14">Example 14 - Custom Template</a></li>
+          <li><a href="#example15">Example 15 - Clear Input on Button Click</a></li>
         </ul>
       </div>
 
@@ -227,42 +228,46 @@
 
       <div class="large-padded-row">
 
-      <h3><a name="example14" class="page-anchor">Example 14 - Custom template</a></h3>
-      <div class="padded-row">
-        <script type="text/ng-template" id="/my-custom-template.html">
-        <div class="angucomplete-holder" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
-         <p>This is custom</p>
-          <input ng-model="searchStr"
-            ng-disabled="disableInput"
-            type="text"
-            placeholder="{{placeholder}}"
-            ng-focus="onFocusHandler()"
-            class="{{inputClass}}"
-            ng-focus="resetHideResults()"
-            ng-blur="hideResults($event)"
-            autocapitalize="off"
-            autocorrect="off"
-            autocomplete="off"
-            ng-change="inputChangeHandler(searchStr)"/>
-          <div class="angucomplete-dropdown" ng-show="showDropdown">
-            <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
-            <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
-            <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
-              <div ng-if="imageField" class="angucomplete-image-holder">
-                <img ng-if="result.image && result.image != ''" ng-src="{{result.image}}" class="angucomplete-image"/>
-                <div ng-if="!result.image && result.image != ''" class="angucomplete-image-default"></div>
+        <h3><a name="example14" class="page-anchor">Example 14 - Custom template</a></h3>
+        <div class="padded-row">
+          <script type="text/ng-template" id="/my-custom-template.html">
+          <div class="angucomplete-holder" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+           <p>This is custom</p>
+            <input ng-model="searchStr"
+              ng-disabled="disableInput"
+              type="text"
+              placeholder="{{placeholder}}"
+              ng-focus="onFocusHandler()"
+              class="{{inputClass}}"
+              ng-focus="resetHideResults()"
+              ng-blur="hideResults($event)"
+              autocapitalize="off"
+              autocorrect="off"
+              autocomplete="off"
+              ng-change="inputChangeHandler(searchStr)"/>
+            <div class="angucomplete-dropdown" ng-show="showDropdown">
+              <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
+              <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
+              <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
+                <div ng-if="imageField" class="angucomplete-image-holder">
+                  <img ng-if="result.image && result.image != ''" ng-src="{{result.image}}" class="angucomplete-image"/>
+                  <div ng-if="!result.image && result.image != ''" class="angucomplete-image-default"></div>
+                </div>
+                <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
+                <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
+                <div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
+                <div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
               </div>
-              <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
-              <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
-              <div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
-              <div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
-            </div>
-            <div class="angucomplete-row" ng-click="selectResult({title: searchStr, originalObject: { name: searchStr, custom: true }})" ng-mouseenter="hoverRow(results.length)" ng-class="{'angucomplete-selected-row': results.length == currentIndex}">
-              <div class="angucomplete-title">Select custom country '{{ searchStr }}'</div>
+              <div class="angucomplete-row" ng-click="selectResult({title: searchStr, originalObject: { name: searchStr, custom: true }})" ng-mouseenter="hoverRow(results.length)" ng-class="{'angucomplete-selected-row': results.length == currentIndex}">
+                <div class="angucomplete-title">Select custom country '{{ searchStr }}'</div>
+              </div>
             </div>
           </div>
+          </script>
         </div>
-        </script>
+      </div>
+
+      <div class="large-padded-row">
         <div angucomplete-alt
           id="ex14"
           placeholder="Search countries"
@@ -276,19 +281,48 @@
           template-url="/my-custom-template.html"
           >
         </div>
-      </div>
-      <div class="result">
-        <div ng-show="countrySelected14">
-          <span ng-if="!countrySelected14.originalObject.custom">
-          You selected <span class="bold-span">{{countrySelected14.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected14.originalObject.code}}</span>
-          </span>
-          <span ng-if="countrySelected14.originalObject.custom">
-            You selected a custom country <span class="bold-span">{{countrySelected14.originalObject.name}}</span>
-          </span>
+
+        <div class="result">
+          <div ng-show="countrySelected14">
+            <span ng-if="!countrySelected14.originalObject.custom">
+            You selected <span class="bold-span">{{countrySelected14.originalObject.name}}</span> which has a country code of <span class="bold-span">{{countrySelected14.originalObject.code}}</span>
+            </span>
+            <span ng-if="countrySelected14.originalObject.custom">
+              You selected a custom country <span class="bold-span">{{countrySelected14.originalObject.name}}</span>
+            </span>
+          </div>
         </div>
       </div>
 
-    </div>
+      <div class="large-padded-row">
+        <h3><a name="example15" class="page-anchor">Example 15 - Clear Input on Button Click</a></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex15"
+               placeholder="Search countries"
+               maxlength="50"
+               pause="100"
+               selected-object="selectedCountry15"
+               local-data="countries"
+               search-fields="name"
+               title-field="name"
+               minlength="1"
+               input-class="form-control form-control-small"
+               match-class="highlight">
+          </div>
+        </div>
+
+        <div class="result">
+          <label><small>This should clear the input and set the bound values to '' or null</small></label>
+          <button class="btn btn-blue btn-slim" ng-click="clearInput('ex15')">Clear #ex15</button>
+          <button class="btn btn-blue btn-slim" ng-click="clearInput()">Clear all</button>
+        </div>
+
+        <div class="result">
+          <div ng-show="selectedCountry15">
+            You selected <span class="bold-span">{{selectedCountry15.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry15.originalObject.code}}</span>
+          </div>
+        </div>
+      </div>
 
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
