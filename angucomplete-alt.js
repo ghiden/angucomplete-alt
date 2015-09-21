@@ -42,6 +42,7 @@
     // string constants
     var REQUIRED_CLASS = 'autocomplete-required';
     var TEXT_SEARCHING = 'Searching...';
+    var TEXT_CREATE = 'Create New';
     var TEXT_NORESULTS = 'No results found';
     var TEMPLATE_URL = '/angucomplete-alt/index.html';
 
@@ -50,6 +51,7 @@
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
         '  <input id="{{id}}_value" name="{{inputName}}" ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{inputType}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
         '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
+        '    <div class="angucomplete-row" ng-show="!searching && showCreate" ng-click="onCreate({name:searchStr})" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}" ng-bind="textCreate"></div>' +
         '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
         '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
         '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
@@ -710,6 +712,7 @@
       // set strings for "Searching..." and "No results"
       scope.textSearching = attrs.textSearching ? attrs.textSearching : TEXT_SEARCHING;
       scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
+      scope.textCreate = attrs.textCreate ? attrs.textCreate : TEXT_CREATE;
       displaySearching = scope.textSearching === 'false' ? false : true;
       displayNoResults = scope.textNoResults === 'false' ? false : true;
 
@@ -770,7 +773,9 @@
         focusOut: '&',
         focusIn: '&',
         inputName: '@',
-        focusFirst: '@'
+        focusFirst: '@',
+        showCreate: '=',
+        onCreate: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
