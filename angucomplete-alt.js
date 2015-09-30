@@ -97,10 +97,12 @@
       scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
       unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
-        // remove scope listener
-        unbindInitialValue();
-        // change input
-        handleInputChange(newval, true);
+        if (newval) {
+          // remove scope listener
+          unbindInitialValue();
+          // change input
+          handleInputChange(newval, true);
+        }
       });
 
       scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
