@@ -24,6 +24,10 @@
 * Allow the user to set an initial value OBJECT instead of just a string #173
 * Documentation update #180
 
+### [@artvlasov](https://github.com/artvlasov)
+
+* Implemented changeInput event listener to set input value #260
+
 ### [@baloo2401](https://github.com/baloo2401)
 
 * display-searching and display-no-result #129
