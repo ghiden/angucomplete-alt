@@ -44,6 +44,7 @@
           <li><a href="#example13">Example 13 - Disable/Enable Input</a></li>
           <li><a href="#example14">Example 14 - Custom Template</a></li>
           <li><a href="#example15">Example 15 - Clear Input on Button Click</a></li>
+          <li><a href="#example16">Example 16 - Change Input on Button Click</a></li>
         </ul>
       </div>
 
@@ -320,6 +321,36 @@
         <div class="result">
           <div ng-show="selectedCountry15">
             You selected <span class="bold-span">{{selectedCountry15.originalObject.name}}</span> which has a country code of <span class="bold-span">{{selectedCountry15.originalObject.code}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="large-padded-row">
+        <h3><a name="example16" class="page-anchor">Example 16 - Change Input on Button Click</a></h3>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex16"
+               placeholder="Search countries"
+               maxlength="50"
+               pause="100"
+               selected-object="selectedCountry16"
+               initial-value="selectedCountry16"
+               local-data="countries"
+               search-fields="name"
+               title-field="name"
+               minlength="1"
+               input-class="form-control form-control-small"
+               match-class="highlight">
+          </div>
+        </div>
+
+        <div class="result">
+          <label><small>This should change the input</small></label>
+          <button class="btn btn-blue btn-slim" ng-click="changeInput('ex16')">Change #ex16</button>
+        </div>
+
+        <div class="result">
+          <div ng-show="selectedCountry16">
+            You selected <span class="bold-span">{{selectedCountry16.originalObject.name}}</span> <span ng-show="selectedCountry16.originalObject.code">which has a country code of <span class="bold-span">{{selectedCountry16.originalObject.code}}</span></span>
           </div>
         </div>
       </div>
