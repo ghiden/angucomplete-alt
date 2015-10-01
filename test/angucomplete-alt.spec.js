@@ -1367,6 +1367,56 @@ describe('angucomplete-alt', function() {
     });
   });
 
+  describe('Change input', function() {
+    it('should set input field for given component id', function() {
+      var element = angular.element(
+        '<form name="name">' +
+        '  <div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson1" local-data="people" search-fields="firstName" title-field="firstName" minlength="1"/>' +
+        '  <div angucomplete-alt id="ex2" placeholder="Search people" selected-object="selectedPerson2" local-data="people" search-fields="firstName" title-field="firstName" minlength="1"/>' +
+        '</form>'
+      );
+      $scope.changeInput = function(id, val) {
+        $scope.$broadcast('angucomplete-alt:changeInput', id, val);
+      };
+      $scope.selectedPerson1 = undefined;
+      $scope.selectedPerson2 = undefined;
+      $scope.people = [
+        {firstName: 'Emma'},
+        {firstName: 'Elvis'},
+        {firstName: 'John'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField1 = element.find('#ex1_value');
+      var inputField2 = element.find('#ex2_value');
+      var eKeydown = $.Event('keydown');
+      var eKeyup = $.Event('keyup');
+
+      inputField1.val('e');
+      inputField1.trigger('input');
+      eKeyup.which = 'e'.charCodeAt(0);
+      inputField1.trigger(eKeyup);
+      $timeout.flush();
+
+      inputField2.val('j');
+      inputField2.trigger('input');
+      eKeyup.which = 'j'.charCodeAt(0);
+      inputField2.trigger(eKeyup);
+      $timeout.flush();
+
+      expect(inputField1.val()).toEqual('e');
+      expect(inputField2.val()).toEqual('j');
+
+      $scope.changeInput('ex1', 'Elvis');
+      $scope.$digest();
+
+      // should only change #ex1
+      expect(inputField1.val()).toBe('Elvis');
+      expect(inputField2.val()).toBe('j');
+    });
+  });
+
   describe('Update input field text', function() {
     it('should update input field when up/down arrow key is pressed', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName,middleName,surname" title-field="firstName,surname" minlength="1"/>');

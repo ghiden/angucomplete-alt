@@ -154,6 +154,15 @@ To clear an angucomplete-alt input field, send this message with id of the direc
 $scope.$broadcast('angucomplete-alt:clearInput', 'autocomplete-1');
 ```
 
+### Change Input
+
+To set an angucomplete-alt input field, send this message with id of the directive and desired value.
+One can pass a simple string or an object as an argument, the same rules applied as for ```initial-value``` parameter.
+For example, the id of the directive is 'autocomplete-1'.
+```js
+$scope.$broadcast('angucomplete-alt:changeInput', 'autocomplete-1', 'Hello!');
+```
+
 ### Remote API Handler
 
 This is an example calling search API with POST.
