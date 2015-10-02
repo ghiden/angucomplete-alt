@@ -320,5 +320,8 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
     }
 
     $scope.disableInput = true;
+
+    $scope.requireExample8a = true;
+    $scope.requireExample8b = true;
   }
 ]);
