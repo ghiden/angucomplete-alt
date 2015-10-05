@@ -424,18 +424,19 @@
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
+        // cancelled/aborted
+        if (status === 0 || status === -1) { return; }
+
         // normalize return obejct from promise
         if (!status && !headers && !config) {
           status = errorRes.status;
         }
-        if (status !== 0) {
-          if (scope.remoteUrlErrorCallback) {
-            scope.remoteUrlErrorCallback(errorRes, status, headers, config);
-          }
-          else {
-            if (console && console.error) {
-              console.error('http error');
-            }
+        if (scope.remoteUrlErrorCallback) {
+          scope.remoteUrlErrorCallback(errorRes, status, headers, config);
+        }
+        else {
+          if (console && console.error) {
+            console.error('http error');
           }
         }
       }
@@ -674,6 +675,7 @@
 
       scope.inputChangeHandler = function(str) {
         if (str.length < minlength) {
+          cancelHttpRequest();
           clearResults();
         }
         else if (str.length === 0 && minlength === 0) {
