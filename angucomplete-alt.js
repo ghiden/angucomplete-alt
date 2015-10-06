@@ -105,6 +105,20 @@
         }
       });
 
+      scope.$watch('fieldRequired', function(newval, oldval) {
+        if (newval !== oldval) {
+          if (!newval) {
+            ctrl[scope.inputName].$setValidity(requiredClassName, true);
+          }
+          else if (!validState || scope.currentIndex === -1) {
+            handleRequired(false);
+          }
+          else {
+            handleRequired(true);
+          }
+        }
+      });
+
       scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
         if (!elementId || elementId === scope.id) {
           scope.searchStr = null;
@@ -225,8 +239,8 @@
       function handleRequired(valid) {
         scope.notEmpty = valid;
         validState = scope.searchStr;
-        if (scope.fieldRequired && ctrl) {
-          ctrl.$setValidity(requiredClassName, valid);
+        if (scope.fieldRequired && ctrl && scope.inputName) {
+          ctrl[scope.inputName].$setValidity(requiredClassName, valid);
         }
       }
 
@@ -783,7 +797,7 @@
         matchClass: '@',
         clearSelected: '@',
         overrideSuggestions: '@',
-        fieldRequired: '@',
+        fieldRequired: '=',
         fieldRequiredClass: '@',
         inputChanged: '=',
         autoMatch: '@',
