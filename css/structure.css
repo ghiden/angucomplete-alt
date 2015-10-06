@@ -1014,8 +1014,21 @@ td {
 	color: #ff0000;
 }
 
-form.ng-invalid-autocomplete-required input {
+form input.ng-invalid-autocomplete-required {
   border-color: red;
+}
+
+.valid-status {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.valid-status.valid {
+  color: green;
+}
+
+.valid-status.invalid {
+  color: red;
 }
 
 .console {
