@@ -1063,3 +1063,15 @@ ul {
   overflow-y: auto;
   max-height: 150px;
 }
+
+pre {
+  width: 600px;
+  overflow-x: auto;
+  font-family: courier;
+  font-size: .8em;
+  display: block;
+  line-height: 1;
+  padding: 10px 15px;
+  background-color: #000;
+  color: #fff;
+}
