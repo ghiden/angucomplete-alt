@@ -421,6 +421,10 @@
               handleOverrideSuggestions();
             }
           }
+        } else if (which === KEY_ES) {
+          // This is very specific to IE10/11 #272
+          // without this, IE clears the input text
+          event.preventDefault();
         }
       }
 
