@@ -761,11 +761,6 @@
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
 
-      scope.$on('$destroy', function() {
-        // take care of required validity when it gets destroyed
-        handleRequired(true);
-      });
-
       // set isScrollOn
       $timeout(function() {
         var css = getComputedStyle(dd);
