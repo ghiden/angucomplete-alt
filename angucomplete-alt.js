@@ -692,6 +692,10 @@
       };
 
       scope.inputChangeHandler = function(str) {
+        if (!str && minlength > 0) {
+          throw new Error('searchStr undefined! possibly maxlength is less than input string length');
+        }
+
         if (str.length < minlength) {
           cancelHttpRequest();
           clearResults();
