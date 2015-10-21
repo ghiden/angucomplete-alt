@@ -1,7 +1,7 @@
 var app = angular.module('app', ["ngTouch", "angucomplete-alt"]);
 
-app.controller('MainController', ['$scope', '$http', '$rootScope',
-  function MainController($scope, $http, $rootScope) {
+app.controller('MainController', ['$scope', '$http', '$rootScope','$q',
+  function MainController($scope, $http, $rootScope, $q) {
     $scope.remoteUrlRequestFn = function(str) {
       return {q: str};
     };
@@ -12,6 +12,19 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
       } else {
         console.log('cleared');
       }
+    };
+
+    $scope.searchConcatData = function () {
+      var defer = $q.defer();
+      var response = {
+          'data':{
+            'departments':[{'name':'department 1'},{'name':'department 2'}],
+            'companies':[{'name':'company 1'},{'name':'company 2'}],
+            'users':[{'name':'user 1'},{'name':'user 2'}]
+          }
+        };
+      defer.resolve(response);
+      return defer.promise;
     };
 
     $scope.people = [
