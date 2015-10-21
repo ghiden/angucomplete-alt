@@ -45,6 +45,7 @@
           <li><a href="#example14">Example 14 - Custom Template</a></li>
           <li><a href="#example15">Example 15 - Clear Input on Button Click</a></li>
           <li><a href="#example16">Example 16 - Change Input on Button Click</a></li>
+          <li><a href="#example17">Example 17 - Concat Multiple Data</a></li>
         </ul>
       </div>
 
@@ -644,6 +645,30 @@
         </div>
       </div>
 
+        <div class="large-padded-row">
+
+          <h3><a name="example17" class="page-anchor">Example 17 - Concat Multiple Data</a></h3>
+          <div class="padded-row">
+<pre>
+&lt;div angucomplete-alt id="ex17"
+  placeholder="Search data"
+  maxlength="50"
+  pause="100"
+  remote-api-handler="searchConcatData"
+  remote-url-data-field="departments,companies,users"
+  search-fields="name"
+  title-field="name"
+  minlength="1"
+  input-class="form-control form-control-small"
+  match-class="highlight"&gt;&lt;/div&gt;
+</pre>
+          </div>
+          <div class="padded-row">
+            <div angucomplete-alt id="ex17" placeholder="Search data" maxlength="50" pause="100" remote-api-handler="searchConcatData" remote-url-data-field="items,companies,users" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+            </div>
+          </div>
+
+        </div>
       <div class="very-large-padded-row">
         <h5>Originally developed by Daryl Rowland (<a href="http://twitter.com/darylrowland">@darylrowland</a>)</h5>
         <h5>Forked and developed by Hidenari Nozaki (<a href="http://twitter.com/ghiden">@ghiden</a>)</h5>

@@ -204,13 +204,25 @@
       }
 
       function extractValue(obj, key) {
-        var keys, result;
+        var keys, result, concatKeys, concatResult = [];
         if (key) {
           keys= key.split('.');
+          concatKeys = key.split(',');
           result = obj;
-          for (var i = 0; i < keys.length; i++) {
-            result = result[keys[i]];
+          if(concatKeys.length > 1){
+            for (var k = 0; k < concatKeys.length; k++) {
+              if(result[concatKeys[k]]){
+                concatResult = concatResult.concat(result[concatKeys[k]]);
+              }
+            }
+            result = concatResult;
           }
+          else{
+            for (var i = 0; i < keys.length; i++) {
+              result = result[keys[i]];
+            }
+          }
+
         }
         else {
           result = obj;
