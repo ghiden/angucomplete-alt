@@ -204,12 +204,22 @@
       }
 
       function extractValue(obj, key) {
-        var keys, result;
+        var keys, result,newKey,index,parsedKey;
         if (key) {
           keys= key.split('.');
           result = obj;
           for (var i = 0; i < keys.length; i++) {
-            result = result[keys[i]];
+            if(keys[i].indexOf('[')!== -1) {
+              parsedKey = keys[i].replace(']','').split('[');
+              newKey = parsedKey[0];
+              index = parsedKey[1];
+              if(result[newKey]!== undefined) {
+                if (result[newKey].length > index)
+                  result = result[newKey][index];
+              }else return '';
+            }else {
+              result = result[keys[i]];
+            }
           }
         }
         else {
