@@ -214,9 +214,10 @@
               newKey = parsedKey[0];
               index = parsedKey[1];
               if(result[newKey]!== undefined) {
-                if (result[newKey].length > index)
+                if (result[newKey].length > index){
                   result = result[newKey][index];
-              }else return '';
+                }
+              }else {return '';}
             }else {
               result = result[keys[i]];
             }
