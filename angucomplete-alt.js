@@ -517,7 +517,9 @@
         var i, match, s, value,
             searchFields = scope.searchFields.split(','),
             matches = [];
-
+        if (typeof scope.parseInput() !== 'undefined') {
+          str = scope.parseInput()(str);
+        }
         for (i = 0; i < scope.localData.length; i++) {
           match = false;
 
@@ -807,7 +809,8 @@
         focusOut: '&',
         focusIn: '&',
         inputName: '@',
-        focusFirst: '@'
+        focusFirst: '@',
+        parseInput: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
