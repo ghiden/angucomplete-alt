@@ -167,6 +167,15 @@
         if (typeof scope.selectedObject === 'function') {
           scope.selectedObject(value);
         }
+        // use the originalObject as the selectedObject
+        else if (scope.useOriginalObject === 'true'){
+          // handles null and undefined value
+          if(value == null){
+            scope.selectedObject = value;
+          } else {
+            scope.selectedObject = value.originalObject;
+          }
+        }
         else {
           scope.selectedObject = value;
         }
@@ -803,7 +812,8 @@
         focusOut: '&',
         focusIn: '&',
         inputName: '@',
-        focusFirst: '@'
+        focusFirst: '@',
+        useOriginalObject: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
