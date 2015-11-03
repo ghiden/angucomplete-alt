@@ -3,6 +3,7 @@
  * Autocomplete directive for AngularJS
  * This is a fork of Daryl Rowland's angucomplete with some extra features.
  * By Hidenari Nozaki
+ * Edit by Mahmut Duva
  */
 
 /*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
