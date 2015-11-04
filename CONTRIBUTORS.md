@@ -57,6 +57,10 @@
 
 * Escape regular expression #123
 
+### [@jesusr: Jesús R Peinado](https://github.com/jesusr)
+
+* Adding parseInput function parameter #294
+
 ### [@jbuquet: Javier Buquet](https://github.com/jbuquet)
 
 * Add custom API handler #128
