@@ -30,8 +30,6 @@
     var KEY_LF  = 37;
     var KEY_ES  = 27;
     var KEY_EN  = 13;
-    var KEY_BS  =  8;
-    var KEY_DEL = 46;
     var KEY_TAB =  9;
 
     var MIN_LENGTH = 3;
@@ -96,7 +94,7 @@
 
       scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
-      unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
+      unbindInitialValue = scope.$watch('initialValue', function(newval) {
         if (newval) {
           // remove scope listener
           unbindInitialValue();
@@ -517,7 +515,9 @@
         var i, match, s, value,
             searchFields = scope.searchFields.split(','),
             matches = [];
-
+        if (typeof scope.parseInput() !== 'undefined') {
+          str = scope.parseInput()(str);
+        }
         for (i = 0; i < scope.localData.length; i++) {
           match = false;
 
@@ -635,7 +635,7 @@
         }
       };
 
-      scope.hideResults = function(event) {
+      scope.hideResults = function() {
         if (mousedownOn &&
             (mousedownOn === scope.id + '_dropdown' ||
              mousedownOn.indexOf('angucomplete') >= 0)) {
@@ -803,12 +803,13 @@
         focusOut: '&',
         focusIn: '&',
         inputName: '@',
-        focusFirst: '@'
+        focusFirst: '@',
+        parseInput: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
       },
-      compile: function(tElement, tAttrs) {
+      compile: function(tElement) {
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
         if (!(startSym === '{{' && endSym === '}}')) {
