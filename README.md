@@ -133,6 +133,8 @@ It expects the returned results from remote API to have a root object. In the ab
 | disable-input | A model to control disable/enable of input field. [example page](http://ghiden.github.io/angucomplete-alt/#example13) | No | = | disableInput |
 | template-url | Customize the markup of the autocomplete template. [example page](http://ghiden.github.io/angucomplete-alt/#example14) | No | attribute | "/my-custom-template.html" |
 | focus-first | Automatically select the first match from the result list. |  No | @ | true |
+| parse-input | A function or expression to parse input string before comparing into search process. |  No | & | parseInput() |
+
 
 ### Scrollbar
 
