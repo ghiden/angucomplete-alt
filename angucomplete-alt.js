@@ -54,6 +54,7 @@
 
 			/**
 			 * Function that obtains the current @element bounding rect
+       * @ngdoc Function
 			 * @param element
 			 * @returns {{left: number, top: number, height: Number, width: Number}}
 			 */
