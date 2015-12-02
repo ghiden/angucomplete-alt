@@ -684,7 +684,10 @@
         scope.currentIndex = index;
       };
 
-      scope.selectResult = function(result) {
+      scope.selectResult = function(selectedItem) {
+        // clone result - this results in maintaining dropdown item when using matchClass
+        var result = jQuery.extend(true, {}, selectedItem);
+
         // Restore original values
         if (scope.matchClass) {
           result.title = extractTitle(result.originalObject);
