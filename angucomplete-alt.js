@@ -602,9 +602,9 @@
         }
 
         // remove already selected items from dropdown (=from results)
-        if (typeof scope.selectedItems !== 'undefined') {
+        if (typeof scope.excludedItems !== 'undefined') {
           scope.results = scope.results.filter(function (item) {
-            var found = scope.selectedItems.filter(function(selectedItem) {
+            var found = scope.excludedItems.filter(function(selectedItem) {
               return selectedItem === item.originalItem;
             });
             return found.length === 0;
@@ -701,17 +701,14 @@
 
         // leave dropdown opened for multiselect
         if (scope.multiSelect) {
-          if (typeof scope.selectedItems !== 'undefined') {
+          if (typeof scope.excludedItems !== 'undefined') {
             // remove already selected items from results
             scope.results = scope.results.filter(function (item) {
               return item.originalObject !== result.originalObject;
             });
-            $timeout(function () {
-              inputField.focus();
-            }, 200);
-          } else {
-            clearResults();
           }
+        } else {
+          clearResults();
         }
       };
 
@@ -835,7 +832,7 @@
         focusFirst: '@',
         parseInput: '&',
         multiSelect: '@',
-        selectedItems: '='
+        excludedItems: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
