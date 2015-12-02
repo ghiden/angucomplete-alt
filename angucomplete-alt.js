@@ -601,6 +601,16 @@
           scope.results = [];
         }
 
+        // remove already selected items from dropdown (=from results)
+        if (typeof scope.selectedItems !== 'undefined') {
+          scope.results = scope.results.filter(function (item) {
+            var found = scope.selectedItems.filter(function(selectedItem) {
+              return selectedItem === item.originalItem;
+            });
+            return found.length === 0;
+          });
+        }
+
         if (scope.autoMatch && scope.results.length === 1 &&
             checkExactMatch(scope.results[0],
               {title: text, desc: description || ''}, scope.searchStr)) {
@@ -688,7 +698,21 @@
           scope.searchStr = result.title;
         }
         callOrAssign(result);
-        clearResults();
+
+        // leave dropdown opened for multiselect
+        if (scope.multiSelect) {
+          if (typeof scope.selectedItems !== 'undefined') {
+            // remove already selected items from results
+            scope.results = scope.results.filter(function (item) {
+              return item.originalObject !== result.originalObject;
+            });
+            $timeout(function () {
+              inputField.focus();
+            }, 200);
+          } else {
+            clearResults();
+          }
+        }
       };
 
       scope.inputChangeHandler = function(str) {
@@ -741,6 +765,11 @@
         else {
           handleRequired(false);
         }
+      }
+
+      // check clearSelected
+      if (!scope.multiSelect) {
+        scope.multiSelect = false;
       }
 
       scope.inputType = attrs.type ? attrs.type : 'text';
@@ -804,7 +833,9 @@
         focusIn: '&',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        multiSelect: '@',
+        selectedItems: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
