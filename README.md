@@ -135,9 +135,9 @@ It expects the returned results from remote API to have a root object. In the ab
 | focus-first | Automatically select the first match from the result list. |  No | @ | true |
 | parse-input | A function or expression to parse input string before comparing into search process. |  No | & | parseInput() |
 | multi-select | Dropdown is not closed after selecting a value | No | @ | true |
-| excludedItems | Items which are being hidden in dropdown. Useful when you have already some data and you dont want to show them in dropdown. | No | = | myItems |
-| excludeOnSelect | Hide item when being selected. This doesn't add selected item to your excludedItems | No | @ | true |
-| exclusionComparerField | As default items to exclude are compared using classic javascript === comparator. However you may specify field which is being used for comparison. This is handy when you compare remotely loaded data where same item is recognized by same id altough object instance is different. | No | @ | id | 
+| excluded-items | Items which are being hidden in dropdown. Useful when you have already some data and you dont want to show them in dropdown. | No | = | myItems |
+| exclude-on-select | Hide item when being selected. This doesn't add selected item to your excludedItems | No | @ | true |
+| exclusion-comparer-field | As default items to exclude are compared using classic javascript === comparator. However you may specify field which is being used for comparison. This is handy when you compare remotely loaded data where same item is recognized by same id altough object instance is different. | No | @ | id | 
 
 ### Scrollbar
 
