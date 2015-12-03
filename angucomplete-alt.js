@@ -602,10 +602,10 @@
         }
 
         // remove already selected items from dropdown (=from results)
-        if (typeof scope.excludedItems !== 'undefined') {
+        if ($.isArray(scope.excludedItems)) {
           scope.results = scope.results.filter(function (item) {
             var found = scope.excludedItems.filter(function(selectedItem) {
-              return selectedItem === item.originalItem;
+              return isItemSame(selectedItem, item.originalObject);
             });
             return found.length === 0;
           });
@@ -619,6 +619,17 @@
           scope.showDropdown = false;
         } else {
           scope.showDropdown = true;
+        }
+      }
+
+      function isItemSame(first, second) {
+        var comparerField = scope.exclusionComparerField;
+        if (comparerField) {
+          // when field is specified compare value of that field
+          return first[comparerField] === second[comparerField];
+        } else {
+          // otherwise use classic comparation
+          return first === second;
         }
       }
 
@@ -704,10 +715,10 @@
 
         // leave dropdown opened for multiselect
         if (scope.multiSelect) {
-          if (typeof scope.excludedItems !== 'undefined') {
+          if ($.isArray(scope.excludedItems) && scope.excludeOnSelect) {
             // remove already selected items from results
             scope.results = scope.results.filter(function (item) {
-              return item.originalObject !== result.originalObject;
+              return !isItemSame(selectedItem.originalObject, item.originalObject);
             });
           }
         } else {
@@ -770,6 +781,21 @@
       // check clearSelected
       if (!scope.multiSelect) {
         scope.multiSelect = false;
+      }
+
+      // check excludedItems
+      if (!scope.excludedItems) {
+        scope.excludedItems = false;
+      }
+
+      // check excludeOnSelect
+      if (!scope.excludeOnSelect) {
+        scope.excludeOnSelect = false;
+      }
+
+      // check exclusionComparerField
+      if (!scope.exclusionComparerField) {
+        scope.exclusionComparerField = null;
       }
 
       scope.inputType = attrs.type ? attrs.type : 'text';
@@ -835,7 +861,9 @@
         focusFirst: '@',
         parseInput: '&',
         multiSelect: '@',
-        excludedItems: '='
+        excludedItems: '=',
+        excludeOnSelect: '@',
+        exclusionComparerField: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
