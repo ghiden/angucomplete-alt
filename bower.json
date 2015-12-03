@@ -13,8 +13,8 @@
   ],
   "license": "MIT",
   "main": [
-      "./angucomplete-alt.js",
-      "./angucomplete-alt.css"
+    "./angucomplete-alt.js",
+    "./angucomplete-alt.css"
   ],
   "ignore": [
     "example",
@@ -25,7 +25,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": ">=1.4.0"
+    "angular": ">=1.4.0",
+    "font-awesome": "font-awsome#~4.5.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.4.0",
