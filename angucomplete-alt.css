@@ -19,6 +19,12 @@
     background-color: #ffffff;
 }
 
+.angucomplete-multi-select .angucomplete-dropdown {
+  right: 0;
+  left: 0;
+  padding: 0 0 3px 3px;
+}
+
 .angucomplete-searching {
     color: #acacac;
     font-size: 14px;
@@ -64,4 +70,19 @@
     background-size: contain;
     height: 34px;
     width: 34px;
+}
+
+.close-search-results {
+  display: none;
+}
+
+.angucomplete-multi-select .search-results {
+  clear: both;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.angucomplete-multi-select .close-search-results {
+  display: block;
+  padding-right: 3px;
 }
