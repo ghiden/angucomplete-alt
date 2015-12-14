@@ -19,7 +19,8 @@ describe('angucomplete-alt', function() {
   }));
 
   describe('Render', function() {
-
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+  
     it('should render input element with given id plus _value', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" selected-object="selectedCountry" title-field="name"></div>');
       $scope.selectedCountry = null;
@@ -56,6 +57,8 @@ describe('angucomplete-alt', function() {
 
   describe('Local data', function() {
 
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+  
     it('should show search results after 3 letter is entered', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name"/>');
       $scope.selectedCountry = undefined;
@@ -67,26 +70,27 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = 97; // letter: a
       inputField.val('a');
       inputField.trigger('input');
       inputField.trigger(e);
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
 
       e.which = 108; // letter: l
       inputField.val('al');
       inputField.trigger('input');
       inputField.trigger(e);
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
 
       e.which = 98; // letter: b
       inputField.val('alb');
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBeGreaterThan(0);
+      expect(dropdown.find('.angucomplete-row').length).toBeGreaterThan(0);
     });
 
     it('should show search results after 1 letter is entered with minlength being set to 1', function() {
@@ -100,13 +104,14 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
       inputField.val('a');
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBeGreaterThan(0);
+      expect(dropdown.find('.angucomplete-row').length).toBeGreaterThan(0);
     });
 
     it('should show search results after 2 letters are entered and hide results when a letter is deleted', function() {
@@ -120,27 +125,28 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = 97; // letter: a
       inputField.val('a');
       inputField.trigger('input');
       inputField.trigger(e);
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
 
       e.which = 108; // letter: l
       inputField.val('al');
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(2);
+      expect(dropdown.find('.angucomplete-row').length).toBe(2);
 
       // delete a char
       e.which = KEY_DEL;
       inputField.val('a');
       inputField.trigger('input');
       inputField.trigger(e);
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
     });
 
     it('should reset selectedObject to undefined when input changes', function() {
@@ -155,6 +161,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = 97; // letter: a
 
@@ -162,7 +169,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
@@ -181,6 +188,8 @@ describe('angucomplete-alt', function() {
     });
 
     describe('incomplete local data', function() {
+      afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+      
       it('should not throw errors', function() {
         var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
         $scope.countrySelected = null;
@@ -207,7 +216,9 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Set results', function() {
-
+    
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+  
     it('should set scope.results[0].title', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" local-data="names" search-fields="name" title-field="name" minlength="1"/>');
       $scope.names = [
@@ -368,6 +379,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Local Data', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+  
     it('should set $scope.searching to false', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       $scope.selectedCountry = undefined;
@@ -399,10 +412,11 @@ describe('angucomplete-alt', function() {
     }));
 
     afterEach(function() {
+      angular.element('#ex1_dropdown').remove();
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     });
-
+    
     it('should process via custom handler', inject(function($http) {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-api-handler="postFn" search-fields="name" title-field="name" remote-url-data-field="data" minlength="1"/>');
       var url = '/api';
@@ -417,6 +431,7 @@ describe('angucomplete-alt', function() {
       $httpBackend.expectPOST('/api', {q: queryTerm}).respond(200, results);
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = queryTerm.charCodeAt(0);
       inputField.val(queryTerm);
@@ -426,7 +441,7 @@ describe('angucomplete-alt', function() {
       $timeout.flush();
       $httpBackend.flush();
 
-      expect(element.find('.angucomplete-row').length).toBe(1);
+      expect(dropdown.find('.angucomplete-row').length).toBe(1);
     }));
 
     it('should url encode input string', function() {
@@ -596,6 +611,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('request formatter function for ajax request', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should process the request with the given function', inject(function($httpBackend) {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names" search-fields="name" remote-url-data-field="data" remote-url-request-formatter="dataFormatFn" title-field="name" minlength="1"/>');
       var sequenceNum = 1234567890;
@@ -630,6 +647,7 @@ describe('angucomplete-alt', function() {
     }));
 
     afterEach(function() {
+      angular.element('#ex1_dropdown').remove();
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     });
@@ -686,6 +704,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('clear result', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should clear input when clear-selected is true', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" clear-selected="true"/>');
       $scope.selectedCountry = undefined;
@@ -698,6 +718,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = 97; // letter: a
 
@@ -705,7 +726,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
@@ -721,6 +742,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('blur', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should hide dropdown when focus is lost', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" clear-selected="true"/>');
       $scope.selectedCountry = undefined;
@@ -733,6 +756,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -740,12 +764,12 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+      expect(dropdown.hasClass('ng-hide')).toBeFalsy();
 
       inputField.blur();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+      expect(dropdown.hasClass('ng-hide')).toBeFalsy();
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+      expect(dropdown.hasClass('ng-hide')).toBeTruthy();
     });
 
     it('should cancel hiding the dropdown if it happens within pause period', function() {
@@ -760,6 +784,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -767,17 +792,19 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+      expect(dropdown.hasClass('ng-hide')).toBeFalsy();
 
       inputField.blur();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+      expect(dropdown.hasClass('ng-hide')).toBeFalsy();
       inputField.focus();
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+      expect(dropdown.hasClass('ng-hide')).toBeTruthy();
     });
   });
 
   describe('TAB for selecting', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should select the selected suggestion when TAB is pressed', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       $scope.selectedCountry = undefined;
@@ -790,6 +817,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -797,7 +825,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
@@ -822,6 +850,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -829,7 +858,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_TAB;
@@ -850,6 +879,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -857,7 +887,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_TAB;
@@ -878,6 +908,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -885,7 +916,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_TAB;
@@ -896,6 +927,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('override suggestions', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should override suggestions when enter is pressed but no suggestion is selected', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true"/>');
       $scope.selectedCountry = undefined;
@@ -908,6 +941,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -922,7 +956,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeydown);
       expect($scope.selectedCountry.originalObject).toEqual('abc');
       inputField.blur();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+      expect(dropdown.hasClass('ng-hide')).toBeTruthy();
     });
 
     it('should override suggestions when enter is pressed but no suggestion is selected also incorporate with clear-selected if it is set', function() {
@@ -937,6 +971,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
       e.which = 97; // letter: a
 
@@ -951,13 +986,15 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeydown);
       expect($scope.selectedCountry.originalObject).toEqual('abc');
       inputField.blur();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+      expect(dropdown.hasClass('ng-hide')).toBeTruthy();
 
       expect(element.isolateScope().searchStr).toBe(null);
     });
   });
 
   describe('selectedObject callback', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should call selectedObject callback if given', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       var selected = false;
@@ -974,6 +1011,7 @@ describe('angucomplete-alt', function() {
 
       expect(selected).toBe(false);
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = 97; // letter: a
 
@@ -981,7 +1019,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').length).toBe(1);
+      expect(dropdown.length).toBe(1);
 
       var eKeydown = $.Event('keydown');
       eKeydown.which = KEY_DW;
@@ -995,6 +1033,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('initial value', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should set initial value from string', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
       $scope.countries = [
@@ -1055,6 +1095,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('require field', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should add a class ng-invalid-autocomplete-required when initialized', function() {
       var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="required" input-name="country"/></form>');
       $scope.countries = [
@@ -1084,6 +1126,7 @@ describe('angucomplete-alt', function() {
       expect(element.hasClass('ng-invalid')).toBe(true);
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = 97; // letter: a
 
@@ -1091,7 +1134,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
 
       // make a selection
       var eKeydown = $.Event('keydown');
@@ -1110,7 +1153,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeyup);
       $timeout.flush();
       expect(element.hasClass('ng-invalid')).toBe(true);
-      expect(element.find('.angucomplete-row').length).toBe(1);
+      expect(dropdown.find('.angucomplete-row').length).toBe(1);
       expect($scope.countrySelected).toBeUndefined();
 
       // make a selection again
@@ -1124,6 +1167,7 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Input changed callback', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
 
     it('should call input changed callback when input is changed', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" input-changed="inputChanged"/>');
@@ -1149,6 +1193,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Auto Selecting', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should not select a suggestion when there are multiple matches', function() {
       var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="2"/>');
       $scope.selectedPerson = undefined;
@@ -1219,6 +1265,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('key event handling', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should query again when down arrow key is pressed', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
       $scope.countrySelected = null;
@@ -1231,6 +1279,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeyup = $.Event('keyup');
       eKeyup.which = 97; // letter: a
 
@@ -1238,23 +1287,28 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
 
       // ESC once
       eKeyup.which = KEY_ES;
       inputField.trigger(eKeyup);
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
 
       // Down arrow
       inputField.focus();
       eKeyup.which = KEY_DW;
       inputField.trigger('input');
       inputField.trigger(eKeyup);
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
     });
   });
 
   describe('Clear input', function() {
+    afterEach(function(){
+      angular.element('#ex1_dropdown').remove();
+      angular.element('#ex2_dropdown').remove();
+    });
+    
     it('should clear input fields', function() {
       var element = angular.element(
         '<form name="name">' +
@@ -1341,6 +1395,7 @@ describe('angucomplete-alt', function() {
       expect(element.hasClass('ng-invalid')).toBe(true);
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var eKeydown = $.Event('keydown');
       var eKeyup = $.Event('keyup');
 
@@ -1350,7 +1405,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeyup);
       $timeout.flush();
 
-      expect(element.find('.angucomplete-row').length).toBe(2);
+      expect(dropdown.find('.angucomplete-row').length).toBe(2);
 
       // make a selection
       eKeydown.which = KEY_DW;
@@ -1370,6 +1425,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Change input', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should set input field for given component id', function() {
       var element = angular.element(
         '<form name="name">' +
@@ -1420,6 +1477,8 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Update input field text', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should update input field when up/down arrow key is pressed', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName,middleName,surname" title-field="firstName,surname" minlength="1"/>');
       $scope.selectedPerson = undefined;
@@ -1553,7 +1612,9 @@ describe('angucomplete-alt', function() {
     });
   });
 
-  describe('set minlenght to 0', function() {
+  describe('set minlength to 0', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should show all items when focused', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="0"/>');
       $scope.countrySelected = null;
@@ -1566,12 +1627,13 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
-      expect(element.find('.angucomplete-row').length).toBe(0);
+      var dropdown = angular.element(document).find('#ex1_dropdown');
+      expect(dropdown.find('.angucomplete-row').length).toBe(0);
       // TODO: should replace all triggers with this triggerHandler
       // http://sravi-kiran.blogspot.co.nz/2013/12/TriggeringEventsInAngularJsDirectiveTests.html
       inputField.triggerHandler('focus');
       $scope.$digest();
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
     });
 
     it('should remove highlight when input becomes empty', function() {
@@ -1586,10 +1648,11 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       inputField.triggerHandler('focus');
       $scope.$digest();
-      expect(element.find('.angucomplete-row').length).toBe(3);
-      element.find('.angucomplete-row .highlight').each(function() {
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
+      dropdown.find('.angucomplete-row .highlight').each(function() {
         expect($(this).text().length).toBe(0);
       });
 
@@ -1600,7 +1663,7 @@ describe('angucomplete-alt', function() {
       inputField.triggerHandler('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      element.find('.angucomplete-row .highlight').each(function() {
+      dropdown.find('.angucomplete-row .highlight').each(function() {
         expect($(this).text().length).toBeGreaterThan(0);
       });
 
@@ -1609,14 +1672,16 @@ describe('angucomplete-alt', function() {
       inputField.triggerHandler('input');
       inputField.trigger(eKeyup);
       $scope.$digest();
-      element.find('.angucomplete-row .highlight').each(function() {
+      dropdown.find('.angucomplete-row .highlight').each(function() {
         expect($(this).text().length).toBe(0);
       });
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
     });
   });
 
   describe('Numeric data', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should handle nemeric data', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" minlength="1"/>');
       $scope.selectedUser = undefined;
@@ -1628,6 +1693,7 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = '1'.charCodeAt(0);
@@ -1635,7 +1701,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(1);
+      expect(dropdown.find('.angucomplete-row').length).toBe(1);
     });
 
     it('should handle match class', function() {
@@ -1649,6 +1715,7 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = '1'.charCodeAt(0);
@@ -1656,7 +1723,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(1);
+      expect(dropdown.find('.angucomplete-row').length).toBe(1);
     });
 
     it('should handle match class, multiple matches ', function() {
@@ -1670,6 +1737,7 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = '1'.charCodeAt(0);
@@ -1682,11 +1750,13 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(e);
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(dropdown.find('.angucomplete-row').length).toBe(3);
     });
   });
 
   describe('focus first attribute', function() {
+    afterEach(function(){ angular.element('#ex1_dropdown').remove(); });
+    
     it('should be handled by angucomplete-alt directive', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
       $scope.selectedPerson = undefined;
@@ -1714,6 +1784,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = 'l'.charCodeAt(0);
@@ -1722,7 +1793,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(e);
       $timeout.flush();
       expect(element.isolateScope().searchStr).toEqual('l');
-      expect(element.find('.angucomplete-row').length).toEqual(2);
+      expect(dropdown.find('.angucomplete-row').length).toEqual(2);
       expect(element.isolateScope().currentIndex).toEqual(0);
     });
 
@@ -1738,6 +1809,7 @@ describe('angucomplete-alt', function() {
       $scope.$digest();
 
       var inputField = element.find('#ex1_value');
+      var dropdown = angular.element(document).find('#ex1_dropdown');
       var e = $.Event('keyup');
 
       e.which = 'l'.charCodeAt(0);
@@ -1747,15 +1819,15 @@ describe('angucomplete-alt', function() {
 
       element.isolateScope().currentIndex = 1;
       $timeout.flush();
-      expect(element.find('.angucomplete-row').length).toEqual(2);
+      expect(dropdown.find('.angucomplete-row').length).toEqual(2);
 
       inputField.blur();
       $timeout.flush();
-      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+      expect(dropdown.hasClass('ng-hide')).toBeTruthy();
 
       inputField.focus();
       $timeout(function(){
-        expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+        expect(dropdown.hasClass('ng-hide')).toBeFalsy();
         expect(element.isolateScope().currentIndex).toEqual(0);
       },0);
     });
