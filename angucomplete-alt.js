@@ -523,6 +523,10 @@
 
           for (s = 0; s < searchFields.length; s++) {
             value = extractValue(scope.localData[i], searchFields[s]) || '';
+            if(scope.disableLocalMatch){
+              match = match || true;
+              continue;
+            }
             match = match || (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0);
           }
 
@@ -804,7 +808,8 @@
         focusIn: '&',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        disableLocalMatch: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
