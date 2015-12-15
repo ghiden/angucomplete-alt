@@ -54,9 +54,8 @@
 
 			/**
 			 * Function that obtains the current @element bounding rect
-       * @ngdoc Function
 			 * @param element
-			 * @returns {{left: number, top: number, height: Number, width: Number}}
+			 * @returns {{left: number, top: number, height: Number, width: Number, distanceToBottom: number}}
 			 */
 			function elementRect(element){
 				var bodyRect = document.body.getBoundingClientRect(),
@@ -68,7 +67,8 @@
 					left: offsetLeftOrigin,
 					top: offsetTopOrigin,
 					height: elementRect.height,
-					width: elementRect.width
+					width: elementRect.width,
+					distanceToBottom: bodyRect.height - elementRect.bottom //Distance between the bottom input and the bottom body
 				};
 			}
 
@@ -83,14 +83,11 @@
 				var responseFormatter;
 				var validState = null;
 				var httpCanceller = null;
-				var dd = elem[0].querySelector('.angucomplete-dropdown');
 				var isScrollOn = false;
 				var mousedownOn = null;
 				var unbindInitialValue;
 				var displaySearching;
 				var displayNoResults;
-
-
 				var autocompleteElement =
 					    '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
 					    '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
@@ -108,8 +105,11 @@
 					    '  </div>';
 
 
+
 				//Append dropdown element to body, this is because the element hides if there is something above itself
 				var compiledAutocompleteEl = $compile(autocompleteElement)(scope);
+				var dd = compiledAutocompleteEl[0];
+
 
 				/**
 				 * Deep check to the element features to get all changes and adapt the current dropdown, not only with the input parent, but also with the current page
@@ -117,10 +117,17 @@
 				scope.$watchCollection( function (  ) {
 					return elementRect(inputField[0])
 				}, function ( newVal ) {
-					console.log("element:", elem, inputField);
-					console.log("Hubo un cambio de posicion", newVal);
-
-					$(compiledAutocompleteEl).css({margin:'0 !important', width:newVal.width, top: newVal.top + newVal.height, left: newVal.left, position:'absolute'});
+					$(compiledAutocompleteEl).css(
+						{
+							margin:'0 !important',
+							width:newVal.width,
+							top: newVal.top + newVal.height,
+							left: newVal.left,
+							position:'absolute',
+							overflow:'auto',
+							'max-height':newVal.distanceToBottom
+						}
+					);
 				});
 
 
@@ -370,7 +377,7 @@
 				}
 
 				function dropdownRow() {
-					return elem[0].querySelectorAll('.angucomplete-row')[scope.currentIndex];
+					return dd.querySelectorAll('.angucomplete-row')[scope.currentIndex];
 				}
 
 				function dropdownRowTop() {
@@ -399,6 +406,7 @@
 					var rowTop = null;
 
 					if (which === KEY_EN && scope.results) {
+						console.log("enter en angucomplete", scope.currentIndex >= 0 && scope.currentIndex < scope.results.length)
 						if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
 							event.preventDefault();
 							scope.selectResult(scope.results[scope.currentIndex]);
