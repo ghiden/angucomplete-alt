@@ -48,17 +48,19 @@
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
         '  <input id="{{id}}_value" name="{{inputName}}" ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{inputType}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
         '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
-        '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
-        '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
-        '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
-        '      <div ng-if="imageField" class="angucomplete-image-holder">' +
-        '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
-        '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
+        '    <div ng-if="showDropdown">' +
+        '      <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
+        '      <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
+        '      <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">' +
+        '        <div ng-if="imageField" class="angucomplete-image-holder">' +
+        '          <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
+        '          <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
+        '        </div>' +
+        '        <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
+        '        <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
+        '        <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
+        '        <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
         '      </div>' +
-        '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
-        '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
-        '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
-        '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
         '    </div>' +
         '  </div>' +
         '</div>'
