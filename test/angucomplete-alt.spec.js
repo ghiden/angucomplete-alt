@@ -53,6 +53,13 @@ describe('angucomplete-alt', function() {
       expect(element.find('#ex1_value').attr('type')).toEqual('text');
     });
 
+    it('should render dropdown in a body of the document with given id plus _dropdown', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" selected-object="selectedCountry" title-field="name"></div>');
+      $scope.selectedCountry = null;
+      $compile(element)($scope);
+      $scope.$digest();
+      expect(angular.element(document.body).find('#ex1_dropdown').length).toBe(1);
+    });
   });
 
   describe('Local data', function() {
@@ -1830,6 +1837,20 @@ describe('angucomplete-alt', function() {
         expect(dropdown.hasClass('ng-hide')).toBeFalsy();
         expect(element.isolateScope().currentIndex).toEqual(0);
       },0);
+    });
+  });
+
+  describe('Clean up', function(){
+    it('should remove dropdown when input removed', function(){
+      var element = angular.element('<div angucomplete-alt id="ex1" selected-object="selectedCountry" title-field="name"></div>');
+      $(document.body).append(element);
+      $scope.selectedCountry = null;
+      $compile(element)($scope);
+      $scope.$digest();
+      
+      $(element).remove();
+      
+      expect(angular.element(document.body).find('#ex1_dropdown').length).toBe(0);
     });
   });
 });
