@@ -530,9 +530,7 @@
             matches[matches.length] = scope.localData[i];
           }
         }
-
-        scope.searching = false;
-        processResults(matches, str);
+        return matches;
       }
 
       function checkExactMatch(result, obj, str){
@@ -553,7 +551,14 @@
         }
         if (scope.localData) {
           scope.$apply(function() {
-            getLocalResults(str);
+            var matches;
+            if (typeof scope.localSearch() !== 'undefined') {
+              matches = scope.localSearch()(str);
+            } else {
+              matches = getLocalResults(str);
+            }
+            scope.searching = false;
+            processResults(matches, str);
           });
         }
         else if (scope.remoteApiHandler) {
@@ -776,6 +781,7 @@
         disableInput: '=',
         initialValue: '=',
         localData: '=',
+        localSearch: '&',
         remoteUrlRequestFormatter: '=',
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
