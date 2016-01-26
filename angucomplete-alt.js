@@ -8,6 +8,7 @@
 /*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
 
 (function (root, factory) {
+  'use strict';
   if (typeof module !== 'undefined' && module.exports) {
     // CommonJS
     module.exports = factory(require('angular'));
