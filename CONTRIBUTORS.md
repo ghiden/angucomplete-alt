@@ -45,6 +45,10 @@
 
 * Fix auto-match #245 #246
 
+### [@fkeusch](https://github.com/fkeusch)
+
+* Add tabindex #311 #57
+
 ### [@Freezystem: Nico](https://github.com/Freezystem)
 
 * Add focus-first #92 #242
@@ -109,6 +113,10 @@
 ### [@termleech](https://github.com/termleech)
 
 * Add maxlength #136
+
+### [@thetrevdev: Trevor](https://github.com/thetrevdev)
+
+* Move strict directive #324
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 
