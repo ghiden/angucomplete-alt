@@ -171,7 +171,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | template-url | Customize the markup of the autocomplete template. [example page](https://ghiden.github.io/angucomplete-alt/#example14) | No | attribute | "/my-custom-template.html" |
 | focus-first | Automatically select the first match from the result list. |  No | @ | true |
 | parse-input | A function or expression to parse input string before comparing into search process. |  No | & | parseInput() |
-| tabindex | Setting the tabindex attribute on the input field. |  No | @ | tabindex="25" |
+| field-tabindex | Setting the tabindex attribute on the input field. |  No | @ | field-tabindex="25" |
 
 
 ### Scrollbar
