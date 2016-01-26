@@ -7,9 +7,8 @@
 
 /*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
 
-'use strict';
-
 (function (root, factory) {
+  'use strict';
   if (typeof module !== 'undefined' && module.exports) {
     // CommonJS
     module.exports = factory(require('angular'));
@@ -21,6 +20,7 @@
     factory(root.angular);
   }
 }(window, function (angular) {
+  'use strict';
 
   angular.module('angucomplete-alt', []).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', '$interpolate', function ($q, $parse, $http, $sce, $timeout, $templateCache, $interpolate) {
     // keyboard events
