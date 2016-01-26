@@ -30,7 +30,7 @@
       <div>
         <ul>
           <li><a href="#example1">Example 1 - Countries of the World</a></li>
-          <li><a href="#example2">Example 2 - People</a></li>
+          <li><a href="#example2">Example 2 - Custom Search</a></li>
           <li><a href="#example3">Example 3 - Clear Result on Selection</a></li>
           <li><a href="#example4">Example 4 - Override Suggestions with Clear Result</a></li>
           <li><a href="#example5">Example 5 - Using GitHub Search API</a></li>
@@ -80,7 +80,7 @@
 
       <div class="large-padded-row">
 
-        <h3><a name="example2" class="page-anchor">Example 2 - People</a></h3>
+        <h3><a name="example2" class="page-anchor">Example 2 - Custom Search</a></h3>
         <div class="padded-row">
 <pre>
 &lt;div angucomplete-alt id="ex2"
@@ -88,7 +88,7 @@
   pause="300"
   selected-object="selectedPerson"
   local-data="people"
-  search-fields="firstName,surname"
+  local-search="localSearch"
   title-field="firstName,surname"
   description-field="twitter"
   image-field="pic"
@@ -99,7 +99,7 @@
 </pre>
         </div>
         <div class="padded-row">
-          <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight" local-search="localSearch">
           </div>
         </div>
         <div class="result">
