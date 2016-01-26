@@ -39,6 +39,7 @@ To see a demo go here: https://ghiden.github.io/angucomplete-alt
 * Override template with your own. When you use this feature, test throughly as it might break other features. Thanks to @sdbondi for #74.
 * Show all items.
 * Custom remote API handler which allows you to fully control how to communicate with your remote API. Thanks to @jbuquet
+* Custom search function for handling local data
 
 ### Angular 1.2
 
@@ -64,7 +65,7 @@ Then add the angucomplete-alt module to your Angular App file, e.g.
 var app = angular.module('app', ["angucomplete-alt"]);
 ```
 
-### Local Usage
+### Using local data
 
 ```html
 <angucomplete-alt id="ex1"
@@ -78,7 +79,42 @@ var app = angular.module('app', ["angucomplete-alt"]);
               input-class="form-control form-control-small"/>
 ```
 
-### Remote Usage
+### Using local data with custom search function
+
+```html
+<angucomplete-alt id="ex2"
+              placeholder="Search people"
+              pause="300"
+              selected-object="selectedPerson"
+              local-data="people"
+              local-search="localSearch"
+              title-field="firstName,surname"
+              description-field="twitter"
+              image-field="pic"
+              minlength="1"
+              input-class="form-control form-control-small"
+              match-class="highlight" />
+```
+
+Local search function takes a string and returns an array of matched items.
+```javascript
+// Here is a naive implementation for matching first name, last name, or full name
+$scope.localSearch = function(str) {
+  var matches = [];
+  $scope.people.forEach(function(person) {
+    var fullName = person.firstName + ' ' + person.surname;
+    if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+      matches.push(person);
+    }
+  });
+  return matches;
+};
+```
+[Example](https://ghiden.github.io/angucomplete-alt/#example2)
+
+### Using remote API
 
 ```html
 <angucomplete-alt id="members"
@@ -113,6 +149,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | input-class | The classes to use for styling the input box. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | form-control |
 | match-class | If it is assigned, matching part of title is highlighted with given class style. [example](https://ghiden.github.io/angucomplete-alt/#example6) | No | @ | highlight |
 | local-data | The local data variable to use from your controller. Should be an array of objects. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | = | countriesList |
+| local-search | A function that search local data. It should take one string as argument and returns an of matched items. [example](https://ghiden.github.io/angucomplete-alt/#example2) | No | & | localSearch |
 | search-fields | The fields from your local data to search on (comma separate them). Each field can contain dots for accessing nested attribute. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | title,description |
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object. [example](https://ghiden.github.io/angucomplete-alt/#example5) | No | = | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | remote-url-request-with-credentials | A boolean that accepts parameters with credentials. | No | @ | true or false |
