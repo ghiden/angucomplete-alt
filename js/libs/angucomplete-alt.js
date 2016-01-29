@@ -7,9 +7,8 @@
 
 /*! Copyright (c) 2014 Hidenari Nozaki and contributors | Licensed under the MIT license */
 
-'use strict';
-
 (function (root, factory) {
+  'use strict';
   if (typeof module !== 'undefined' && module.exports) {
     // CommonJS
     module.exports = factory(require('angular'));
@@ -21,6 +20,7 @@
     factory(root.angular);
   }
 }(window, function (angular) {
+  'use strict';
 
   angular.module('angucomplete-alt', []).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', '$interpolate', function ($q, $parse, $http, $sce, $timeout, $templateCache, $interpolate) {
     // keyboard events
@@ -30,8 +30,6 @@
     var KEY_LF  = 37;
     var KEY_ES  = 27;
     var KEY_EN  = 13;
-    var KEY_BS  =  8;
-    var KEY_DEL = 46;
     var KEY_TAB =  9;
 
     var MIN_LENGTH = 3;
@@ -48,7 +46,7 @@
     // Set the default template for this directive
     $templateCache.put(TEMPLATE_URL,
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
-        '  <input id="{{id}}_value" name="{{inputName}}" ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{inputType}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
+        '  <input id="{{id}}_value" name="{{inputName}}" tabindex="{{fieldTabindex}}" ng-class="{\'angucomplete-input-not-empty\': notEmpty}" ng-model="searchStr" ng-disabled="disableInput" type="{{inputType}}" placeholder="{{placeholder}}" maxlength="{{maxlength}}" ng-focus="onFocusHandler()" class="{{inputClass}}" ng-focus="resetHideResults()" ng-blur="hideResults($event)" autocapitalize="off" autocorrect="off" autocomplete="off" ng-change="inputChangeHandler(searchStr)"/>' +
         '  <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">' +
         '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>' +
         '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>' +
@@ -96,7 +94,7 @@
 
       scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
-      unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
+      unbindInitialValue = scope.$watch('initialValue', function(newval) {
         if (newval) {
           // remove scope listener
           unbindInitialValue();
@@ -421,13 +419,17 @@
               handleOverrideSuggestions();
             }
           }
+        } else if (which === KEY_ES) {
+          // This is very specific to IE10/11 #272
+          // without this, IE clears the input text
+          event.preventDefault();
         }
       }
 
       function httpSuccessCallbackGen(str) {
         return function(responseData, status, headers, config) {
           // normalize return obejct from promise
-          if (!status && !headers && !config) {
+          if (!status && !headers && !config && responseData.data) {
             responseData = responseData.data;
           }
           scope.searching = false;
@@ -513,7 +515,9 @@
         var i, match, s, value,
             searchFields = scope.searchFields.split(','),
             matches = [];
-
+        if (typeof scope.parseInput() !== 'undefined') {
+          str = scope.parseInput()(str);
+        }
         for (i = 0; i < scope.localData.length; i++) {
           match = false;
 
@@ -526,9 +530,7 @@
             matches[matches.length] = scope.localData[i];
           }
         }
-
-        scope.searching = false;
-        processResults(matches, str);
+        return matches;
       }
 
       function checkExactMatch(result, obj, str){
@@ -549,7 +551,14 @@
         }
         if (scope.localData) {
           scope.$apply(function() {
-            getLocalResults(str);
+            var matches;
+            if (typeof scope.localSearch() !== 'undefined') {
+              matches = scope.localSearch()(str);
+            } else {
+              matches = getLocalResults(str);
+            }
+            scope.searching = false;
+            processResults(matches, str);
           });
         }
         else if (scope.remoteApiHandler) {
@@ -631,7 +640,7 @@
         }
       };
 
-      scope.hideResults = function(event) {
+      scope.hideResults = function() {
         if (mousedownOn &&
             (mousedownOn === scope.id + '_dropdown' ||
              mousedownOn.indexOf('angucomplete') >= 0)) {
@@ -757,11 +766,6 @@
       // set response formatter
       responseFormatter = callFunctionOrIdentity('remoteUrlResponseFormatter');
 
-      scope.$on('$destroy', function() {
-        // take care of required validity when it gets destroyed
-        handleRequired(true);
-      });
-
       // set isScrollOn
       $timeout(function() {
         var css = getComputedStyle(dd);
@@ -777,6 +781,7 @@
         disableInput: '=',
         initialValue: '=',
         localData: '=',
+        localSearch: '&',
         remoteUrlRequestFormatter: '=',
         remoteUrlRequestWithCredentials: '@',
         remoteUrlResponseFormatter: '=',
@@ -803,13 +808,15 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
+        fieldTabindex: '@',
         inputName: '@',
-        focusFirst: '@'
+        focusFirst: '@',
+        parseInput: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
       },
-      compile: function(tElement, tAttrs) {
+      compile: function(tElement) {
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
         if (!(startSym === '{{' && endSym === '}}')) {
