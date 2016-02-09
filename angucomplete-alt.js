@@ -358,6 +358,7 @@
           } else {
             handleOverrideSuggestions(event);
             clearResults();
+            event.currentTarget.blur();
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
