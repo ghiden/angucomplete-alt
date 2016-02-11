@@ -355,7 +355,7 @@
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
             event.preventDefault();
             scope.selectResult(scope.results[scope.currentIndex]);
-          } else {
+          } else if (scope.searchStr !== '') {
             handleOverrideSuggestions(event);
             clearResults();
             event.currentTarget.blur();
