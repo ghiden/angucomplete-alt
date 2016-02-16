@@ -7,6 +7,7 @@ describe('angucomplete-alt', function() {
       KEY_ES  = 27,
       KEY_EN  = 13,
       KEY_DEL = 46,
+      KEY_SHIFT = 16,
       KEY_TAB =  9,
       KEY_BS  =  8;
 
@@ -1251,6 +1252,44 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+
+    it('should not query again if tab or shift keyup in input field and input is allready valid', function () {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_TAB;
+      inputField.trigger(eKeydown);
+      $scope.$digest();
+      expect($scope.selectedCountry.originalObject).toEqual($scope.countries[0]);
+
+      eKeyup.which = KEY_TAB;
+      inputField.trigger(eKeyup);
+      $scope.$digest();
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+
+      eKeyup.which = KEY_SHIFT;
+      inputField.trigger(eKeyup);
+      $scope.$digest();
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
     });
   });
 
