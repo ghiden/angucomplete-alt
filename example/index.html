@@ -45,6 +45,7 @@
           <li><a href="#example14">Example 14 - Custom Template</a></li>
           <li><a href="#example15">Example 15 - Clear Input on Button Click</a></li>
           <li><a href="#example16">Example 16 - Change Input on Button Click</a></li>
+          <li><a href="#example17">Example 17 - Show Dropdown on Click</a></li>
         </ul>
       </div>
 
@@ -640,6 +641,50 @@
         <div class="result">
           <div ng-show="selectedCountry16">
             You selected <span class="bold-span">{{selectedCountry16.originalObject.name}}</span> <span ng-show="selectedCountry16.originalObject.code">which has a country code of <span class="bold-span">{{selectedCountry16.originalObject.code}}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="large-padded-row">
+        <h3><a name="example17" class="page-anchor">Example 16 - Show dropdown on click</a></h3>
+        <div class="padded-row">
+<pre>
+&lt;div angucomplete-alt id="ex17"
+   placeholder="Search countries"
+   maxlength="50"
+   pause="100"
+   selected-object="selectedCountry17"
+   initial-value="selectedCountry17"
+   local-data="countries"
+   search-fields="name"
+   title-field="name"
+   minlength="1"
+   dropdown-on-focus="true"
+   input-class="form-control form-control-small"
+   match-class="highlight"&gt;
+&lt;/div&gt;
+</pre>
+        </div>
+        <div class="padded-row">
+          <div angucomplete-alt id="ex17"
+               placeholder="Search countries"
+               maxlength="50"
+               pause="100"
+               selected-object="selectedCountry17"
+               initial-value="selectedCountry17"
+               local-data="countries"
+               search-fields="name"
+               title-field="name"
+               minlength="1"
+               dropdown-on-focus="true"
+               input-class="form-control form-control-small"
+               match-class="highlight">
+          </div>
+        </div>
+
+        <div class="result">
+          <div ng-show="selectedCountry17">
+            You selected <span class="bold-span">{{selectedCountry17.originalObject.name}}</span> <span ng-show="selectedCountry17.originalObject.code">which has a country code of <span class="bold-span">{{selectedCountry17.originalObject.code}}</span></span>
           </div>
         </div>
       </div>
