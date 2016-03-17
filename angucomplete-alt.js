@@ -79,6 +79,7 @@
       var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
+      var isInAutocomplete = false;
 
       elem.on('mousedown', function(event) {
         if (event.target.id) {
@@ -298,9 +299,6 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event) {
-            event.preventDefault();
-          }
 
           // cancel search timer
           $timeout.cancel(searchTimer);
@@ -353,12 +351,10 @@
 
         if (which === KEY_EN && scope.results) {
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
-            event.preventDefault();
             scope.selectResult(scope.results[scope.currentIndex]);
           } else if (scope.searchStr !== '') {
             handleOverrideSuggestions(event);
             clearResults();
-            event.currentTarget.blur();
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
@@ -416,7 +412,10 @@
             // no results
             // intentionally not sending event so that it does not
             // prevent default tab behavior
-            if (scope.searchStr && scope.searchStr.length > 0) {
+            console.log(scope.results);
+            console.log(scope.searchStr);
+            console.log(scope.index);
+            if (scope.searchStr && scope.searchStr.length > 0 && !isInAutocomplete && scope.results) {
               handleOverrideSuggestions();
             }
           }
@@ -656,12 +655,6 @@
           if (scope.focusOut) {
             scope.focusOut();
           }
-
-          if (scope.overrideSuggestions) {
-            if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
-              handleOverrideSuggestions();
-            }
-          }
         }
       };
 
@@ -680,10 +673,13 @@
         if (scope.matchClass) {
           result.title = extractTitle(result.originalObject);
           result.description = extractValue(result.originalObject, scope.descriptionField);
+          isInAutocomplete = true;
+          inputField.focus();
         }
 
         if (scope.clearSelected) {
           scope.searchStr = null;
+          isInAutocomplete = false;
         }
         else {
           scope.searchStr = result.title;
