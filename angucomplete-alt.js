@@ -412,9 +412,6 @@
             // no results
             // intentionally not sending event so that it does not
             // prevent default tab behavior
-            console.log(scope.results);
-            console.log(scope.searchStr);
-            console.log(scope.index);
             if (scope.searchStr && scope.searchStr.length > 0 && !isInAutocomplete && scope.results) {
               handleOverrideSuggestions();
             }
