@@ -465,7 +465,12 @@
 
       function getRemoteResults(str) {
         var params = {},
-            url = scope.remoteUrl + encodeURIComponent(str);
+            url = scope.remoteUrl + encodeURIComponent(str),
+            headers = {
+                  'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
+              };
         if (scope.remoteUrlRequestFormatter) {
           params = {params: scope.remoteUrlRequestFormatter(str)};
           url = scope.remoteUrl;
@@ -476,7 +481,7 @@
         cancelHttpRequest();
         httpCanceller = $q.defer();
         params.timeout = httpCanceller.promise;
-        $http.get(url, params)
+        $http.get(url, params, headers)
           .success(httpSuccessCallbackGen(str))
           .error(httpErrorCallback);
       }
@@ -811,7 +816,8 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        label: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
