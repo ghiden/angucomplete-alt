@@ -298,7 +298,7 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event) {
+          if (event && scope.enterSubmitsForm) {
             event.preventDefault();
           }
 
@@ -353,12 +353,16 @@
 
         if (which === KEY_EN && scope.results) {
           if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
-            event.preventDefault();
+            if (!scope.enterSubmitsForm) {
+              event.preventDefault();
+            }
             scope.selectResult(scope.results[scope.currentIndex]);
           } else if (scope.searchStr !== '') {
             handleOverrideSuggestions(event);
             clearResults();
-            event.currentTarget.blur();
+            if (!scope.enterSubmitsForm) {
+              event.currentTarget.blur();
+            }
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
@@ -800,6 +804,7 @@
         fieldRequired: '=',
         fieldRequiredClass: '@',
         inputChanged: '=',
+        enterSubmitsForm: '@',
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
