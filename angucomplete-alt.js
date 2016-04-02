@@ -298,8 +298,11 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event && scope.enterSubmitsForm) {
-            event.preventDefault();
+          if (event) {
+            var which = ie8EventNormalizer(event);
+            if (which !== KEY_EN || (which === KEY_EN && !scope.enterSubmitsForm)) {
+              event.preventDefault();
+            }
           }
 
           // cancel search timer
