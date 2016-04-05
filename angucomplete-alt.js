@@ -522,8 +522,17 @@
           match = false;
 
           for (s = 0; s < searchFields.length; s++) {
+            // get the value of search field number "s"
             value = extractValue(scope.localData[i], searchFields[s]) || '';
-            match = match || (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0);
+            
+            // check if each word in the search string matches the string
+            var valueMatchesStr = true;
+            var searchWords = str.split(/\s+/g);
+            searchWords.forEach(function(searchWord) {
+                valueMatchesStr = valueMatchesStr && (value.toString().toLowerCase().indexOf(searchWord.toString().toLowerCase()) >= 0);
+            });
+            
+            match = match || valueMatchesStr;
           }
 
           if (match) {
