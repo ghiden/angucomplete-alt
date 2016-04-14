@@ -163,7 +163,7 @@
 
       function callOrAssign(value) {
         if (typeof scope.selectedObject === 'function') {
-          scope.selectedObject(value);
+          scope.selectedObject(value, scope.selectedObjectData);
         }
         else {
           scope.selectedObject = value;
@@ -778,6 +778,7 @@
       require: '^?form',
       scope: {
         selectedObject: '=',
+        selectedObjectData: '=',
         disableInput: '=',
         initialValue: '=',
         localData: '=',
