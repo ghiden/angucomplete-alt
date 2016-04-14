@@ -147,6 +147,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | minlength | The minimum length of string required before searching. [example](https://ghiden.github.io/angucomplete-alt/#example1). If set to 0, it shows all items. It works both local and remote but is intended to use with local data. If used with remote API, it needs to return all items when query parameter is empty string. | No | @ | 3 |
 | input-name | Name for input field. This is required when you use field-required. | No | @ | |
 | input-class | The classes to use for styling the input box. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | form-control |
+| input-style | Use styles to change something specific in the field. [example](https://ghiden.github.io/angucomplete-alt/#example17) | No | @ | |
 | match-class | If it is assigned, matching part of title is highlighted with given class style. [example](https://ghiden.github.io/angucomplete-alt/#example6) | No | @ | highlight |
 | local-data | The local data variable to use from your controller. Should be an array of objects. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | = | countriesList |
 | local-search | A function that search local data. It should take one string as argument and returns an of matched items. [example](https://ghiden.github.io/angucomplete-alt/#example2) | No | & | localSearch |
