@@ -160,8 +160,8 @@ It expects the returned results from remote API to have a root object. In the ab
 | override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](https://ghiden.github.io/angucomplete-alt/#example4) | No | true |
 | field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form and you need to provide input-name. Default class name is "autocomplete-required". [example](https://ghiden.github.io/angucomplete-alt/#example8). | No | = | a variable holding true/false |
 | field-required-class | Set custom class name for required. | No | @ | "match" |
-| text-searching | Custom string to show when search is in progress. Set this to 'false' prevents text to show up. | No | attribute | "Searching for items..." |
-| text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | attribute | "Not found" |
+| text-searching | Custom string to show when search is in progress. Set this to 'false' prevents text to show up. | No | @ | "Searching for items..." |
+| text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | @ | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](https://ghiden.github.io/angucomplete-alt/#example9) | No | = | myInitialValue (object/string) |
 | input-changed | A callback function that is called when input field is changed. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](https://ghiden.github.io/angucomplete-alt/#example10) |  No | = | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](https://ghiden.github.io/angucomplete-alt/#example11) |  No | @ | true |
