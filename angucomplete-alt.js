@@ -790,6 +790,8 @@
         id: '@',
         type: '@',
         placeholder: '@',
+        textSearching: '@',
+        textNoResults: '@',
         remoteUrl: '@',
         remoteUrlDataField: '@',
         titleField: '@',
