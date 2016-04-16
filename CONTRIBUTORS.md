@@ -53,6 +53,10 @@
 
 * Add focus-first #92 #242
 
+### [@glaggia-larus: Gianmarco Laggia](https://github.com/glaggia-larus)
+
+* Pass textSearching and textNoResult with @ #357
+
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
 * Add css to bower.json main #68
@@ -76,6 +80,10 @@
 ### [@JohannesFerner: Johannes Ferner](https://github.com/JohannesFerner)
 
 * Add an example on clearInput event #225 #252
+
+### [@johanye: Hang Ye](https://github.com/johanye)
+
+* Make localData accessible to local search function #343
 
 ### [@Leocrest](https://github.com/Leocrest)
 
