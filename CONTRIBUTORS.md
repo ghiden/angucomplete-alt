@@ -65,6 +65,10 @@
 
 * Escape regular expression #123
 
+### [@JaZo: Jasper Zonneveld](https://github.com/JaZo)
+
+* Pass textSearching and textNoResult with @ #335
+
 ### [@jesusr: Jesús R Peinado](https://github.com/jesusr)
 
 * Adding parseInput function parameter #294
