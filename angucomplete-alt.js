@@ -553,7 +553,7 @@
           scope.$apply(function() {
             var matches;
             if (typeof scope.localSearch() !== 'undefined') {
-              matches = scope.localSearch()(str);
+              matches = scope.localSearch()(str, scope.localData);
             } else {
               matches = getLocalResults(str);
             }
