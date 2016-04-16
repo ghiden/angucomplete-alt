@@ -813,9 +813,7 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&',
-        textSearching: '@',
-        textNoResults: '@'
+        parseInput: '&'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
