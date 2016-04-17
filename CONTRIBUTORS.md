@@ -53,6 +53,10 @@
 
 * Add focus-first #92 #242
 
+### [@ggillyb: Gilly Barr](https://github.com/ggillyb)
+
+* stop displaying 'searching' message on error #336
+
 ### [@glaggia-larus: Gianmarco Laggia](https://github.com/glaggia-larus)
 
 * Pass textSearching and textNoResult with @ #357
