@@ -440,6 +440,8 @@
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
+        scope.searching = false;
+        
         // cancelled/aborted
         if (status === 0 || status === -1) { return; }
 
