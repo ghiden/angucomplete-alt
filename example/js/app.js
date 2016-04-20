@@ -14,9 +14,9 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
       }
     };
 
-    $scope.localSearch = function(str) {
+    $scope.localSearch = function(str, people) {
       var matches = [];
-      $scope.people.forEach(function(person) {
+      people.forEach(function(person) {
         var fullName = person.firstName + ' ' + person.surname;
         if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
             (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
