@@ -440,6 +440,8 @@
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
+        scope.searching = false;
+
         // cancelled/aborted
         if (status === 0 || status === -1) { return; }
 
@@ -553,7 +555,7 @@
           scope.$apply(function() {
             var matches;
             if (typeof scope.localSearch() !== 'undefined') {
-              matches = scope.localSearch()(str);
+              matches = scope.localSearch()(str, scope.localData);
             } else {
               matches = getLocalResults(str);
             }
@@ -791,6 +793,8 @@
         id: '@',
         type: '@',
         placeholder: '@',
+        textSearching: '@',
+        textNoResults: '@',
         remoteUrl: '@',
         remoteUrlDataField: '@',
         titleField: '@',
