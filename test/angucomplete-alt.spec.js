@@ -1611,6 +1611,27 @@ describe('angucomplete-alt', function() {
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
 
+    it('should set $scope.searching to true on focus when using remote data', inject(function($httpBackend) {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" minlength="0"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var results = {data: []};
+      $httpBackend.expectGET('names?q=').respond(200, results);
+
+      var inputField = element.find('#ex1_value');
+      inputField.triggerHandler('focus');
+      $scope.$digest();
+      expect(element.isolateScope().searching).toBe(true);
+
+      $timeout.flush();
+      $httpBackend.flush();
+
+      expect(element.isolateScope().searching).toBe(false);
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+    }));
+
     it('should remove highlight when input becomes empty', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="0" match-class="highlight"/>');
       $scope.countrySelected = null;
@@ -1651,6 +1672,35 @@ describe('angucomplete-alt', function() {
       });
       expect(element.find('.angucomplete-row').length).toBe(3);
     });
+
+    it('should set $scope.searching to true when input becomes empty and using remote data', inject(function($httpBackend) {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search names" selected-object="selected" remote-url="names?q=" search-fields="name" remote-url-data-field="data" title-field="name" minlength="0"/>');
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var results = {data: []};
+      $httpBackend.expectGET('names?q=').respond(200, results);
+
+      var inputField = element.find('#ex1_value');
+      inputField.val('a');
+      $scope.$digest();
+
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = KEY_DEL;
+      inputField.val('');
+      inputField.triggerHandler('input');
+      inputField.trigger(eKeyup);
+      $scope.$digest();
+
+      expect(element.isolateScope().searching).toBe(true);
+
+      $timeout.flush();
+      $httpBackend.flush();
+
+      expect(element.isolateScope().searching).toBe(false);
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+    }));
   });
 
   describe('Numeric data', function() {
