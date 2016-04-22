@@ -6,6 +6,9 @@
 grunt # no arguments, just grunt
 ```
 
+(If you don't have grunt installed, you'll need to run ``npm install -g grunt-cli`` to install grunt.
+You'll also want to run ``bower install && npm install``.)
+
 * If PR is not trivial, please add tests.
 
 * All pull requests should be made to the `master` branch.
