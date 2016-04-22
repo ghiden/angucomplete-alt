@@ -97,6 +97,11 @@
 
 * Clear input #61
 
+### [@loren138](https://github.com/loren138)
+
+* Update the package file and contribution instructions #372
+* Pass data variable to select function #373
+
 ### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
 
 * Add input name and a not-empty class #124
