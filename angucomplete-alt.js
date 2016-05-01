@@ -66,6 +66,9 @@
     );
 
     function link(scope, elem, attrs, ctrl) {
+	    
+	    console.log( scope.readOnlyInput );
+	    
       var inputField = elem.find('input');
       var minlength = MIN_LENGTH;
       var searchTimer = null;
@@ -818,9 +821,9 @@
         inputName: '@',
         focusFirst: '@',
         parseInput: '&',
-        containerClass: "@",
+        containerClass: "=",
         inputLabel: "@", 
-        readOnlyInput: "@"
+        readOnlyInput: "="
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;

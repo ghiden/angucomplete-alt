@@ -173,9 +173,9 @@ It expects the returned results from remote API to have a root object. In the ab
 | focus-first | Automatically select the first match from the result list. |  No | @ | true |
 | parse-input | A function or expression to parse input string before comparing into search process. |  No | & | parseInput() |
 | field-tabindex | Setting the tabindex attribute on the input field. |  No | @ | field-tabindex="25" |
-| container-class | Adds classes to the angucomplete container. |  No | @ | form-group (Bootstrap) |
+| container-class | Adds classes to the angucomplete container. |  No | = | form-group (Bootstrap) |
 | input-label | Adds an input label to the angucomplete. `<label>` element is only displayed if an input-label is supplied. |  No | @ | "First Name:" |
-| read-only-input | A model to control `READONLY` status of input field. |  No | @ | readOnlyInput |
+| read-only-input | A model to control `READONLY` status of input field. |  No | = | readOnlyInput |
 
 
 ### Scrollbar
