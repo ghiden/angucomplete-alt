@@ -67,8 +67,6 @@
 
     function link(scope, elem, attrs, ctrl) {
 	    
-	    console.log( scope.readOnlyInput );
-	    
       var inputField = elem.find('input');
       var minlength = MIN_LENGTH;
       var searchTimer = null;
