@@ -14,6 +14,19 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
       }
     };
 
+    $scope.localSearch = function(str, people) {
+      var matches = [];
+      people.forEach(function(person) {
+        var fullName = person.firstName + ' ' + person.surname;
+        if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+            (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+            (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+          matches.push(person);
+        }
+      });
+      return matches;
+    };
+
     $scope.people = [
       {firstName: "Daryl", surname: "Rowland", twitter: "@darylrowland", pic: "img/daryl.jpeg"},
       {firstName: "Alan", surname: "Partridge", twitter: "@alangpartridge", pic: "img/alanp.jpg"},

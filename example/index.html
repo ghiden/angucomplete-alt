@@ -30,7 +30,7 @@
       <div>
         <ul>
           <li><a href="#example1">Example 1 - Countries of the World</a></li>
-          <li><a href="#example2">Example 2 - People</a></li>
+          <li><a href="#example2">Example 2 - Custom Search</a></li>
           <li><a href="#example3">Example 3 - Clear Result on Selection</a></li>
           <li><a href="#example4">Example 4 - Override Suggestions with Clear Result</a></li>
           <li><a href="#example5">Example 5 - Using GitHub Search API</a></li>
@@ -80,7 +80,7 @@
 
       <div class="large-padded-row">
 
-        <h3><a name="example2" class="page-anchor">Example 2 - People</a></h3>
+        <h3><a name="example2" class="page-anchor">Example 2 - Custom Search</a></h3>
         <div class="padded-row">
 <pre>
 &lt;div angucomplete-alt id="ex2"
@@ -88,7 +88,7 @@
   pause="300"
   selected-object="selectedPerson"
   local-data="people"
-  search-fields="firstName,surname"
+  local-search="localSearch"
   title-field="firstName,surname"
   description-field="twitter"
   image-field="pic"
@@ -97,9 +97,25 @@
   match-class="highlight"&gt;
 &lt;/div&gt;
 </pre>
+        <div class="padded-row">
+<pre>
+// search function to match full text
+$scope.localSearch = function(str, people) {
+  var matches = [];
+  people.forEach(function(person) {
+    var fullName = person.firstName + ' ' + person.surname;
+    if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) &gt;= 0) ||
+        (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) &gt;= 0) ||
+        (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) &gt;= 0)) {
+      matches.push(person);
+    }
+  });
+  return matches;
+};
+</pre>
         </div>
         <div class="padded-row">
-          <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" search-fields="firstName,surname" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight">
+          <div angucomplete-alt id="ex2" placeholder="Search people" pause="300" selected-object="selectedPerson" local-data="people" title-field="firstName,surname" description-field="twitter" image-field="pic" minlength="1" input-class="form-control form-control-small" match-class="highlight" local-search="localSearch">
           </div>
         </div>
         <div class="result">
@@ -283,7 +299,7 @@
       minlength="1"
       input-class="form-control form-control-small"
       match-class="highlight"
-      field-required="requireExample8a"
+      field-required="true"
       input-name="country8a"&gt;
     &lt;/div&gt;
 
@@ -298,7 +314,7 @@
       minlength="1"
       input-class="form-control form-control-small"
       match-class="highlight"
-      field-required="requireExample8b"
+      field-required="true"
       input-name="country8b"&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -308,10 +324,10 @@
           <h3><a name="example8" class="page-anchor">Example 8 - Required</a><span ng-show="form.$valid" class="valid-status valid">[VALID]</span><span class="valid-status invalid" ng-show="form.$invalid">[INVALID]</span></h3>
           <div class="padded-row">
             <span>Choose two countries</span>
-            <div angucomplete-alt id="ex8a" placeholder="Search countries" pause="100" selected-object="countrySelected8a" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="requireExample8a" input-name="country8a">
+            <div angucomplete-alt id="ex8a" placeholder="Search countries" pause="100" selected-object="countrySelected8a" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true" input-name="country8a">
             </div>
 
-            <div angucomplete-alt id="ex8b" placeholder="Search countries" pause="100" selected-object="countrySelected8b" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="requireExample8b" input-name="country8b">
+            <div angucomplete-alt id="ex8b" placeholder="Search countries" pause="100" selected-object="countrySelected8b" local-data="countries" search-fields="name" title-field="name" minlength="1" input-class="form-control form-control-small" match-class="highlight" field-required="true" input-name="country8b">
             </div>
           </div>
         </form>

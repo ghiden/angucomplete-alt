@@ -45,9 +45,21 @@
 
 * Fix auto-match #245 #246
 
+### [@fkeusch](https://github.com/fkeusch)
+
+* Add tabindex #311 #57
+
 ### [@Freezystem: Nico](https://github.com/Freezystem)
 
 * Add focus-first #92 #242
+
+### [@ggillyb: Gilly Barr](https://github.com/ggillyb)
+
+* stop displaying 'searching' message on error #336
+
+### [@glaggia-larus: Gianmarco Laggia](https://github.com/glaggia-larus)
+
+* Pass textSearching and textNoResult with @ #357
 
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
@@ -56,6 +68,10 @@
 ### [@iamgurdip](https://github.com/iamgurdip)
 
 * Escape regular expression #123
+
+### [@JaZo: Jasper Zonneveld](https://github.com/JaZo)
+
+* Pass textSearching and textNoResult with @ #335
 
 ### [@jesusr: Jesús R Peinado](https://github.com/jesusr)
 
@@ -73,9 +89,18 @@
 
 * Add an example on clearInput event #225 #252
 
+### [@johanye: Hang Ye](https://github.com/johanye)
+
+* Make localData accessible to local search function #343
+
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
+
+### [@loren138](https://github.com/loren138)
+
+* Update the package file and contribution instructions #372
+* Pass data variable to select function #373
 
 ### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
 
@@ -109,6 +134,10 @@
 ### [@termleech](https://github.com/termleech)
 
 * Add maxlength #136
+
+### [@thetrevdev: Trevor](https://github.com/thetrevdev)
+
+* Move strict directive #324
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 

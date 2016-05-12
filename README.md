@@ -39,6 +39,7 @@ To see a demo go here: https://ghiden.github.io/angucomplete-alt
 * Override template with your own. When you use this feature, test throughly as it might break other features. Thanks to @sdbondi for #74.
 * Show all items.
 * Custom remote API handler which allows you to fully control how to communicate with your remote API. Thanks to @jbuquet
+* Custom search function for handling local data
 
 ### Angular 1.2
 
@@ -64,7 +65,7 @@ Then add the angucomplete-alt module to your Angular App file, e.g.
 var app = angular.module('app', ["angucomplete-alt"]);
 ```
 
-### Local Usage
+### Using local data
 
 ```html
 <angucomplete-alt id="ex1"
@@ -78,7 +79,42 @@ var app = angular.module('app', ["angucomplete-alt"]);
               input-class="form-control form-control-small"/>
 ```
 
-### Remote Usage
+### Using local data with custom search function
+
+```html
+<angucomplete-alt id="ex2"
+              placeholder="Search people"
+              pause="300"
+              selected-object="selectedPerson"
+              local-data="people"
+              local-search="localSearch"
+              title-field="firstName,surname"
+              description-field="twitter"
+              image-field="pic"
+              minlength="1"
+              input-class="form-control form-control-small"
+              match-class="highlight" />
+```
+
+Local search function takes a string and returns an array of matched items.
+```javascript
+// Here is a naive implementation for matching first name, last name, or full name
+$scope.localSearch = function(str) {
+  var matches = [];
+  $scope.people.forEach(function(person) {
+    var fullName = person.firstName + ' ' + person.surname;
+    if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+      matches.push(person);
+    }
+  });
+  return matches;
+};
+```
+[Example](https://ghiden.github.io/angucomplete-alt/#example2)
+
+### Using remote API
 
 ```html
 <angucomplete-alt id="members"
@@ -103,6 +139,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | maxlength | Maxlength attribute for the search field. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | attribute | 25 |
 | pause | The time to wait (in milliseconds) before searching when the user enters new characters. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | 400 |
 | selected-object | Either an object in your scope or callback function. If you set an object, it will be passed to the directive with '=' sign but it is actually one-way-bound data. So, setting it from your scope has no effect on input string. If you set a callback, it gets called when selection is made. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](https://ghiden.github.io/angucomplete-alt/#example1) | Yes | = | selectedObject or objectSelectedCallback |
+| selected-object-data | A second parameter which will be passed to selected-object.  Only works when using selected-object. | No | = | row |
 | remote-url | The remote URL to hit to query for results in JSON. angucomplete will automatically append the search string on the end of this, so it must be a GET request. [example](https://ghiden.github.io/angucomplete-alt/#example5) | No | @ | http://myserver.com/api/users/find?searchstr= |
 | remote-url-data-field | The name of the field in the JSON object returned back that holds the Array of objects to be used for the autocomplete list. [example](https://ghiden.github.io/angucomplete-alt/#example5) | No | @ | results |
 | title-field | The name of the field in the JSON objects returned back that should be used for displaying the title in the autocomplete list. Note, if you want to combine fields together, you can comma separate them here (e.g. for a first and last name combined). If you want to access nested field, use dot to connect attributes (e.g. name.first). [example](https://ghiden.github.io/angucomplete-alt/#example1) | Yes | @ | firstName,lastName |
@@ -113,6 +150,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | input-class | The classes to use for styling the input box. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | form-control |
 | match-class | If it is assigned, matching part of title is highlighted with given class style. [example](https://ghiden.github.io/angucomplete-alt/#example6) | No | @ | highlight |
 | local-data | The local data variable to use from your controller. Should be an array of objects. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | = | countriesList |
+| local-search | A function that search local data. It should take a input string and an array of items as arguments and returns an array of matched items. [example](https://ghiden.github.io/angucomplete-alt/#example2) | No | & | localSearch |
 | search-fields | The fields from your local data to search on (comma separate them). Each field can contain dots for accessing nested attribute. [example](https://ghiden.github.io/angucomplete-alt/#example1) | No | @ | title,description |
 | remote-url-request-formatter | A function that takes a query string and returns parameter(s) for GET. It should take the query string as argument and returns a key-value object. [example](https://ghiden.github.io/angucomplete-alt/#example5) | No | = | Suppose if you need to send a query keyword and a timestamp to search API, you can write a function like this in the parent scope. $scope.dataFormatFn = function(str) { return {q: str, timestamp: +new Date()}; } |
 | remote-url-request-with-credentials | A boolean that accepts parameters with credentials. | No | @ | true or false |
@@ -123,8 +161,8 @@ It expects the returned results from remote API to have a root object. In the ab
 | override-suggestions | To override suggestions and set the value in input field to selectedObject. [example](https://ghiden.github.io/angucomplete-alt/#example4) | No | true |
 | field-required | Set field to be required. Requirement for this to work is that this directive needs to be in a form and you need to provide input-name. Default class name is "autocomplete-required". [example](https://ghiden.github.io/angucomplete-alt/#example8). | No | = | a variable holding true/false |
 | field-required-class | Set custom class name for required. | No | @ | "match" |
-| text-searching | Custom string to show when search is in progress. Set this to 'false' prevents text to show up. | No | attribute | "Searching for items..." |
-| text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | attribute | "Not found" |
+| text-searching | Custom string to show when search is in progress. Set this to 'false' prevents text to show up. | No | @ | "Searching for items..." |
+| text-no-results | Custom string to show when there is no match. Set this to 'false' prevents text to show up. | No | @ | "Not found" |
 | initial-value | Initial value for component. If string, the internal model is set to the string value, if an object, the title-field attribute is used to parse the correct title for the view, and the internal model is set to the object. [example](https://ghiden.github.io/angucomplete-alt/#example9) | No | = | myInitialValue (object/string) |
 | input-changed | A callback function that is called when input field is changed. To get attributes of the input from which the assignment was made, use this.$parent.$index within your function. [example](https://ghiden.github.io/angucomplete-alt/#example10) |  No | = | inputChangedFn |
 | auto-match | Allows for auto selecting an item if the search text matches a search results attributes exactly. [example](https://ghiden.github.io/angucomplete-alt/#example11) |  No | @ | true |
@@ -134,6 +172,7 @@ It expects the returned results from remote API to have a root object. In the ab
 | template-url | Customize the markup of the autocomplete template. [example page](https://ghiden.github.io/angucomplete-alt/#example14) | No | attribute | "/my-custom-template.html" |
 | focus-first | Automatically select the first match from the result list. |  No | @ | true |
 | parse-input | A function or expression to parse input string before comparing into search process. |  No | & | parseInput() |
+| field-tabindex | Setting the tabindex attribute on the input field. |  No | @ | field-tabindex="25" |
 
 
 ### Scrollbar
