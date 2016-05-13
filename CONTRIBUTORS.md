@@ -15,9 +15,22 @@
 
 * Bug fix #109
 
+### [@annmirosh](https://github.com/annmirosh)
+
+* Fix input event for mobile device #232 #178
+
 ### [@antony: Antony Jones](https://github.com/antony)
 
 * Allow the user to set an initial value OBJECT instead of just a string #173
+* Documentation update #180
+
+### [@artvlasov](https://github.com/artvlasov)
+
+* Implemented changeInput event listener to set input value #260
+
+### [@baloo2401](https://github.com/baloo2401)
+
+* display-searching and display-no-result #129
 
 ### [@boshen](https://github.com/Boshen)
 
@@ -28,6 +41,26 @@
 
 * Missing 'type' field on input element when not specified #167
 
+### [@federicojasson: Federico Jasson](https://github.com/federicojasson)
+
+* Fix auto-match #245 #246
+
+### [@fkeusch](https://github.com/fkeusch)
+
+* Add tabindex #311 #57
+
+### [@Freezystem: Nico](https://github.com/Freezystem)
+
+* Add focus-first #92 #242
+
+### [@ggillyb: Gilly Barr](https://github.com/ggillyb)
+
+* stop displaying 'searching' message on error #336
+
+### [@glaggia-larus: Gianmarco Laggia](https://github.com/glaggia-larus)
+
+* Pass textSearching and textNoResult with @ #357
+
 ### [@handiwijoyo: Handi Wijoyo](https://github.com/handiwijoyo)
 
 * Add css to bower.json main #68
@@ -35,6 +68,14 @@
 ### [@iamgurdip](https://github.com/iamgurdip)
 
 * Escape regular expression #123
+
+### [@JaZo: Jasper Zonneveld](https://github.com/JaZo)
+
+* Pass textSearching and textNoResult with @ #335
+
+### [@jesusr: Jesús R Peinado](https://github.com/jesusr)
+
+* Adding parseInput function parameter #294
 
 ### [@jbuquet: Javier Buquet](https://github.com/jbuquet)
 
@@ -44,9 +85,22 @@
 
 * Support withCredentials for $http #113
 
+### [@JohannesFerner: Johannes Ferner](https://github.com/JohannesFerner)
+
+* Add an example on clearInput event #225 #252
+
+### [@johanye: Hang Ye](https://github.com/johanye)
+
+* Make localData accessible to local search function #343
+
 ### [@Leocrest](https://github.com/Leocrest)
 
 * Clear input #61
+
+### [@loren138](https://github.com/loren138)
+
+* Update the package file and contribution instructions #372
+* Pass data variable to select function #373
 
 ### [@mcnocopo: Pachito Marco Calabrese](https://github.com/mcnocopo)
 
@@ -80,6 +134,10 @@
 ### [@termleech](https://github.com/termleech)
 
 * Add maxlength #136
+
+### [@thetrevdev: Trevor](https://github.com/thetrevdev)
+
+* Move strict directive #324
 
 ### [@tomgutz: Tomas Gutierrez](https://github.com/tomgutz)
 

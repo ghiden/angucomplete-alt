@@ -994,6 +994,43 @@ describe('angucomplete-alt', function() {
     });
   });
 
+  describe('selectedObject callback with extra paramater', function() {
+    it('should call selectedObject callback if given', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" selected-object-data="\'test\'" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      var selected = false;
+      $scope.countrySelected = function(value, row) {
+        selected = row;
+      };
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(selected).toBe(false);
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 97; // letter: a
+
+      inputField.val('a');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_DW;
+      inputField.trigger(eKeydown);
+      expect(element.isolateScope().currentIndex).toBe(0);
+
+      eKeydown.which = KEY_EN;
+      inputField.trigger(eKeydown);
+      expect(selected).toBe('test');
+    });
+  });
+
   describe('initial value', function() {
     it('should set initial value from string', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" initial-value="initialValue"/>');
@@ -1056,30 +1093,32 @@ describe('angucomplete-alt', function() {
 
   describe('require field', function() {
     it('should add a class ng-invalid-autocomplete-required when initialized', function() {
-      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="required" input-name="country"/></form>');
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
         {name: 'Albania', code: 'AL'}
       ];
+      $scope.required = true;
       $compile(element)($scope);
       $scope.$digest();
 
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.hasClass('ng-invalid')).toBe(true);
     });
 
     it('should add a class ng-invalid-autocomplete-required when selection is made', function() {
-      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="true"/></form>');
+      var element = angular.element('<form name="form"><div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" field-required="required" input-name="country"/></form>');
       $scope.countrySelected = null;
       $scope.countries = [
         {name: 'Afghanistan', code: 'AF'},
         {name: 'Aland Islands', code: 'AX'},
         {name: 'Albania', code: 'AL'}
       ];
+      $scope.required = true;
       $compile(element)($scope);
       $scope.$digest();
 
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.hasClass('ng-invalid')).toBe(true);
 
       var inputField = element.find('#ex1_value');
       var eKeyup = $.Event('keyup');
@@ -1097,7 +1136,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeydown);
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect(element.hasClass('ng-invalid')).toBe(false);
       expect($scope.countrySelected).toBeDefined();
 
       // delete a char
@@ -1107,7 +1146,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger('input');
       inputField.trigger(eKeyup);
       $timeout.flush();
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.hasClass('ng-invalid')).toBe(true);
       expect(element.find('.angucomplete-row').length).toBe(1);
       expect($scope.countrySelected).toBeUndefined();
 
@@ -1116,7 +1155,7 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeydown);
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect(element.hasClass('ng-invalid')).toBe(false);
       expect($scope.countrySelected).toBeDefined();
     });
   });
@@ -1147,13 +1186,36 @@ describe('angucomplete-alt', function() {
   });
 
   describe('Auto Selecting', function() {
+    it('should not select a suggestion when there are multiple matches', function() {
+      var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="2"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway1@example.com'},
+        {name: 'John Elway', email: 'elway2@example.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var y = $.Event('keyup');
+      y.which = 121;
+
+      inputField.val('john elway');
+      inputField.trigger('input');
+      inputField.trigger(y);
+      $timeout.flush();
+      expect($scope.selectedPerson).toBeUndefined();
+    });
+
     it('should select the first suggestion when the search text fully matches any of the attributes', function() {
       var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="2"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
-        {name: 'Elvis Presly', email: 'theking@gmail.com'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1173,9 +1235,9 @@ describe('angucomplete-alt', function() {
       var element = angular.element('<div angucomplete-alt auto-match="true" id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name,email" title-field="name" description-field="email" minlength="1"/>');
       $scope.selectedPerson = undefined;
       $scope.people = [
-        {name: 'Jim Beam', email: 'jbeam@aol.com'},
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
         {name: 'Elvis Presly'},
-        {name: 'John Elway', email: 'elway@nfl.com'}
+        {name: 'John Elway', email: 'elway@example.com'}
       ];
       $compile(element)($scope);
       $scope.$digest();
@@ -1297,13 +1359,14 @@ describe('angucomplete-alt', function() {
     it('should clear input fields', function() {
       var element = angular.element(
         '<form name="name">' +
-        '  <div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName" title-field="firstName" minlength="1" field-required="true"/>' +
+        '  <div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="firstName" title-field="firstName" minlength="1" field-required="required" input-name="person"/>' +
         '</form>'
       );
       $scope.clearInput = function(id) {
         $scope.$broadcast('angucomplete-alt:clearInput', id);
       };
       $scope.selectedPerson = undefined;
+      $scope.required = true;
       $scope.people = [
         {firstName: 'Emma'},
         {firstName: 'Elvis'},
@@ -1312,7 +1375,7 @@ describe('angucomplete-alt', function() {
       $compile(element)($scope);
       $scope.$digest();
 
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.hasClass('ng-invalid')).toBe(true);
 
       var inputField = element.find('#ex1_value');
       var eKeydown = $.Event('keydown');
@@ -1331,14 +1394,65 @@ describe('angucomplete-alt', function() {
       inputField.trigger(eKeydown);
       eKeydown.which = KEY_EN;
       inputField.trigger(eKeydown);
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(false);
+      expect(element.hasClass('ng-invalid')).toBe(false);
       expect($scope.selectedPerson).toBeDefined();
 
       $scope.clearInput('ex1');
       $scope.$digest();
 
       expect(inputField.val()).toBe('');
-      expect(element.hasClass('ng-invalid-autocomplete-required')).toBe(true);
+      expect(element.hasClass('ng-invalid')).toBe(true);
+      expect($scope.selectedPerson).toBeUndefined();
+    });
+  });
+
+  describe('Change input', function() {
+    it('should set input field for given component id', function() {
+      var element = angular.element(
+        '<form name="name">' +
+        '  <div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson1" local-data="people" search-fields="firstName" title-field="firstName" minlength="1"/>' +
+        '  <div angucomplete-alt id="ex2" placeholder="Search people" selected-object="selectedPerson2" local-data="people" search-fields="firstName" title-field="firstName" minlength="1"/>' +
+        '</form>'
+      );
+      $scope.changeInput = function(id, val) {
+        $scope.$broadcast('angucomplete-alt:changeInput', id, val);
+      };
+      $scope.selectedPerson1 = undefined;
+      $scope.selectedPerson2 = undefined;
+      $scope.people = [
+        {firstName: 'Emma'},
+        {firstName: 'Elvis'},
+        {firstName: 'John'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField1 = element.find('#ex1_value');
+      var inputField2 = element.find('#ex2_value');
+      var eKeydown = $.Event('keydown');
+      var eKeyup = $.Event('keyup');
+
+      inputField1.val('e');
+      inputField1.trigger('input');
+      eKeyup.which = 'e'.charCodeAt(0);
+      inputField1.trigger(eKeyup);
+      $timeout.flush();
+
+      inputField2.val('j');
+      inputField2.trigger('input');
+      eKeyup.which = 'j'.charCodeAt(0);
+      inputField2.trigger(eKeyup);
+      $timeout.flush();
+
+      expect(inputField1.val()).toEqual('e');
+      expect(inputField2.val()).toEqual('j');
+
+      $scope.changeInput('ex1', 'Elvis');
+      $scope.$digest();
+
+      // should only change #ex1
+      expect(inputField1.val()).toBe('Elvis');
+      expect(inputField2.val()).toBe('j');
     });
   });
 
@@ -1536,6 +1650,151 @@ describe('angucomplete-alt', function() {
         expect($(this).text().length).toBe(0);
       });
       expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+  });
+
+  describe('Numeric data', function() {
+    it('should handle nemeric data', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" minlength="1"/>');
+      $scope.selectedUser = undefined;
+      $scope.users = [
+        {name: 'Alice', id: 1},
+        {name: 'Bob', id: 2},
+        {name: 'Chris', id: 3}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = '1'.charCodeAt(0);
+      inputField.val(1);
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(1);
+    });
+
+    it('should handle match class', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" description-field="amount" minlength="1" match-class="highlight"/>');
+      $scope.selectedUser = undefined;
+      $scope.users = [
+        {name: 'Alice', id: 1, amount: 100},
+        {name: 'Bob', id: 2, amount: 123},
+        {name: 'Chris', id: 3, amount: 200}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = '1'.charCodeAt(0);
+      inputField.val(1);
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(1);
+    });
+
+    it('should handle match class, multiple matches ', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search IDs" selected-object="selectedUser" local-data="users" search-fields="id" title-field="id" description-field="amount" minlength="2" match-class="highlight"/>');
+      $scope.selectedUser = undefined;
+      $scope.users = [
+        {name: 'Alice', id: 100, amount: 100},
+        {name: 'Bob', id: 101, amount: 123},
+        {name: 'Chris', id: 110, amount: 200}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = '1'.charCodeAt(0);
+      inputField.val(1);
+      inputField.trigger('input');
+      inputField.trigger(e);
+
+      e.which = '0'.charCodeAt(0);
+      inputField.val(10);
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+  });
+
+  describe('focus first attribute', function() {
+    it('should be handled by angucomplete-alt directive', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(element.isolateScope().focusFirst).toBeTruthy();
+      expect(element.isolateScope().currentIndex).toEqual(0);
+    });
+
+    it('should force the focus on first match after match list update', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 'l'.charCodeAt(0);
+      inputField.val('l');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect(element.isolateScope().searchStr).toEqual('l');
+      expect(element.find('.angucomplete-row').length).toEqual(2);
+      expect(element.isolateScope().currentIndex).toEqual(0);
+    });
+
+    it('should force the focus on first match after input is blured and refocused', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search people" selected-object="selectedPerson" local-data="people" search-fields="name" title-field="name" minlength="1" focus-first="true"/>');
+      $scope.selectedPerson = undefined;
+      $scope.people = [
+        {name: 'Jim Beam', email: 'jbeam@example.com'},
+        {name: 'Elvis Presly', email: 'theking@example.com'},
+        {name: 'John Elway', email: 'elway@example.com'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+
+      e.which = 'l'.charCodeAt(0);
+      inputField.val('l');
+      inputField.trigger('input');
+      inputField.trigger(e);
+
+      element.isolateScope().currentIndex = 1;
+      $timeout.flush();
+      expect(element.find('.angucomplete-row').length).toEqual(2);
+
+      inputField.blur();
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeTruthy();
+
+      inputField.focus();
+      $timeout(function(){
+        expect(element.find('#ex1_dropdown').hasClass('ng-hide')).toBeFalsy();
+        expect(element.isolateScope().currentIndex).toEqual(0);
+      },0);
     });
   });
 });

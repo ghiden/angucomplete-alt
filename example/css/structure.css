@@ -1014,8 +1014,21 @@ td {
 	color: #ff0000;
 }
 
-form.ng-invalid-autocomplete-required input {
+form input.ng-invalid-autocomplete-required {
   border-color: red;
+}
+
+.valid-status {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.valid-status.valid {
+  color: green;
+}
+
+.valid-status.invalid {
+  color: red;
 }
 
 .console {
@@ -1024,9 +1037,7 @@ form.ng-invalid-autocomplete-required input {
   font-size: 12px;
   color: #ccc;
 }
-.result {
-  height: 15px;
-}
+
 .small-input {
   width: 30%;
 }
@@ -1051,4 +1062,16 @@ ul {
 #ex1_dropdown {
   overflow-y: auto;
   max-height: 150px;
+}
+
+pre {
+  width: 600px;
+  overflow-x: auto;
+  font-family: courier;
+  font-size: .8em;
+  display: block;
+  line-height: 1;
+  padding: 10px 15px;
+  background-color: #000;
+  color: #fff;
 }

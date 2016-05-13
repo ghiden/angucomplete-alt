@@ -1,13 +1,30 @@
 var app = angular.module('app', ["ngTouch", "angucomplete-alt"]);
 
-app.controller('MainController', ['$scope', '$http',
-  function MainController($scope, $http) {
+app.controller('MainController', ['$scope', '$http', '$rootScope',
+  function MainController($scope, $http, $rootScope) {
     $scope.remoteUrlRequestFn = function(str) {
       return {q: str};
     };
 
     $scope.countrySelected = function(selected) {
-      window.alert('You have selected ' + selected.title);
+      if (selected) {
+        window.alert('You have selected ' + selected.title);
+      } else {
+        console.log('cleared');
+      }
+    };
+
+    $scope.localSearch = function(str, people) {
+      var matches = [];
+      people.forEach(function(person) {
+        var fullName = person.firstName + ' ' + person.surname;
+        if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+            (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+            (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+          matches.push(person);
+        }
+      });
+      return matches;
     };
 
     $scope.people = [
@@ -271,6 +288,8 @@ app.controller('MainController', ['$scope', '$http',
       }
     }
 
+    $scope.selectedCountry16 = {name: 'Russia'};
+
     $scope.inputChanged = function(str) {
       $scope.console10 = str;
     }
@@ -287,6 +306,35 @@ app.controller('MainController', ['$scope', '$http',
       focusInputElem.classList.add('small-input');
     }
 
+    /***
+     * Send a broadcast to the directive in order to clear itself
+     * if an id parameter is given only this ancucomplete is cleared
+     * @param id
+     */
+    $scope.clearInput = function (id) {
+      if (id) {
+        $scope.$broadcast('angucomplete-alt:clearInput', id);
+      }
+      else{
+        $scope.$broadcast('angucomplete-alt:clearInput');
+      }
+    }
+
+    /***
+     * Send a broadcast to the directive in order to change itself
+     * if an id parameter is given only this ancucomplete is changed
+     * @param id
+     */
+    $scope.changeInput = function (id) {
+      if (id) {
+        var pos = Math.floor(Math.random() * ($scope.countries.length - 1));
+        $scope.$broadcast('angucomplete-alt:changeInput', id, $scope.countries[pos]);
+      }
+    }
+
     $scope.disableInput = true;
+
+    $scope.requireExample8a = true;
+    $scope.requireExample8b = true;
   }
 ]);
