@@ -699,7 +699,7 @@
       };
 
       scope.inputChangeHandler = function(str) {
-        if (str.length < minlength) {
+        if (typeof str !== 'string' || str.length < minlength) {
           cancelHttpRequest();
           clearResults();
         }
