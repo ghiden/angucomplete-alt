@@ -442,13 +442,13 @@
       function httpErrorCallback(errorRes, status, headers, config) {
         scope.searching = false;
 
-        // cancelled/aborted
-        if (status === 0 || status === -1) { return; }
-
         // normalize return obejct from promise
         if (!status && !headers && !config) {
           status = errorRes.status;
         }
+
+        // cancelled/aborted
+        if (status === 0 || status === -1) { return; }
         if (scope.remoteUrlErrorCallback) {
           scope.remoteUrlErrorCallback(errorRes, status, headers, config);
         }
