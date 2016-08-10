@@ -73,6 +73,7 @@
       var responseFormatter;
       var validState = null;
       var httpCanceller = null;
+      var httpCallInProgress = false;
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
       var mousedownOn = null;
@@ -440,7 +441,7 @@
       }
 
       function httpErrorCallback(errorRes, status, headers, config) {
-        scope.searching = false;
+        scope.searching = httpCallInProgress;
 
         // cancelled/aborted
         if (status === 0 || status === -1) { return; }
@@ -478,9 +479,11 @@
         cancelHttpRequest();
         httpCanceller = $q.defer();
         params.timeout = httpCanceller.promise;
+        httpCallInProgress = true;
         $http.get(url, params)
           .success(httpSuccessCallbackGen(str))
-          .error(httpErrorCallback);
+          .error(httpErrorCallback)
+          .finally(function(){httpCallInProgress=false;});
       }
 
       function getRemoteResultsWithCustomHandler(str) {
