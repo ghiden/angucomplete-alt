@@ -621,12 +621,15 @@
 
       function showAll() {
         if (scope.localData) {
+          scope.searching = false;
           processResults(scope.localData, '');
         }
         else if (scope.remoteApiHandler) {
+          scope.searching = true;
           getRemoteResultsWithCustomHandler('');
         }
         else {
+          scope.searching = true;
           getRemoteResults('');
         }
       }
@@ -704,7 +707,6 @@
           clearResults();
         }
         else if (str.length === 0 && minlength === 0) {
-          scope.searching = false;
           showAll();
         }
 
