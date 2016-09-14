@@ -202,6 +202,15 @@
           .join(' ');
       }
 
+      function extractDescription(data) {
+        // split title fields and run extractValue for each and join with ' '
+        return scope.descriptionField.split(',')
+          .map(function(field) {
+            return extractValue(data, field);
+          })
+          .join(' ');
+      }
+
       function extractValue(obj, key) {
         var keys, result;
         if (key) {
@@ -586,7 +595,8 @@
 
             description = '';
             if (scope.descriptionField) {
-              description = formattedDesc = extractValue(responseData[i], scope.descriptionField);
+              description = formattedDesc = extractDescription(responseData[i])
+                  //extractValue(responseData[i], scope.descriptionField);
             }
 
             image = '';
