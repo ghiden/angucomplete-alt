@@ -125,6 +125,10 @@
 * New callback handler, response translator, better template code format, and css fix #6
 * Fixed support for IE8 #13
 
+### [@nhim175: Thinh Pham](https://github.com/nhim175)
+
+* Adding support for IMEs #430
+
 ### [@peterjkirby: Peter Kirby](https://github.com/peterjkirby)
 
 * Bug fix #97
