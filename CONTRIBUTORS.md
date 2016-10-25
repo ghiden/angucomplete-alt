@@ -49,6 +49,10 @@
 
 * Fix auto-match #245 #246
 
+### [@ferfabricio: Fernando Fabricio dos Santos](https://github.com/ferfabricio)
+
+* Update README #439
+
 ### [@fkeusch](https://github.com/fkeusch)
 
 * Add tabindex #311 #57
