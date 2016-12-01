@@ -29,6 +29,7 @@
     var KEY_UP  = 38;
     var KEY_LF  = 37;
     var KEY_ES  = 27;
+    var KEY_SHIFT = 16;
     var KEY_EN  = 13;
     var KEY_TAB =  9;
 
@@ -411,6 +412,9 @@
               scope.selectResult(scope.results[scope.currentIndex]);
               scope.$digest();
             }
+          }
+          else if (scope.selectedObject && scope.selectedObject.originalObject) {
+//              nothing todo, good to go
           }
           else {
             // no results
