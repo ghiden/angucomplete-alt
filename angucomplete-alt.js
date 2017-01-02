@@ -11,7 +11,11 @@
   'use strict';
   if (typeof module !== 'undefined' && module.exports) {
     // CommonJS
-    module.exports = factory(require('angular'));
+    if (typeof angular === 'undefined') {
+      module.exports = factory(require('angular'));
+    } else {
+      module.exports = factory(angular);
+    }
   } else if (typeof define === 'function' && define.amd) {
     // AMD
     define(['angular'], factory);
