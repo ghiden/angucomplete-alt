@@ -137,6 +137,10 @@
 
 * Bug fix #97
 
+### [@postama: Adam Postma](https://github.com/postama)
+
+* Change to use promises instead of success/catch. #442
+
 ### [@sdbondi: Stan Bondi](https://github.com/sdbondi)
 
 * Custom template #74
