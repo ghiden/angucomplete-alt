@@ -288,9 +288,13 @@
             }, scope.pause);
           }
 
-          if (validState && validState !== scope.searchStr && !scope.clearSelected) {
+          if (typeof validState !== 'undefined' && validState !== scope.searchStr && !scope.clearSelected) {
             scope.$apply(function() {
-              callOrAssign();
+              if(scope.searchStr === '') {
+                callOrAssign();
+              } else {
+                callOrAssign({originalObject: scope.searchStr});
+              }
             });
           }
         }
