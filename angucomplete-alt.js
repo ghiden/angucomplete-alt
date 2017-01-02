@@ -412,6 +412,9 @@
               scope.$digest();
             }
           }
+          else if (scope.selectedObject && scope.selectedObject.originalObject) {
+//              nothing todo, good to go
+          }
           else {
             // no results
             // intentionally not sending event so that it does not
