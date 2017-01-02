@@ -29,6 +29,7 @@
     var KEY_UP  = 38;
     var KEY_LF  = 37;
     var KEY_ES  = 27;
+    var KEY_SHIFT = 16;
     var KEY_EN  = 13;
     var KEY_TAB =  9;
 
@@ -253,6 +254,10 @@
         if (which === KEY_UP || which === KEY_EN) {
           event.preventDefault();
         }
+        else if((which === KEY_TAB || which === KEY_SHIFT) && scope.selectedObject && scope.selectedObject.originalObject) {
+          // Don´t search if tabbed into field with valid object selection
+          event.preventDefault();
+        }
         else if (which === KEY_DW) {
           event.preventDefault();
           if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
@@ -267,6 +272,7 @@
             inputField.val(scope.searchStr);
           });
         }
+
         else {
           if (minlength === 0 && !scope.searchStr) {
             return;
