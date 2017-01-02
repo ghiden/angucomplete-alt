@@ -528,7 +528,18 @@
 
           for (s = 0; s < searchFields.length; s++) {
             value = extractValue(scope.localData[i], searchFields[s]) || '';
-            match = match || (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0);
+            var lowerValue = value.toString().toLowerCase();
+            var lowerSearch = str.toString().toLowerCase();
+
+            if (typeof scope.$parent[scope.searchMethod] === "function") {
+            match = match || scope.$parent[scope.searchMethod](str, value);
+            } else if(scope.searchMethod === 'startsWith') {
+                match = match || (lowerValue.indexOf(lowerSearch) === 0);
+            } else if(scope.searchMethod === 'endsWith') {
+                match = match || (lowerValue.indexOf(lowerSearch, lowerValue.length - lowerSearch.length) !== -1);
+            } else {
+                match = match || (lowerValue.indexOf(lowerSearch) >= 0);
+            }
           }
 
           if (match) {
@@ -808,6 +819,7 @@
         inputClass: '@',
         pause: '@',
         searchFields: '@',
+        searchMethod: '@',
         minlength: '@',
         matchClass: '@',
         clearSelected: '@',
