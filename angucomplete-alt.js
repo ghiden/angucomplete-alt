@@ -641,7 +641,7 @@
         if (scope.focusIn) {
           scope.focusIn();
         }
-        if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+        if (scope.dropdownOnFocus || (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0))) {
           scope.currentIndex = scope.focusFirst ? 0 : scope.currentIndex;
           scope.showDropdown = true;
           showAll();
@@ -809,6 +809,7 @@
         pause: '@',
         searchFields: '@',
         minlength: '@',
+        dropdownOnFocus: '@',
         matchClass: '@',
         clearSelected: '@',
         overrideSuggestions: '@',

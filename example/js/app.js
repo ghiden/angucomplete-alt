@@ -289,6 +289,7 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
     }
 
     $scope.selectedCountry16 = {name: 'Russia'};
+    $scope.selectedCountry17 = {name: 'Russia'};
 
     $scope.inputChanged = function(str) {
       $scope.console10 = str;

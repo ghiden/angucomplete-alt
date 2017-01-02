@@ -1702,6 +1702,43 @@ describe('angucomplete-alt', function() {
       $httpBackend.verifyNoOutstandingRequest();
     }));
   });
+  describe('set dropdown-on-focus to true', function() {
+    it('should show all items when focused', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" dropdown-on-focus="true"/>');
+      $scope.countrySelected = null;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      expect(element.find('.angucomplete-row').length).toBe(0);
+      // TODO: should replace all triggers with this triggerHandler
+      // http://sravi-kiran.blogspot.co.nz/2013/12/TriggeringEventsInAngularJsDirectiveTests.html
+      inputField.triggerHandler('focus');
+      $scope.$digest();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+
+    it('should still show all items on focus even if one was already selected', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="1" dropdown-on-focus="true"/>');
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $scope.countrySelected = $scope.countries[0];
+      $compile(element)($scope);
+      $scope.$digest();
+      var inputField = element.find('#ex1_value');
+      inputField.triggerHandler('focus');
+      $scope.$digest();
+      expect(element.find('.angucomplete-row').length).toBe(3);
+    });
+  });
 
   describe('Numeric data', function() {
     it('should handle nemeric data', function() {
