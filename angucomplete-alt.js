@@ -80,6 +80,7 @@
       var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
+      var sparseQuery = false;
 
       elem.on('mousedown', function(event) {
         if (event.target.id) {
@@ -219,19 +220,34 @@
 
       function findMatchString(target, str) {
         var result, matches, re;
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-        // Escape user input to be treated as a literal string within a regular expression
-        re = new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
         if (!target) { return; }
         if (!target.match || !target.replace) { target = target.toString(); }
-        matches = target.match(re);
-        if (matches) {
-          result = target.replace(re,
-              '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
+        
+        if (scope.sparseQuery) {
+          result = target
+          angular.forEach(str.split(' '), function(str) {
+            //re = new RegExp("("+str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+")(?![^<]*>|[^<>]*<\/)", 'ig');
+            re = new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+"(?![^<]*>)", 'ig');
+            matches = target.match(re);
+            if (matches) {
+              result = result.replace(re, '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
+            }
+          })
         }
         else {
-          result = target;
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+          // Escape user input to be treated as a literal string within a regular expression
+          re = new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+          matches = target.match(re);
+          if (matches) {
+            result = target.replace(re,
+                '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
+          }
+          else {
+            result = target;
+          }
         }
+        
         return $sce.trustAsHtml(result);
       }
 
@@ -528,9 +544,25 @@
 
           for (s = 0; s < searchFields.length; s++) {
             value = extractValue(scope.localData[i], searchFields[s]) || '';
-            match = match || (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0);
+            
+            if (scope.sparseQuery) {
+              var matchCount = 0
+              var all_str = str.split(' ')
+              angular.forEach(all_str, function(str) {
+                if (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) {
+                  matchCount++;
+                }
+              })
+              if (matchCount == all_str.length) {
+                match = match || true;
+              }
+              
+            }
+            else {
+              match = match || (value.toString().toLowerCase().indexOf(str.toString().toLowerCase()) >= 0);
+            }
           }
-
+          
           if (match) {
             matches[matches.length] = scope.localData[i];
           }
@@ -821,7 +853,8 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        sparseQuery: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
