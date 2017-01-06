@@ -43,6 +43,9 @@
     var TEXT_NORESULTS = 'No results found';
     var TEMPLATE_URL = '/angucomplete-alt/index.html';
 
+    // custom
+    var lastestPromise;
+
     // Set the default template for this directive
     $templateCache.put(TEMPLATE_URL,
         '<div class="angucomplete-holder" ng-class="{\'angucomplete-dropdown-visible\': showDropdown}">' +
@@ -486,12 +489,22 @@
           .finally(function(){httpCallInProgress=false;});
       }
 
+      function ensureLastest(promise) {
+          lastestPromise = promise;
+          return lastestPromise.then(function(thisPromise, resolve) {
+              if (thisPromise !== lastestPromise) {
+                  return Promise.reject("");
+              }
+              return resolve;
+          }.bind(null, lastestPromise));
+      }
+
       function getRemoteResultsWithCustomHandler(str) {
         cancelHttpRequest();
 
         httpCanceller = $q.defer();
 
-        scope.remoteApiHandler(str, httpCanceller.promise)
+        ensureLastest(scope.remoteApiHandler(str, httpCanceller.promise))
           .then(httpSuccessCallbackGen(str))
           .catch(httpErrorCallback);
 
