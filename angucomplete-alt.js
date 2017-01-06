@@ -357,8 +357,15 @@
             event.preventDefault();
             scope.selectResult(scope.results[scope.currentIndex]);
           } else {
-            handleOverrideSuggestions(event);
-            clearResults();
+	    if (scope.results.length ==0)
+            {
+              handleOverrideSuggestions(event);
+              clearResults();
+            }
+            else {
+              event.preventDefault();
+              scope.selectResult(scope.results[0]);
+            }
           }
           scope.$apply();
         } else if (which === KEY_DW && scope.results) {
