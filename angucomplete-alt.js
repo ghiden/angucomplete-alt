@@ -366,6 +366,7 @@
           if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
             scope.$apply(function() {
               scope.currentIndex ++;
+              scope.selectResult(scope.results[scope.currentIndex], true);
               updateInputField();
             });
 
@@ -381,6 +382,7 @@
           if (scope.currentIndex >= 1) {
             scope.$apply(function() {
               scope.currentIndex --;
+              scope.selectResult(scope.results[scope.currentIndex], true);
               updateInputField();
             });
 
@@ -687,7 +689,7 @@
         scope.currentIndex = index;
       };
 
-      scope.selectResult = function(result) {
+      scope.selectResult = function(result, not_clear_flag) {
         // Restore original values
         if (scope.matchClass) {
           result.title = extractTitle(result.originalObject);
@@ -701,7 +703,7 @@
           scope.searchStr = result.title;
         }
         callOrAssign(result);
-        clearResults();
+        if (!not_clear_flag) clearResults();
       };
 
       scope.inputChangeHandler = function(str) {
