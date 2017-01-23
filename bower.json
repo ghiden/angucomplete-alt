@@ -1,9 +1,9 @@
 {
-  "name": "angucomplete-alt",
-  "version": "3.0.0",
-  "homepage": "http://ghiden.github.io/angucomplete-alt/",
+  "name": "angucomplete-mr",
+  "version": "3.1.0",
+  "homepage": "https://github.com/moryrasb/angucomplete-alt",
   "authors": [
-    "Hidenari Nozaki <hidenari@gmail.com>"
+    "Hidenari Nozaki <hidenari@gmail.com>","Morteza Rezaee <mortezarezaee5718@gmail.com>"
   ],
   "description": "Autocomplete directive for AngularJS",
   "keywords": [
@@ -13,8 +13,8 @@
   ],
   "license": "MIT",
   "main": [
-      "./angucomplete-alt.js",
-      "./angucomplete-alt.css"
+    "./angucomplete-alt.js",
+    "./angucomplete-alt.css"
   ],
   "ignore": [
     "example",
@@ -25,7 +25,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": ">=1.6.0"
+    "angular": ">=1.6.0",
+    "angucomplete-alt": "angucomplete-mr#^3.0.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.6.0",
