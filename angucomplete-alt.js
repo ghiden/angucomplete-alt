@@ -81,6 +81,13 @@
       var displaySearching;
       var displayNoResults;
 
+      if (elem.attr('disabled')) {
+        $timeout(function() {
+          inputField.attr('disabled', 'disabled');
+          scope.disableInput = true;
+        }, 0);
+      }
+
       elem.on('mousedown', function(event) {
         if (event.target.id) {
           mousedownOn = event.target.id;
