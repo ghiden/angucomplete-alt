@@ -12,7 +12,7 @@
     "node": ">= 0.8.4"
   },
   "license": "MIT",
-  "main": "./angucomplete-alt.js",
+  "main": "./index.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -29,4 +29,3 @@
     "load-grunt-tasks": "~0.2.0"
   }
 }
-
