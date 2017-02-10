@@ -55,6 +55,10 @@
         '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
         '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
         '      </div>' +
+        '      <div ng-if="imageFieldBase64" class="angucomplete-image-holder">' +
+        '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
+        '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
+        '      </div>' +                       
         '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
         '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
         '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
@@ -593,6 +597,14 @@
             if (scope.imageField) {
               image = extractValue(responseData[i], scope.imageField);
             }
+            image = '';
+            if (scope.imageFieldBase64) {
+              image = extractValue(responseData[i], scope.imageFieldBase64);
+              if (image) {
+                image = "data:image/png;base64," + image;  
+              }
+              
+            }
 
             if (scope.matchClass) {
               formattedText = findMatchString(text, str);
@@ -805,6 +817,7 @@
         titleField: '@',
         descriptionField: '@',
         imageField: '@',
+        imageFieldBase64: '@',
         inputClass: '@',
         pause: '@',
         searchFields: '@',
