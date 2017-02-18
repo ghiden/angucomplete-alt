@@ -77,7 +77,6 @@
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
       var mousedownOn = null;
-      var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
 
@@ -95,10 +94,8 @@
 
       scope.currentIndex = scope.focusFirst ? 0 : null;
       scope.searching = false;
-      unbindInitialValue = scope.$watch('initialValue', function(newval) {
+      scope.$watch('initialValue', function(newval) {
         if (newval) {
-          // remove scope listener
-          unbindInitialValue();
           // change input
           handleInputChange(newval, true);
         }
