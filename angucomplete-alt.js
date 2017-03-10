@@ -185,12 +185,14 @@
       }
 
       function setInputString(str) {
-        callOrAssign({originalObject: str});
+        if(!scope.exactMatch) {
+          callOrAssign({originalObject: str});
 
-        if (scope.clearSelected) {
-          scope.searchStr = null;
+          if (scope.clearSelected) {
+            scope.searchStr = null;
+          }
+          clearResults();
         }
-        clearResults();
       }
 
       function extractTitle(data) {
@@ -398,7 +400,7 @@
             });
           }
         } else if (which === KEY_TAB) {
-          if (scope.results && scope.results.length > 0 && scope.showDropdown) {
+          if (scope.results && scope.showDropdown) {
             if (scope.currentIndex === -1 && scope.overrideSuggestions) {
               // intentionally not sending event so that it does not
               // prevent default tab behavior
@@ -416,7 +418,7 @@
             // no results
             // intentionally not sending event so that it does not
             // prevent default tab behavior
-            if (scope.searchStr && scope.searchStr.length > 0) {
+            if (scope.searchStr) {
               handleOverrideSuggestions();
             }
           }
@@ -542,10 +544,12 @@
         if (!str) { return false; }
         for(var key in obj){
           if(obj[key].toLowerCase() === str.toLowerCase()){
+            scope.exactMatch = true;
             scope.selectResult(result);
             return true;
           }
         }
+        scope.exactMatch = false;
         return false;
       }
 
@@ -576,7 +580,7 @@
       function processResults(responseData, str) {
         var i, description, image, text, formattedText, formattedDesc;
 
-        if (responseData && responseData.length > 0) {
+        if (responseData) {
           scope.results = [];
 
           for (i = 0; i < responseData.length; i++) {
@@ -658,7 +662,7 @@
           hideTimer = $timeout(function() {
             clearResults();
             scope.$apply(function() {
-              if (scope.searchStr && scope.searchStr.length > 0) {
+              if (scope.searchStr) {
                 inputField.val(scope.searchStr);
               }
             });
@@ -670,7 +674,7 @@
           }
 
           if (scope.overrideSuggestions) {
-            if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
+            if (scope.searchStr && scope.currentIndex === -1) {
               handleOverrideSuggestions();
             }
           }
