@@ -245,12 +245,12 @@
 
       function keyupHandler(event) {
         var which = ie8EventNormalizer(event);
-        if (which === KEY_LF || which === KEY_RT) {
+        if (which === KEY_LF || which === KEY_RT || which === KEY_EN) {
           // do nothing
           return;
         }
 
-        if (which === KEY_UP || which === KEY_EN) {
+        if (which === KEY_UP) {
           event.preventDefault();
         }
         else if (which === KEY_DW) {
@@ -299,10 +299,7 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event) {
-            event.preventDefault();
-          }
-
+              
           // cancel search timer
           $timeout.cancel(searchTimer);
           // cancel http request
