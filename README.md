@@ -11,7 +11,7 @@ This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/
 
 To see a demo go here: https://ghiden.github.io/angucomplete-alt
 
-###Key Features
+### Key Features
 * Show just a title, a title and a description or a title, description and image in your autocomplete list
 * Deliberately minimally styled so you can customise it to your heart's content!
 * Reads JSON data and allows you to specify which fields to use for display
