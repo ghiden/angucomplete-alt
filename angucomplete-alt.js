@@ -299,7 +299,7 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-              
+          if (event && !scope.submitOnEnter) { event.preventDefault(); }
           // cancel search timer
           $timeout.cancel(searchTimer);
           // cancel http request
@@ -818,12 +818,14 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        submitOnEnter: '@'        
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
       },
       compile: function(tElement) {
+        if (angular.isUndefined(scope.submitOnEnter)) { scope.submitOnEnter = false; }
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
         if (!(startSym === '{{' && endSym === '}}')) {
