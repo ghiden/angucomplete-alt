@@ -80,7 +80,9 @@
       var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
-
+      
+      if (angular.isUndefined(scope.submitOnEnter)) { scope.submitOnEnter = false; }
+      
       elem.on('mousedown', function(event) {
         if (event.target.id) {
           mousedownOn = event.target.id;
@@ -825,7 +827,6 @@
         return attrs.templateUrl || TEMPLATE_URL;
       },
       compile: function(tElement) {
-        if (angular.isUndefined(scope.submitOnEnter)) { scope.submitOnEnter = false; }
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
         if (!(startSym === '{{' && endSym === '}}')) {
