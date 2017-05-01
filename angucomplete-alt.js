@@ -80,7 +80,9 @@
       var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
-
+      
+      if (angular.isUndefined(scope.submitOnEnter)) { scope.submitOnEnter = false; }
+      
       elem.on('mousedown', function(event) {
         if (event.target.id) {
           mousedownOn = event.target.id;
@@ -245,12 +247,12 @@
 
       function keyupHandler(event) {
         var which = ie8EventNormalizer(event);
-        if (which === KEY_LF || which === KEY_RT) {
+        if (which === KEY_LF || which === KEY_RT || which === KEY_EN) {
           // do nothing
           return;
         }
 
-        if (which === KEY_UP || which === KEY_EN) {
+        if (which === KEY_UP) {
           event.preventDefault();
         }
         else if (which === KEY_DW) {
@@ -299,10 +301,7 @@
       function handleOverrideSuggestions(event) {
         if (scope.overrideSuggestions &&
             !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event) {
-            event.preventDefault();
-          }
-
+          if (event && !scope.submitOnEnter) { event.preventDefault(); }
           // cancel search timer
           $timeout.cancel(searchTimer);
           // cancel http request
@@ -821,7 +820,8 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        submitOnEnter: '@'        
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
