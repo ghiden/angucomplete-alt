@@ -268,10 +268,6 @@
           });
         }
         else {
-          if (minlength === 0 && !scope.searchStr) {
-            return;
-          }
-
           if (!scope.searchStr || scope.searchStr === '') {
             scope.showDropdown = false;
           } else if (scope.searchStr.length >= minlength) {
