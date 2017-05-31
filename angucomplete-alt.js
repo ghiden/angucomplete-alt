@@ -694,7 +694,7 @@
           scope.searchStr = null;
         }
         else {
-          scope.searchStr = result.title;
+          scope.searchStr = result ? result.title : undefined;
         }
         callOrAssign(result);
         clearResults();
