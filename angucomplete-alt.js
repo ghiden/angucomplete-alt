@@ -270,7 +270,7 @@
         else {
           if (minlength > 0 && (!scope.searchStr || scope.searchStr === '')) {
             scope.showDropdown = false;
-          } else if (scope.searchStr.length >= minlength) {
+          } else if (!scope.searchStr || (scope.searchStr && scope.searchStr.length >= minlength)) {
             initResults();
 
             if (searchTimer) {
