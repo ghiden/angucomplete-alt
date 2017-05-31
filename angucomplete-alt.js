@@ -268,7 +268,7 @@
           });
         }
         else {
-          if (!scope.searchStr || scope.searchStr === '') {
+          if (minlength > 0 && (!scope.searchStr || scope.searchStr === '')) {
             scope.showDropdown = false;
           } else if (scope.searchStr.length >= minlength) {
             initResults();
@@ -547,7 +547,7 @@
 
       function searchTimerComplete(str) {
         // Begin the search
-        if (!str || str.length < minlength) {
+        if (minlength > 0 && (!str || str.length < minlength)) {
           return;
         }
         if (scope.localData) {
