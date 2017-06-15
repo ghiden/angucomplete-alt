@@ -24,13 +24,13 @@
 
   angular.module('angucomplete-alt', []).directive('angucompleteAlt', ['$q', '$parse', '$http', '$sce', '$timeout', '$templateCache', '$interpolate', function ($q, $parse, $http, $sce, $timeout, $templateCache, $interpolate) {
     // keyboard events
-    var KEY_DW  = 40;
-    var KEY_RT  = 39;
-    var KEY_UP  = 38;
-    var KEY_LF  = 37;
-    var KEY_ES  = 27;
-    var KEY_EN  = 13;
-    var KEY_TAB =  9;
+    var KEY_DOWN   = 40;
+    var KEY_RIGHT  = 39;
+    var KEY_UP     = 38;
+    var KEY_LEFT   = 37;
+    var KEY_ESCAPE = 27;
+    var KEY_ENTER  = 13;
+    var KEY_TAB    =  9;
 
     var MIN_LENGTH = 3;
     var MAX_LENGTH = 524288;  // the default max length per the html maxlength attribute
@@ -80,9 +80,8 @@
       var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
-      
-      if (angular.isUndefined(scope.submitOnEnter)) { scope.submitOnEnter = false; }
-      
+      var submitOnEnter;
+
       elem.on('mousedown', function(event) {
         if (event.target.id) {
           mousedownOn = event.target.id;
@@ -245,66 +244,86 @@
         }
       }
 
-      function keyupHandler(event) {
-        var which = ie8EventNormalizer(event);
-        if (which === KEY_LF || which === KEY_RT || which === KEY_EN) {
-          // do nothing
+      function keyupEnterHandler(event) {
+        event.preventDefault();
+      }
+
+      function keyupUpHandler(event) {
+        event.preventDefault();
+      }
+
+      function keyupDownHandler(event) {
+        event.preventDefault();
+        if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
+          initResults();
+          scope.searching = true;
+          searchTimerComplete(scope.searchStr);
+        }
+      }
+
+      function keyupEscapeHandler(event) {
+        clearResults();
+        scope.$apply(function() {
+          inputField.val(scope.searchStr);
+        });
+      }
+
+      function keyupDefaultHandler(event) {
+        if (minlength === 0 && !scope.searchStr) {
           return;
         }
 
-        if (which === KEY_UP) {
-          event.preventDefault();
-        }
-        else if (which === KEY_DW) {
-          event.preventDefault();
-          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
-            initResults();
-            scope.searching = true;
-            searchTimerComplete(scope.searchStr);
+        if (!scope.searchStr || scope.searchStr === '') {
+          scope.showDropdown = false;
+        } else if (scope.searchStr.length >= minlength) {
+          initResults();
+
+          if (searchTimer) {
+            $timeout.cancel(searchTimer);
           }
+
+          scope.searching = true;
+
+          searchTimer = $timeout(function() {
+            searchTimerComplete(scope.searchStr);
+          }, scope.pause);
         }
-        else if (which === KEY_ES) {
-          clearResults();
+
+        if (validState && validState !== scope.searchStr && !scope.clearSelected) {
           scope.$apply(function() {
-            inputField.val(scope.searchStr);
+            callOrAssign();
           });
         }
-        else {
-          if (minlength === 0 && !scope.searchStr) {
-            return;
-          }
+      }
 
-          if (!scope.searchStr || scope.searchStr === '') {
-            scope.showDropdown = false;
-          } else if (scope.searchStr.length >= minlength) {
-            initResults();
+      function keyupHandler(event) {
+        var keyPressed = ie8EventNormalizer(event);
+        if (keyPressed === KEY_LEFT || keyPressed === KEY_RIGHT) {
+          return;
+        }
 
-            if (searchTimer) {
-              $timeout.cancel(searchTimer);
-            }
-
-            scope.searching = true;
-
-            searchTimer = $timeout(function() {
-              searchTimerComplete(scope.searchStr);
-            }, scope.pause);
-          }
-
-          if (validState && validState !== scope.searchStr && !scope.clearSelected) {
-            scope.$apply(function() {
-              callOrAssign();
-            });
-          }
+        switch (keyPressed) {
+        case KEY_ENTER:
+          return keyupEnterHandler(event);
+        case KEY_UP:
+          return keyupUpHandler(event);
+        case KEY_DOWN:
+          return keyupDownHandler(event);
+        case KEY_ESCAPE:
+          return keyupEscapeHandler(event);
+        default:
+          keyupDefaultHandler(event);
         }
       }
 
       function handleOverrideSuggestions(event) {
-        var hasInput = /\S/.test(inputField.val())
-        if (hasInput && scope.overrideSuggestions &&
-            !(scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr)) {
-          if (event && !scope.submitOnEnter) { 
-            event.preventDefault();
-          }
+        if (!scope.overrideSuggestions) {
+          return;
+        }
+
+        var hasInput = /\S/.test(inputField.val());
+        var valuesAreEqual = scope.selectedObject && scope.selectedObject.originalObject === scope.searchStr;
+        if (hasInput && !valuesAreEqual) {
           // cancel search timer
           $timeout.cancel(searchTimer);
           // cancel http request
@@ -316,8 +335,7 @@
 
       function dropdownRowOffsetHeight(row) {
         var css = getComputedStyle(row);
-        return row.offsetHeight +
-          parseInt(css.marginTop, 10) + parseInt(css.marginBottom, 10);
+        return row.offsetHeight + parseInt(css.marginTop, 10) + parseInt(css.marginBottom, 10);
       }
 
       function dropdownHeight() {
@@ -349,83 +367,108 @@
         }
       }
 
-      function keydownHandler(event) {
-        var which = ie8EventNormalizer(event);
-        var row = null;
-        var rowTop = null;
-
-        if (which === KEY_EN && scope.results) {
-          if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
-            event.preventDefault();
-            scope.selectResult(scope.results[scope.currentIndex]);
-          } else {
-            handleOverrideSuggestions(event);
-            clearResults();
-          }
-          scope.$apply();
-        } else if (which === KEY_DW && scope.results) {
+      function keydownEnterHandler(event) {
+        if (scope.currentIndex >= 0 && scope.currentIndex < scope.results.length) {
           event.preventDefault();
-          if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
-            scope.$apply(function() {
-              scope.currentIndex ++;
-              updateInputField();
-            });
+          scope.selectResult(scope.results[scope.currentIndex]);
+        } else {
+          handleOverrideSuggestions(event);
+          clearResults();
+        }
 
-            if (isScrollOn) {
-              row = dropdownRow();
-              if (dropdownHeight() < row.getBoundingClientRect().bottom) {
-                dropdownScrollTopTo(dropdownRowOffsetHeight(row));
-              }
-            }
-          }
-        } else if (which === KEY_UP && scope.results) {
+        if (!submitOnEnter) {
           event.preventDefault();
-          if (scope.currentIndex >= 1) {
-            scope.$apply(function() {
-              scope.currentIndex --;
-              updateInputField();
-            });
+        }
 
-            if (isScrollOn) {
-              rowTop = dropdownRowTop();
-              if (rowTop < 0) {
-                dropdownScrollTopTo(rowTop - 1);
-              }
+        scope.$apply();
+      }
+
+      function keydownDownHandler(event) {
+        event.preventDefault();
+        if ((scope.currentIndex + 1) < scope.results.length && scope.showDropdown) {
+          scope.$apply(function() {
+            scope.currentIndex ++;
+            updateInputField();
+          });
+
+          if (isScrollOn) {
+            var row = dropdownRow();
+            if (dropdownHeight() < row.getBoundingClientRect().bottom) {
+              dropdownScrollTopTo(dropdownRowOffsetHeight(row));
             }
           }
-          else if (scope.currentIndex === 0) {
-            scope.$apply(function() {
-              scope.currentIndex = -1;
-              inputField.val(scope.searchStr);
-            });
-          }
-        } else if (which === KEY_TAB) {
-          if (scope.results && scope.results.length > 0 && scope.showDropdown) {
-            if (scope.currentIndex === -1 && scope.overrideSuggestions) {
-              // intentionally not sending event so that it does not
-              // prevent default tab behavior
-              handleOverrideSuggestions();
-            }
-            else {
-              if (scope.currentIndex === -1) {
-                scope.currentIndex = 0;
-              }
-              scope.selectResult(scope.results[scope.currentIndex]);
-              scope.$digest();
+        }
+      }
+
+      function keydownUpHandler(event) {
+        event.preventDefault();
+        if (scope.currentIndex >= 1) {
+          scope.$apply(function() {
+            scope.currentIndex --;
+            updateInputField();
+          });
+
+          if (isScrollOn) {
+            var rowTop = dropdownRowTop();
+            if (rowTop < 0) {
+              dropdownScrollTopTo(rowTop - 1);
             }
           }
-          else {
-            // no results
+        }
+        else if (scope.currentIndex === 0) {
+          scope.$apply(function() {
+            scope.currentIndex = -1;
+            inputField.val(scope.searchStr);
+          });
+        }
+      }
+
+      function keydownTabHandler(event) {
+        if (scope.results.length > 0 && scope.showDropdown) {
+          if (scope.currentIndex === -1 && scope.overrideSuggestions) {
             // intentionally not sending event so that it does not
             // prevent default tab behavior
-            if (scope.searchStr && scope.searchStr.length > 0) {
-              handleOverrideSuggestions();
-            }
+            handleOverrideSuggestions();
           }
-        } else if (which === KEY_ES) {
+          else {
+            if (scope.currentIndex === -1) {
+              scope.currentIndex = 0;
+            }
+            scope.selectResult(scope.results[scope.currentIndex]);
+            scope.$digest();
+          }
+        }
+      }
+
+      function keydownHandler(event) {
+        var keyPressed = ie8EventNormalizer(event);
+        if (keyPressed === KEY_ESCAPE) {
           // This is very specific to IE10/11 #272
           // without this, IE clears the input text
           event.preventDefault();
+          return;
+        }
+
+        var hasResults = angular.isDefined(scope.results);
+        if (keyPressed === KEY_TAB && !hasResults) {
+          // no results
+          // intentionally not sending event so that it does not
+          // prevent default tab behavior
+          if (scope.searchStr && scope.searchStr.length > 0) {
+            handleOverrideSuggestions();
+          }
+          return;
+        }
+
+        switch (keyPressed) {
+        case KEY_ENTER:
+          return keydownEnterHandler(event);
+        case KEY_DOWN:
+          return keydownDownHandler(event);
+        case KEY_UP:
+          return keydownUpHandler(event);
+        case KEY_TAB:
+          return keydownTabHandler(event);
         }
       }
 
@@ -650,31 +693,30 @@
         }
       };
 
-      scope.hideResults = function() {
-        if (mousedownOn &&
-            (mousedownOn === scope.id + '_dropdown' ||
-             mousedownOn.indexOf('angucomplete') >= 0)) {
+      scope.hideResults = function(event) {
+        var matchesElementId = mousedownOn && (mousedownOn === scope.id + '_dropdown' || mousedownOn.indexOf('angucomplete') >= 0);
+        if (matchesElementId) {
           mousedownOn = null;
+          return;
         }
-        else {
-          hideTimer = $timeout(function() {
-            clearResults();
-            scope.$apply(function() {
-              if (scope.searchStr && scope.searchStr.length > 0) {
-                inputField.val(scope.searchStr);
-              }
-            });
-          }, BLUR_TIMEOUT);
-          cancelHttpRequest();
 
-          if (scope.focusOut) {
-            scope.focusOut();
-          }
-
-          if (scope.overrideSuggestions) {
-            if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
-              handleOverrideSuggestions();
+        hideTimer = $timeout(function() {
+          clearResults();
+          scope.$apply(function() {
+            if (scope.searchStr && scope.searchStr.length > 0) {
+              inputField.val(scope.searchStr);
             }
+          });
+        }, BLUR_TIMEOUT);
+        cancelHttpRequest();
+
+        if (scope.focusOut) {
+          scope.focusOut();
+        }
+
+        if (scope.overrideSuggestions) {
+          if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
+            handleOverrideSuggestions();
           }
         }
       };
@@ -764,6 +806,7 @@
       scope.textNoResults = attrs.textNoResults ? attrs.textNoResults : TEXT_NORESULTS;
       displaySearching = scope.textSearching === 'false' ? false : true;
       displayNoResults = scope.textNoResults === 'false' ? false : true;
+      submitOnEnter = scope.submitOnEnter === 'true' || scope.submitOnEnter === '';
 
       // set max length (default to maxlength deault from html
       scope.maxlength = attrs.maxlength ? attrs.maxlength : MAX_LENGTH;
@@ -824,7 +867,7 @@
         inputName: '@',
         focusFirst: '@',
         parseInput: '&',
-        submitOnEnter: '@'        
+        submitOnEnter: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
