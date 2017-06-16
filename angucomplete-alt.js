@@ -81,8 +81,10 @@
       var displaySearching;
       var displayNoResults;
       var submitOnEnter;
+      var mostRecentKeyPressed;
 
       elem.on('mousedown', function(event) {
+        mostRecentKeyPressed = null;
         if (event.target.id) {
           mousedownOn = event.target.id;
           if (mousedownOn === scope.id + '_dropdown') {
@@ -165,7 +167,7 @@
 
       function callOrAssign(value) {
         if (typeof scope.selectedObject === 'function') {
-          scope.selectedObject(value, scope.selectedObjectData);
+          scope.selectedObject(value, scope.selectedObjectData, mostRecentKeyPressed);
         }
         else {
           scope.selectedObject = value;
@@ -442,6 +444,7 @@
 
       function keydownHandler(event) {
         var keyPressed = ie8EventNormalizer(event);
+        mostRecentKeyPressed = keyPressed;
         if (keyPressed === KEY_ESCAPE) {
           // This is very specific to IE10/11 #272
           // without this, IE clears the input text
@@ -710,14 +713,14 @@
         }, BLUR_TIMEOUT);
         cancelHttpRequest();
 
-        if (scope.focusOut) {
-          scope.focusOut();
-        }
-
         if (scope.overrideSuggestions) {
           if (scope.searchStr && scope.searchStr.length > 0 && scope.currentIndex === -1) {
             handleOverrideSuggestions();
           }
+        }
+
+        if (scope.focusOut) {
+          scope.focusOut();
         }
       };
 
