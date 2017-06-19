@@ -81,6 +81,7 @@
       var displaySearching;
       var displayNoResults;
       var submitOnEnter;
+      var mostRecentKeyPressed;
 
       elem.on('mousedown', function(event) {
         if (event.target.id) {
@@ -165,7 +166,7 @@
 
       function callOrAssign(value) {
         if (typeof scope.selectedObject === 'function') {
-          scope.selectedObject(value, scope.selectedObjectData);
+          scope.selectedObject(value, scope.selectedObjectData, mostRecentKeyPressed);
         }
         else {
           scope.selectedObject = value;
@@ -442,6 +443,7 @@
 
       function keydownHandler(event) {
         var keyPressed = ie8EventNormalizer(event);
+        mostRecentKeyPressed = keyPressed;
         if (keyPressed === KEY_ESCAPE) {
           // This is very specific to IE10/11 #272
           // without this, IE clears the input text
