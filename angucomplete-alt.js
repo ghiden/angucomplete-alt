@@ -401,11 +401,10 @@
               handleOverrideSuggestions();
             }
             else {
-              if (scope.currentIndex === -1) {
-                scope.currentIndex = 0;
-              }
-              scope.selectResult(scope.results[scope.currentIndex]);
-              scope.$digest();
+                if(scope.currentIndex >= 0) {
+                    scope.selectResult(scope.results[scope.currentIndex]);
+                    scope.$digest();
+                }
             }
           }
           else {
