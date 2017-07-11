@@ -994,6 +994,39 @@ describe('angucomplete-alt', function() {
     });
   });
 
+  describe('noResultSelected callback', function() {
+    it('should call noResultSelected callback if given', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" no-result-selected="noResultSelected" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
+      var selected = false;
+      $scope.noResultSelected = function(value) {
+        selected = true;
+      };
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      expect(selected).toBe(false);
+      var inputField = element.find('#ex1_value');
+      var eKeyup = $.Event('keyup');
+      eKeyup.which = 122; // letter: z
+
+      inputField.val('z');
+      inputField.trigger('input');
+      inputField.trigger(eKeyup);
+      $timeout.flush();
+      expect(element.find('#ex1_dropdown').length).toBe(1);
+
+      var dropDown = element.find('.angucomplete-searching[ng-bind="textNoResults"]');
+      var eClick = $.Event('click');
+      dropDown.trigger(eClick);
+      expect(selected).toBe(true);
+    });
+  });
+
   describe('selectedObject callback with extra paramater', function() {
     it('should call selectedObject callback if given', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" selected-object-data="\'test\'" local-data="countries" search-fields="name" title-field="name" minlength="1"/>');
