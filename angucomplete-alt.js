@@ -98,6 +98,7 @@
       unbindInitialValue = scope.$watch('initialValue', function(newval) {
         if (newval) {
           // remove scope listener
+          // For the watch value, change every time have a new value,  comment the method "unbindInitialValue();"
           unbindInitialValue();
           // change input
           handleInputChange(newval, true);
