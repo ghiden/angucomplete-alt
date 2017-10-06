@@ -560,31 +560,22 @@
         }
         if (scope.localData) {
           if (typeof scope.localData === 'function') {
-            var localData = scope.localData(str);
-            if (localData.then) {
-              scope.searching = true;
-              localData.then(function (localData) {
-                var matches;
-                if (typeof scope.localSearch() !== 'undefined') {
-                  matches = scope.localSearch()(str, localData);
-                } else {
-                  matches = getLocalResults(str, localData);
-                }
-                scope.searching = false;
-                processResults(matches, str);
-              });
-            } else {
-              scope.$apply(function () {
-                var matches;
-                if (typeof scope.localSearch() !== 'undefined') {
-                  matches = scope.localSearch()(str, localData);
-                } else {
-                  matches = getLocalResults(str, localData);
-                }
-                scope.searching = false;
-                processResults(matches, str);
-              });
-            }
+            var localData = $q.resolve(scope.localData(str));
+            scope.searching = true;
+            localData.then(function (localData) {
+              var matches;
+              if (typeof scope.localSearch() !== 'undefined') {
+                matches = scope.localSearch()(str, localData);
+              } else {
+                matches = getLocalResults(str, localData);
+              }
+              scope.searching = false;
+              processResults(matches, str);
+            }).catch(function () {
+              scope.searching = false;
+              processResults([], str);
+            });
+
           } else {
             scope.$apply(function () {
               var matches;
