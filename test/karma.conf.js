@@ -1,6 +1,8 @@
 // Karma configuration
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
+
+    logLevel: config.LOG_DEBUG,
 
     // base path, that will be used to resolve files and exclude
     basePath: '..',
@@ -15,17 +17,16 @@ module.exports = function(config) {
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      
+
       // Source Code
       'angucomplete-alt.js',
 
       // Test Specs
-      'test/*.spec.js'
+      'test/*.spec.js',
     ],
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
