@@ -955,6 +955,34 @@ describe('angucomplete-alt', function() {
 
       expect(element.isolateScope().searchStr).toBe(null);
     });
+	
+    it('should not override on tab keydown when a selection has auto-matched and input text has not changed', function() {
+      var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="selectedCountry" local-data="countries" search-fields="name" title-field="name" minlength="1" override-suggestions="true" auto-match="true"/>');
+      $scope.selectedCountry = undefined;
+      $scope.countries = [
+        {name: 'Afghanistan', code: 'AF'},
+        {name: 'Aland Islands', code: 'AX'},
+        {name: 'Albania', code: 'AL'}
+      ];
+      $compile(element)($scope);
+      $scope.$digest();
+
+      var inputField = element.find('#ex1_value');
+      var e = $.Event('keyup');
+      e.which = 97; // letter: a
+
+      inputField.val('Albania');
+      inputField.trigger('input');
+      inputField.trigger(e);
+      $timeout.flush();
+      expect($scope.selectedCountry.originalObject).toEqual($scope.countries[2]);
+
+      var eKeydown = $.Event('keydown');
+      eKeydown.which = KEY_TAB;
+      inputField.trigger(eKeydown);
+      inputField.blur();
+      expect($scope.selectedCountry.originalObject).toEqual($scope.countries[2]);
+    });
   });
 
   describe('selectedObject callback', function() {
