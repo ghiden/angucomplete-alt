@@ -90,6 +90,9 @@
         }
         else {
           mousedownOn = event.target.className;
+          if(event.target.innerText === scope.textNoResults) {
+            scope.hideResults(event);
+          }
         }
       });
 
