@@ -1632,7 +1632,7 @@ describe('angucomplete-alt', function() {
       $httpBackend.verifyNoOutstandingRequest();
     }));
 
-    it('should remove highlight when input becomes empty', function() {
+    it('should not remove highlight when input becomes empty', function() {
       var element = angular.element('<div angucomplete-alt id="ex1" placeholder="Search countries" selected-object="countrySelected" local-data="countries" search-fields="name" title-field="name" minlength="0" match-class="highlight"/>');
       $scope.countrySelected = null;
       $scope.countries = [
@@ -1670,7 +1670,7 @@ describe('angucomplete-alt', function() {
       element.find('.angucomplete-row .highlight').each(function() {
         expect($(this).text().length).toBe(0);
       });
-      expect(element.find('.angucomplete-row').length).toBe(3);
+      expect(element.find('.angucomplete-row').length).toBe(0);
     });
 
     it('should set $scope.searching to true when input becomes empty and using remote data', inject(function($httpBackend) {
@@ -1694,7 +1694,6 @@ describe('angucomplete-alt', function() {
 
       expect(element.isolateScope().searching).toBe(true);
 
-      $timeout.flush();
       $httpBackend.flush();
 
       expect(element.isolateScope().searching).toBe(false);

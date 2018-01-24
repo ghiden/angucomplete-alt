@@ -255,7 +255,7 @@
         }
         else if (which === KEY_DW) {
           event.preventDefault();
-          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= minlength) {
+          if (!scope.showDropdown && scope.searchStr && scope.searchStr.length >= parseInt(minlength)) {
             initResults();
             scope.searching = true;
             searchTimerComplete(scope.searchStr);
@@ -268,13 +268,9 @@
           });
         }
         else {
-          if (minlength === 0 && !scope.searchStr) {
-            return;
-          }
-
-          if (!scope.searchStr || scope.searchStr === '') {
+          if (parseInt(minlength) > 0 && (!scope.searchStr || scope.searchStr === '')) {
             scope.showDropdown = false;
-          } else if (scope.searchStr.length >= minlength) {
+          } else if (!scope.searchStr || (scope.searchStr && scope.searchStr.length >= parseInt(minlength))) {
             initResults();
 
             if (searchTimer) {
@@ -405,11 +401,10 @@
               handleOverrideSuggestions();
             }
             else {
-              if (scope.currentIndex === -1) {
-                scope.currentIndex = 0;
-              }
-              scope.selectResult(scope.results[scope.currentIndex]);
-              scope.$digest();
+                if(scope.currentIndex >= 0) {
+                    scope.selectResult(scope.results[scope.currentIndex]);
+                    scope.$digest();
+                }
             }
           }
           else {
@@ -551,7 +546,7 @@
 
       function searchTimerComplete(str) {
         // Begin the search
-        if (!str || str.length < minlength) {
+        if (parseInt(minlength) > 0 && (!str || str.length < parseInt(minlength))) {
           return;
         }
         if (scope.localData) {
@@ -641,7 +636,7 @@
         if (scope.focusIn) {
           scope.focusIn();
         }
-        if (minlength === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
+        if (parseInt(minlength) === 0 && (!scope.searchStr || scope.searchStr.length === 0)) {
           scope.currentIndex = scope.focusFirst ? 0 : scope.currentIndex;
           scope.showDropdown = true;
           showAll();
@@ -698,18 +693,18 @@
           scope.searchStr = null;
         }
         else {
-          scope.searchStr = result.title;
+          scope.searchStr = result ? result.title : undefined;
         }
         callOrAssign(result);
         clearResults();
       };
 
       scope.inputChangeHandler = function(str) {
-        if (str.length < minlength) {
+        if (str.length < parseInt(minlength)) {
           cancelHttpRequest();
           clearResults();
         }
-        else if (str.length === 0 && minlength === 0) {
+        else if (str.length === 0 && parseInt(minlength) === 0) {
           showAll();
         }
 
