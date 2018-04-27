@@ -98,7 +98,9 @@
       unbindInitialValue = scope.$watch('initialValue', function(newval) {
         if (newval) {
           // remove scope listener
-          unbindInitialValue();
+          if(!scope.keepBindInitialValue) {
+            unbindInitialValue();
+          }
           // change input
           handleInputChange(newval, true);
         }
@@ -821,7 +823,8 @@
         fieldTabindex: '@',
         inputName: '@',
         focusFirst: '@',
-        parseInput: '&'
+        parseInput: '&',
+        keepBindInitialValue: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
