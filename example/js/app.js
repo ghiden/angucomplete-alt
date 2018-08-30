@@ -322,7 +322,7 @@ app.controller('MainController', ['$scope', '$http', '$rootScope',
 
     /***
      * Send a broadcast to the directive in order to change itself
-     * if an id parameter is given only this ancucomplete is changed
+     * if an id parameter is given only this angucomplete is changed
      * @param id
      */
     $scope.changeInput = function (id) {
