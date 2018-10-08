@@ -1,50 +1,7 @@
 angucomplete-alt
 ============
 
-This is a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a bit of tweaks such as:
-
-* change long attribute names to hyphenated ones
-* coding style similar to angular standard
-* refactored in general
-* jshint
-* more test coverage
-
-To see a demo go here: https://ghiden.github.io/angucomplete-alt
-
-###Key Features
-* Show just a title, a title and a description or a title, description and image in your autocomplete list
-* Deliberately minimally styled so you can customise it to your heart's content!
-* Reads JSON data and allows you to specify which fields to use for display
-* Simple setup - e.g. to pull data from a server, just set the url parameter
-
-### Extra Features
-* Request format function: if you need to tweak data before you send to your search API, you can set your own format function. Search query goes through your function and gets sent to your API.
-* Response format function: if you need to tweak response from the server before it gets processed by the directive, you can set your own format function. Raw HTTP response goes through your function. Thanks to @nekcih for proposing this feature.
-* Clear on selection: when you select an item, input field is cleared.
-* Blur event handling, thanks to @leejsinclair
-* Override suggestions
-* You can either bind an object or callback function
-    * bind an object: it works as one-way-data-binding. It gets set when a selection is made.
-    * callback function: when a selection is made by user, this callback is called with the selected object. When the selection is deselected, the callback is called with undefined. Thanks to @nekcih for proposing this feature.
-* Required support: It is a bit different from ng-required which becomes valid when there is any character in input field. This required becomes valid when a selection is made. Class name is "autocomplete-required" and customizable. Thanks to @alindber for the initial idea.
-* Custom texts for "Searching..." and "No results found", thanks to @vhuerta for this idea.
-* Be able to set initial value. This becomes handy if you use this directive for updating existing model.
-* Be able to set a error callback for ajax request
-* Add a callback for tracking input changes. Thanks to @urecio for the initial idea.
-* Auto match
-* Add callbacks for tracking focus in/out.
-* Enable/disable input field
-* Show scrollbar. See [example #1](https://ghiden.github.io/angucomplete-alt/#example1)
-* Clear input by sending $broadcast from parent scope. Thanks to @Leocrest for #61.
-* Override template with your own. When you use this feature, test throughly as it might break other features. Thanks to @sdbondi for #74.
-* Show all items.
-* Custom remote API handler which allows you to fully control how to communicate with your remote API. Thanks to @jbuquet
-* Custom search function for handling local data
-
-### Angular 1.2
-
-From v2.0.0, I have dropped the support for angular 1.2.
-Please use [angucomplete-ie8](https://github.com/ghiden/angucomplete-ie8) which still supports 1.2.
+This is a fork of a fork of Daryl Rowland's angucomplete (https://github.com/darylrowland/angucomplete) with a lot of tweaks. The original hasn't been updated in nearly two years, so this fork is kept up to date for Top Echelon's Big Biller.
 
 ### Getting Started
 Download the package, and include the dist/angucomplete-alt.min.js file in your page.
@@ -239,18 +196,3 @@ function ($item) {
 
 }
 ```
-
-### Examples
-
-To run examples, cd into 'examples' directory and run static http server of your choice:
-
-```bash
-cd examples
-python -m SimpleHTTPServer
-```
-
-### Contributors
-
-Here is the list of [contributors](CONTRIBUTORS.md).
-Here is how to [contribute](CONTRIBUTING.md).
-Of course the easiest contribution is to give it a star!

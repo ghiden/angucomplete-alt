@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "jasmine": true
+    },
+    "extends": ["angular"],
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            2,
+            { "SwitchCase": 1 }
+        ],
+        "space-before-blocks": 2,
+        "angular/di": 0,
+        "angular/no-service-method": 0,
+        "angular/controller-as": 0,
+        "angular/document-service": 0,
+        "angular/controller-as-vm": 0,
+        "angular/on-watch": 0,
+        "angular/controller-as-route": 0,
+        "keyword-spacing" : 2,
+        "key-spacing" : 2,
+        "space-infix-ops" : 2,
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "comma-spacing": ["error", { "before": false, "after": true } ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "eol-last": ["error", "always"],
+        "no-multiple-empty-lines": ["error", { "max": 1 }]
+    }
+}
