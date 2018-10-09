@@ -66,16 +66,12 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
 
       // #194 dropdown list not consistent in collapsing (bug).
       let clickoutHandlerForDropdown = (event) => {
-        $log.info('clickoutHandlerForDropdown', event);
-
         config.mousedownOn = null;
         $scope.hideResults(event);
         document.body.removeEventListener('click', clickoutHandlerForDropdown);
       };
 
       $scope.mousedownHandler = (event) => {
-        $log.info('mousedownHandler', event);
-
         let target = getCorrectTarget(event.target);
         if (target.id) {
           config.mousedownOn = target.id;
@@ -490,8 +486,6 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       $scope.keyupHandler = (event) => {
-        $log.info('keyupHandler', event);
-
         var keyPressed = ie8EventNormalizer(event);
         if (keyPressed === KEY_LEFT || keyPressed === KEY_RIGHT) {
           return;
@@ -645,7 +639,6 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       $scope.keydownHandler = (event) => {
-        $log.info('keydownHandler', event);
 
         var keyPressed = ie8EventNormalizer(event);
         config.mostRecentKeyPressed = keyPressed;
@@ -694,7 +687,6 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       $scope.onFocusHandler = () => {
-        $log.info('onFocusHandler');
 
         $scope.resetHideResults();
 
@@ -724,9 +716,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         return containsAngucomplete || containsMatchClass;
       };
 
-      $scope.hideResults = (event) => {
-        $log.info('HIDE RESULTS', event, 'mousedownOn: ', config.mousedownOn);
-
+      $scope.hideResults = () => {
         if (dropdownWasClicked()) {
           config.mousedownOn = null;
           return;
@@ -766,7 +756,6 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       $scope.selectResult = (result) => {
-        $log.info('SELECT RESULT', result);
 
         // Restore original values
         if ($scope.matchClass) {
@@ -785,7 +774,6 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       $scope.inputChangeHandler = (str) => {
-        $log.info('inputChangeHandler', str);
 
         if (str.length < config.minlength) {
           cancelHttpRequest();
