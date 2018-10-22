@@ -71,14 +71,12 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
 
     // #194 dropdown list not consistent in collapsing (bug).
     var clickoutHandlerForDropdown = function clickoutHandlerForDropdown(event) {
-
       config.mousedownOn = null;
       $scope.hideResults(event);
       document.body.removeEventListener('click', clickoutHandlerForDropdown);
     };
 
     $scope.mousedownHandler = function (event) {
-
       var target = getCorrectTarget(event.target);
       if (target.id) {
         config.mousedownOn = target.id;
@@ -663,10 +661,9 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       }
 
       var hasResults = angular.isDefined($scope.results);
-      if (keyPressed === KEY_TAB && !hasResults) {
-        // no results
-        // intentionally not sending event so that it does not
-        // prevent default tab behavior
+      if (!hasResults) {
+        // intentionally not sending event to handlers
+        // so we don't operate on undefined results
         if ($scope.searchStr && $scope.searchStr.length > 0) {
           handleOverrideSuggestions();
         }
