@@ -149,13 +149,11 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
 
       config.unbindInitialValue = $scope.$watch('initialValue', (newval) => {
         if (newval) {
-          return;
+          // remove $scope listener
+          config.unbindInitialValue();
+          // change input
+          handleInputChange(newval, true);
         }
-
-        // remove $scope listener
-        config.unbindInitialValue();
-        // change input
-        handleInputChange(newval, true);
       });
 
       $scope.$watch('fieldRequired', (newval, oldval) => {
