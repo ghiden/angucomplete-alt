@@ -57,7 +57,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
           return target;
         }
 
-        if (target.className.indexOf($scope.matchClass) >= 0) {
+        if (typeof target.className === 'string' && target.className.indexOf($scope.matchClass) >= 0) {
           return target.parentNode;
         }
 
