@@ -62,7 +62,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         return target;
       }
 
-      if (typeof target.className === 'string' && target.className.indexOf($scope.matchClass) >= 0) {
+      if (angular.isString(target.className) && target.className.indexOf($scope.matchClass) >= 0) {
         return target.parentNode;
       }
 
@@ -659,7 +659,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       }
 
       var hasResults = angular.isDefined($scope.results);
-      if (!hasResults) {
+      if (keyPressed === KEY_TAB && !hasResults) {
         // intentionally not sending event to handlers
         // so we don't operate on undefined results
         if ($scope.searchStr && $scope.searchStr.length > 0) {
