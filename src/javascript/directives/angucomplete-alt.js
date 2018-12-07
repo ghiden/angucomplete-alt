@@ -649,7 +649,9 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         }
 
         var hasResults = angular.isDefined($scope.results);
-        if ((keyPressed === KEY_TAB || keyPressed === KEY_ENTER || keyPressed === KEY_DOWN) && !hasResults) {
+        var resultNavigiationKeys = [KEY_TAB, KEY_ENTER, KEY_DOWN];
+        var resultNavigationKeyPressed = resultNavigiationKeys.indexOf(keyPressed) !== -1;
+        if (resultNavigationKeyPressed && !hasResults) {
           // intentionally not sending event to handlers
           // so we don't operate on undefined results
           if ($scope.searchStr && $scope.searchStr.length > 0) {
