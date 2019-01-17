@@ -19,6 +19,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
     const TEXT_SEARCHING = 'Searching...';
     const TEXT_NORESULTS = 'No results found';
     const DEFAULT_TEMPLATE_URL = 'angucomplete-alt-template.html';
+    const BROWSER_IS_CHROME = navigator.userAgent.includes("Chrome");
 
     let link = ($scope, element, attributes, formController) => {
       let subElements = {
@@ -70,6 +71,8 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         $scope.hideResults(event);
         document.body.removeEventListener('click', clickoutHandlerForDropdown);
       };
+
+      $scope.supportedAutocompleteValue = BROWSER_IS_CHROME ? 'nope' : 'off';
 
       $scope.mousedownHandler = (event) => {
         let target = getCorrectTarget(event.target);
