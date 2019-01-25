@@ -55,10 +55,10 @@
         '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/>' +
         '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>' +
         '      </div>' +
-        '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>' +
+        '      <div class="angucomplete-title" ng-if="matchClass" ng-bind="result.title"></div>' +
         '      <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>' +
-        '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>' +
-        '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
+        '      <div ng-if="result.description && result.description != \'\'" class="angucomplete-description" ng-bind="result.description"></div>' +
+        '      <div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div>' +
         '    </div>' +
         '  </div>' +
         '</div>'
@@ -227,7 +227,7 @@
         matches = target.match(re);
         if (matches) {
           result = target.replace(re,
-              '<span class="'+ scope.matchClass +'">'+ matches[0] +'</span>');
+               matches[0]);
         }
         else {
           result = target;
@@ -830,10 +830,10 @@
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
         if (!(startSym === '{{' && endSym === '}}')) {
-          var interpolatedHtml = tElement.html()
+          var interpolatedHtml = tElement.text()
             .replace(/\{\{/g, startSym)
             .replace(/\}\}/g, endSym);
-          tElement.html(interpolatedHtml);
+          tElement.text(interpolatedHtml);
         }
         return link;
       }
