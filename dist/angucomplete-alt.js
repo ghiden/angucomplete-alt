@@ -24,7 +24,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
   var TEXT_SEARCHING = 'Searching...';
   var TEXT_NORESULTS = 'No results found';
   var DEFAULT_TEMPLATE_URL = 'angucomplete-alt-template.html';
-  var BROWSER_IS_CHROME = navigator.userAgent.includes("Chrome");
+  var BROWSER_IS_CHROME = navigator.userAgent.includes('Chrome');
 
   var link = function link($scope, element, attributes, formController) {
     var subElements = {
@@ -714,7 +714,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
     };
 
     var dropdownWasClicked = function dropdownWasClicked() {
-      if (!config.mousedownOn) {
+      if (!config.mousedownOn || !angular.isString(config.mousedownOn)) {
         return false;
       }
 
