@@ -688,6 +688,10 @@
       };
 
       scope.selectResult = function(result) {
+        console.log('result ', result);
+        console.log('scope matchClass', scope.matchClass);
+        console.log('scope clearSelected', scope.clearSelected);
+        console.log('scope ', scope);
         // Restore original values
         if (scope.matchClass) {
           result.title = extractTitle(result.originalObject);
