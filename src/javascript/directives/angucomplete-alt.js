@@ -54,11 +54,17 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
           return target;
         }
 
-        if (!target.className || !target.parentNode) {
+        let className = target.getAttribute('class');
+
+        if (target.closest('.angucomplete-image-holder')) {
+          return target.closest('.angucomplete-image-holder');
+        }
+
+        if (!className || !target.parentNode) {
           return target;
         }
 
-        if (angular.isString(target.className) && target.className.indexOf($scope.matchClass) >= 0) {
+        if (angular.isString(className) && className.indexOf($scope.matchClass) >= 0) {
           return target.parentNode;
         }
 
@@ -83,7 +89,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
             document.body.addEventListener('click', clickoutHandlerForDropdown);
           }
         } else {
-          config.mousedownOn = target.className;
+          config.mousedownOn = target.getAttribute('class');
         }
       };
 
