@@ -24,7 +24,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
   var TEXT_SEARCHING = 'Searching...';
   var TEXT_NORESULTS = 'No results found';
   var DEFAULT_TEMPLATE_URL = 'angucomplete-alt-template.html';
-  var BROWSER_IS_CHROME = navigator.userAgent.includes("Chrome");
+  var BROWSER_IS_CHROME = navigator.userAgent.includes('Chrome');
 
   var link = function link($scope, element, attributes, formController) {
     var subElements = {
@@ -59,11 +59,17 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         return target;
       }
 
-      if (!target.className || !target.parentNode) {
+      var className = target.getAttribute('class');
+
+      if (target.closest('.angucomplete-image-holder')) {
+        return target.closest('.angucomplete-image-holder');
+      }
+
+      if (!className || !target.parentNode) {
         return target;
       }
 
-      if (angular.isString(target.className) && target.className.indexOf($scope.matchClass) >= 0) {
+      if (angular.isString(className) && className.indexOf($scope.matchClass) >= 0) {
         return target.parentNode;
       }
 
@@ -88,7 +94,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
           document.body.addEventListener('click', clickoutHandlerForDropdown);
         }
       } else {
-        config.mousedownOn = target.className;
+        config.mousedownOn = target.getAttribute('class');
       }
     };
 
