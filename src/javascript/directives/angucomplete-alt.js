@@ -710,7 +710,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
       };
 
       let dropdownWasClicked = () => {
-        if (!config.mousedownOn || !angular.isString(config.mousedownOn)) {
+        if (!config.mousedownOn) {
           return false;
         }
 
