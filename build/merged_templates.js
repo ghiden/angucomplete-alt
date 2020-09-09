@@ -19,17 +19,24 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>\n' +
     '\n' +
     '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">\n' +
-    '      <div ng-if="imageField" class="angucomplete-image-holder">\n' +
-    '        <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image" />\n' +
-    '        <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>\n' +
+    '      <div ng-if="includeBbIcons" class="angucomplete-image-holder mr1">\n' +
+    '        <span class="angucomplete-image">\n' +
+    '          <bb3-record-icon record="result.originalObject"></bb3-record-icon>\n' +
+    '        </span>\n' +
     '      </div>\n' +
-    '      <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>\n' +
-    '      <div class="angucomplete-title" ng-if="!matchClass">\n' +
-    '        {{ result.title }}\n' +
-    '      </div>\n' +
-    '      <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>\n' +
-    '      <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">\n' +
-    '        {{result.description}}\n' +
+    '      <div>\n' +
+    '        <div ng-if="imageField" class="angucomplete-image-holder">\n' +
+    '          <img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image" />\n' +
+    '          <div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div>\n' +
+    '        </div>\n' +
+    '        <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>\n' +
+    '        <div class="angucomplete-title" ng-if="!matchClass">\n' +
+    '          {{ result.title }}\n' +
+    '        </div>\n' +
+    '        <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>\n' +
+    '        <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">\n' +
+    '          {{result.description}}\n' +
+    '        </div>\n' +
     '      </div>\n' +
     '    </div>\n' +
     '  </div>\n' +
