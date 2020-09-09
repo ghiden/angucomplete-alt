@@ -18,7 +18,7 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>\n' +
     '    <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>\n' +
     '\n' +
-    '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}">\n' +
+    '    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{\'angucomplete-selected-row\': $index == currentIndex, \'flex\': includeBbIcons}">\n' +
     '      <div ng-if="includeBbIcons" class="angucomplete-image-holder mr1">\n' +
     '        <span class="angucomplete-image">\n' +
     '          <bb3-record-icon record="result.originalObject"></bb3-record-icon>\n' +
