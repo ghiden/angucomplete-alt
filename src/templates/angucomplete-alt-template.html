@@ -10,7 +10,7 @@
     <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
     <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
 
-    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
+    <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex, 'flex': includeBbIcons}">
       <div ng-if="includeBbIcons" class="angucomplete-image-holder mr1">
         <span class="angucomplete-image">
           <bb3-record-icon record="result.originalObject"></bb3-record-icon>
