@@ -902,9 +902,7 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         includeBbIcons: '=?',
         subtitleField: '@?'
       },
-      templateUrl: (_element, attributes) => {
-        return attributes.templateUrl || DEFAULT_TEMPLATE_URL;
-      },
+      templateUrl: DEFAULT_TEMPLATE_URL,
       compile: (tElement) => {
         var startSym = $interpolate.startSymbol();
         var endSym = $interpolate.endSymbol();
