@@ -31,7 +31,7 @@ module.run(['$templateCache', function($templateCache) {
     '        </div>\n' +
     '        <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>\n' +
     '        <div class="angucomplete-title" ng-if="!matchClass">\n' +
-    '          {{ result.title }}\n' +
+    '          {{ result.title }} <span ng-if="subtitleField" class="subtle font-smaller">{{ result.originalObject[subtitleField] }}</span>\n' +
     '        </div>\n' +
     '        <div ng-if="matchClass && result.description && result.description != \'\'" class="angucomplete-description" ng-bind-html="result.description"></div>\n' +
     '        <div ng-if="!matchClass && result.description && result.description != \'\'" class="angucomplete-description">\n' +

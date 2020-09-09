@@ -23,7 +23,7 @@
         </div>
         <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
         <div class="angucomplete-title" ng-if="!matchClass">
-          {{ result.title }}
+          {{ result.title }} <span ng-if="subtitleField" class="subtle font-smaller">{{ result.originalObject[subtitleField] }}</span>
         </div>
         <div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
         <div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">

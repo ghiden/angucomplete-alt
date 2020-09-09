@@ -899,7 +899,8 @@ angular.module('angucomplete-alt').directive('angucompleteAlt', ['$q', '$parse',
         parseInput: '&',
         submitOnEnter: '@',
         bbAddPermission: '@?',
-        includeBbIcons: '=?'
+        includeBbIcons: '=?',
+        subtitleField: '@?'
       },
       templateUrl: (_element, attributes) => {
         return attributes.templateUrl || DEFAULT_TEMPLATE_URL;
