@@ -2,6 +2,11 @@
   <input id="{{id}}_value" class="{{inputClass}}" name="{{inputName}}" tabindex="{{fieldTabindex}}" type="{{inputType}}" maxlength="{{maxlength}}" placeholder="{{placeholder}}" autocapitalize="off" autocorrect="off" autocomplete="{{supportedAutocompleteValue}}" ng-model="searchStr" ng-class="{'angucomplete-input-not-empty': notEmpty}" ng-disabled="disableInput" ng-keydown="keydownHandler($event)" ng-keyup="keyupHandler($event)" ng-focus="onFocusHandler()" ng-blur="hideResults($event)" ng-change="inputChangeHandler(searchStr)" />
 
   <div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-show="showDropdown">
+    <div class="angucomplete-add" bb3-if="bbAddPermission && searchStr && !results[currentIndex]" permission-string="{{ bbAddPermission }}">
+      Press
+      <b>Enter</b> to create
+    </div>
+
     <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
     <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
 
